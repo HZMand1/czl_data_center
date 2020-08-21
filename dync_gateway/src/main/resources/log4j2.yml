@@ -1,0 +1,39 @@
+# 共有8个级别，按照从低到高为：ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF  选择all则输出全部的日志
+Configuration:
+   status: debug
+   Properties:
+      Property:
+      -  name: log.level.console
+         value: debug
+      -  name: log.path
+         value: /Users/yuanzhenhui/Documents/document_file/tmp/dync-gateway
+      -  name: project.name
+         value: dync-gateway
+   Appenders:
+      Console:
+         name: CONSOLE
+         target: SYSTEM_OUT
+         ThresholdFilter:
+            level: ${log.level.console}
+            onMatch: ACCEPT
+            onMismatch: DENY
+         PatternLayout:
+            pattern: '%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n'
+      RollingFile:
+      -  name: ROLLING_FILE
+         ignoreExceptions: false
+         fileName: ${log.path}/${project.name}.log
+         filePattern: ${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz
+         PatternLayout:
+            pattern: '%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n'
+         Policies:
+            SizeBasedTriggeringPolicy:
+               size: 300 MB
+         DefaultRolloverStrategy:
+            max: 100
+   Loggers:
+      Root:
+         level: ${log.level.console}
+         AppenderRef:
+         -  ref: CONSOLE
+         -  ref: ROLLING_FILE

@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cn.paohe</groupId>
+	<artifactId>czl_data_center</artifactId>
+	<version>${czl.version}</version>
+	<packaging>pom</packaging>
+	<name>czl_data_center</name>
+	<description>采芝林数据中心（基于spring cloud转发平台）</description>
+
+	<!-- parent springboot version -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.3.RELEASE</version>
+	</parent>
+
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<name>Team Nexus Repository</name>
+			<url>http://183.62.35.227:8081/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus</id>
+			<name>Team Nexus Repository</name>
+			<url>http://183.62.35.227:8081/nexus/content/groups/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<distributionManagement>
+		<repository>
+			<id>thirdparty</id>
+			<url>http://183.62.35.227:8081/nexus/content/repositories/thirdparty/</url>
+		</repository>
+	</distributionManagement>
+
+	<properties>
+		<encoding.code>UTF-8</encoding.code>
+		<project.build.sourceEncoding>${encoding.code}</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>${encoding.code}</project.reporting.outputEncoding>
+		<!-- jdk version -->
+		<java.version>8</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+
+		<czl.version>0.0.1</czl.version>
+		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
+		<spring-cloud-code.version>2.0.0.RELEASE</spring-cloud-code.version>
+
+	</properties>
+
+	<!-- 导入spring cloud版本 -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<modules>
+		<module>config-center</module>
+		<module>register-center</module>
+		<module>dync-gateway</module>
+		<module>sync-center</module>
+	</modules>
+</project>

@@ -1,0 +1,86 @@
+server:
+   port: 13001
+   compression:
+      enabled: true
+   undertow:
+      uriEncoding: utf-8
+      io-threads: 32
+      worker-threads: 32
+      buffer-size: 32
+      buffers-per-region: 32
+      direct-buffers: true
+spring:
+   application:
+      name: config-center
+   thymeleaf:
+      prefix: classpath:/template/
+      cache: false
+      suffix: .html
+      encoding: UTF-8
+      content-type: text/html
+   redis:
+      host: 127.0.0.1
+      port: 6379
+      timeout: 5000
+      database: 1
+      pool:
+         maxActive: 1000
+         maxIdle: 600
+         minIdle: 20
+         maxWait: -1
+         testOnBorrow: true
+         numTestsPerEvictionRun: 1024
+         timeBetweenEvictionRunsMillis: 30000
+         minEvictableIdleTimeMillis: 1800000
+         softMinEvictableIdleTimeMillis: 1800000
+         testWhileIdle: true
+         blockWhenExhausted: false
+eureka:
+   client:
+      registry-fetch-interval-seconds: 30 # 缓存清单更新时间
+      serviceUrl:
+         defaultZone: http://127.0.0.1:11001/eureka/
+   instance: # eureka实例配置信息
+      lease-renewal-interval-in-seconds: 30 # 服务续约间隔时间。默认每隔30秒，客户端会向服务端发送心跳。见DiscoveryClient.initScheduledTasks
+      lease-expiration-duration-in-seconds: 90 # 服务失效时间。缺省为90秒服务端接收不到客户端的心跳，则剔除该客户端服务实例。
+datasource:
+   initialSize: 5
+   minIdle: 5
+   maxActive: 10
+   maxWait: 60000
+   timeBetweenEvictionRunsMillis: 60000
+   minEvictableIdleTimeMillis: 300000
+   validationQuery: SELECT 1 FROM DUAL
+   testWhileIdle: true
+   testOnBorrow: false
+   testOnReturn: false
+   poolPreparedStatements: true
+   maxPoolPreparedStatementPerConnectionSize: 100
+   filters: stat,wall,log4j
+   connectionProperties: druid.stat.mergeSql=true
+druid:
+   loginUsername: admin
+   loginPassword: admin
+   resetEnable: true
+jdbc:
+   datasources: master
+   master:
+      dsType: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3506/czl_data_center
+      username: yzh
+      password: '0623'
+mybatis:
+   type-aliases-package: cn.paohe.*.model
+   mapper-locations: classpath*:dao/**/*.xml
+mapper:
+   mappers: cn.paohe.base.business.dao.MyMapper
+   not-empty: false
+   identity: MYSQL
+pagehelper:
+   helperDialect: mysql
+   reasonable: true
+   supportMethodsArguments: true
+   params: count\=countSql
+redis:
+   defaultExpiration: 0

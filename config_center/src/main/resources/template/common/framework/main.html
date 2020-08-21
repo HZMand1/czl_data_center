@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html class="gt-ie8 gt-ie9 not-ie">
+<head
+	th:include="common/framework/admin_common::admin_common_header('采芝林数据中心')"></head>
+<!-- 通过这里更改主题 -->
+<body class="theme-fresh main-menu-animated" id="bodyId">
+	<link rel="stylesheet"
+		th:href="@{/js/common/notification/naranja.min.css}">
+	<div class="mask"></div>
+	<img th:attr="src=@{/images/framework/loading.svg}" class="loading" />
+	<div class="z-loading-wrap">
+		<div class="spinner">
+			<img th:attr="src=@{/images/framework/loading2.gif}" />
+		</div>
+		<div class="z-msg">拼命加载中...</div>
+	</div>
+
+	<div id="main-wrapper" style="vertical-align: unset;">
+		<div th:include="common/framework/navigation::navigation"></div>
+		<div th:include="common/framework/menu::menu"></div>
+		<div th:include="common/framework/content::content"></div>
+	</div>
+</body>
+<script th:src="@{/js/framework/framework_extra.js}"></script>
+<script th:src="@{/js/common/notification/naranja.js}"></script>
+</html>

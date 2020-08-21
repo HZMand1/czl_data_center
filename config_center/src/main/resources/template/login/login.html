@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head th:include="common/framework/common::common_header('跑合项目管理登录')"></head>
+
+<body>
+	<div class="z-login-wrap">
+		<div class="z-login-box">
+			<div class="z-content z-clearfix">
+				<div class="z-title">
+					<h1>
+						<img th:attr="src=@{/images/login/log03.png}" />
+						<span>采芝林数据中心</span>
+					</h1>
+				</div>
+
+				<div class="z-form">
+					<form id="loginForm">
+						<label class="form-item z-clearfix">
+							<input type="text" name="userAccount" id="userAccount" class="form-control" placeholder="请输入用户"/>
+							<i class="ace-icon fa fa-user"></i>
+						</label>
+						<label class="form-item z-clearfix">
+							<input type="password" id="userPassword" class="form-control" placeholder="请输入密码" />
+							<i class="ace-icon fa fa-user"></i>
+						</label>
+
+						<label class="form-item z-clearfix z-code-box" style="margin-bottom: 0px;" id="showVcode"></label>
+
+						<p id="err" class="z-err" th:text="${err}"></p>
+
+						<button type="button" class="z-login-btn" th:onclick="'login()'">登录</button>
+
+						<label class="inline z-inline">
+							<input type="checkbox" id="setcheck" name="rememberLogin" class="z-switch" style="position: absolute; opacity: 0;" checked="checked"/>
+							<span class="z-switch" id="rememberLogin"></span>
+							<span>记住登录</span>
+						</label>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="z-shadow"></div>
+	</div>
+
+	<div class="z-loading-wrap">
+		<div class="spinner">
+			<div class="double-bounce1"></div>
+			<div class="double-bounce2"></div>
+		</div>
+		<div class="z-msg">用户登录中...</div>
+	</div>
+</body>
+
+<script th:src="@{/js/login/login.js}"></script>
+
+</html>

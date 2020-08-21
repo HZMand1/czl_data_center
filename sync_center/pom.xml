@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.paohe</groupId>
+		<artifactId>czl_data_center</artifactId>
+		<version>${czl.version}</version>
+	</parent>
+	<artifactId>sync-center</artifactId>
+	<name>sync-center</name>
+	<description>基于阿里Canal的数据同步中心</description>
+
+	<properties>
+		<canal.version>1.1.0</canal.version>
+		<cache.version>0.0.1</cache.version>
+		<base.version>0.0.1</base.version>
+	</properties>
+
+	<dependencies>
+		<!-- canal -->
+		<dependency>
+			<groupId>com.alibaba.otter</groupId>
+			<artifactId>canal.client</artifactId>
+			<version>${canal.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.alibaba</groupId>
+					<artifactId>fastjson</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- base-phfw -->
+		<dependency>
+			<groupId>cn.paohe</groupId>
+			<artifactId>base-phfw</artifactId>
+			<version>${base.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.github.pagehelper</groupId>
+					<artifactId>
+						pagehelper-spring-boot-starter
+					</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- cache-phfw -->
+		<dependency>
+			<groupId>cn.paohe</groupId>
+			<artifactId>cache-phfw</artifactId>
+			<version>${cache.version}</version>
+		</dependency>
+		
+		<!-- springboot log4j2 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>cn.paohe.Application</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

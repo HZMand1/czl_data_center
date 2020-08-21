@@ -1,0 +1,11 @@
+spring: # spring 参数配置
+   redis:
+      host: 127.0.0.1 # redis主机ip
+      port: 6379 # redis访问端口
+      database: 1 # redis使用下标为什么的数据库
+      timeout: 5000s # 数据库连接超时时间，2.0 中该参数的类型为Duration，这里在配置的时候需要指明单位
+      jedis:
+         pool:
+            max-idle: 600 # 最大空闲连接数
+            min-idle: 1 # 最小空闲连接数
+            max-active: 1000 # 最大活跃连接数，负数为不限制

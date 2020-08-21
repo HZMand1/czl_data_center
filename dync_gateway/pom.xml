@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cn.paohe</groupId>
+		<artifactId>czl_data_center</artifactId>
+		<version>${czl.version}</version>
+	</parent>
+	<artifactId>dync-gateway</artifactId>
+	<name>dync-gateway</name>
+	<description>数据中心主体服务动态网关</description>
+
+	<properties>
+		<base-phfw.version>0.0.1</base-phfw.version>
+		<cache-phfw.version>0.0.1</cache-phfw.version>
+		<es-phfw.version>0.0.1</es-phfw.version>
+	</properties>
+
+	<dependencies>
+		<!-- base-phfw -->
+		<dependency>
+			<groupId>cn.paohe</groupId>
+			<artifactId>base-phfw</artifactId>
+			<version>${base-phfw.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.github.pagehelper</groupId>
+					<artifactId>
+						pagehelper-spring-boot-starter
+					</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>
+						spring-boot-starter-undertow
+					</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- cache-phfw -->
+		<dependency>
+			<groupId>cn.paohe</groupId>
+			<artifactId>cache-phfw</artifactId>
+			<version>${cache-phfw.version}</version>
+		</dependency>
+
+		<!-- es-phfw -->
+		<dependency>
+			<groupId>cn.paohe</groupId>
+			<artifactId>es-phfw</artifactId>
+			<version>${es-phfw.version}</version>
+		</dependency>
+
+		<!-- spring cloud gateway -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+
+		<!-- springboot actuator -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- springboot log4j2 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+
+		<!-- junit -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- junit4webflux -->
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
