@@ -66,9 +66,9 @@
 	</dependencyManagement>
 
 	<modules>
-		<module>config-center</module>
-		<module>register-center</module>
-		<module>dync-gateway</module>
-		<module>sync-center</module>
+		<module>config_center</module>
+		<module>register_center</module>
+		<module>sync_gateway</module>
+		<module>sync_center</module>
 	</modules>
 </project>
