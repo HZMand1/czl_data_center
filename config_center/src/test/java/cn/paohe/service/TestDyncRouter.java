@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import cn.paohe.Application;
+import cn.paohe.ConfigApplication;
 import cn.paohe.base.utils.encryption.UUIDGenerator;
 import cn.paohe.model.RouterConfig;
 import cn.paohe.util.basetype.ObjectUtils;
@@ -21,7 +21,7 @@ import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = ConfigApplication.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestDyncRouter {
 

@@ -27,15 +27,15 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
-public class Application extends SpringBootServletInitializer {
+public class ConfigApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
+        return application.sources(ConfigApplication.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(ConfigApplication.class, args);
     }
 
 }

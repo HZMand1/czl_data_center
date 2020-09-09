@@ -15,10 +15,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Date: 2020/06/30
  */
 @SpringBootApplication
-public class Application {
+public class SyncApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(SyncApplication.class, args);
     }
 
 }
