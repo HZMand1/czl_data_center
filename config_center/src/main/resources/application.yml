@@ -66,10 +66,10 @@ jdbc:
    datasources: master
    master:
       dsType: com.alibaba.druid.pool.DruidDataSource
-      driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3506/czl_data_center
-      username: yzh
-      password: '0623'
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.100.211:10003/czl_data_center?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+      username: paohe
+      password: paohe!@#
 mybatis:
    type-aliases-package: cn.paohe.*.model
    mapper-locations: classpath*:dao/**/*.xml

@@ -68,7 +68,7 @@
 	<modules>
 		<module>config_center</module>
 		<module>register_center</module>
-		<module>sync_gateway</module>
+		<module>dync_gateway</module>
 		<module>sync_center</module>
 	</modules>
 </project>
