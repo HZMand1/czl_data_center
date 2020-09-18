@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.paohe.sys.dao.RoleAuthMapper" >
+	<resultMap id="BaseResultMap" type="cn.paohe.entity.model.sys.RoleAuthEntity" >
+		<result column="ROLE_AUTH_ID" property="roleAuthId" jdbcType="INTEGER" />
+		<result column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+		<result column="USER_ID" property="userId" jdbcType="INTEGER" />
+		<result column="MENU_ID" property="menuId" jdbcType="INTEGER" />
+		<result column="ALIVE_FLAG" property="aliveFlag" jdbcType="INTEGER" />
+		<result column="ADD_USER_ID" property="addUserId" jdbcType="INTEGER" />
+		<result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+		<result column="OPR_USER_ID" property="oprUserId" jdbcType="INTEGER" />
+		<result column="OPR_TIME" property="oprTime" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        ROLE_AUTH_ID, ROLE_ID, USER_ID, MENU_ID,ALIVE_FLAG, ADD_USER_ID, ADD_TIME, OPR_USER_ID, OPR_TIME
+	</sql>
+	
+	<!-- 查询角色用户权限信息 -->
+	<select id="findUserOrRoleMenuAuth" resultType="cn.paohe.entity.vo.sys.RoleMenuAuthVo" parameterType="cn.paohe.entity.vo.sys.RoleMenuAuthVo">
+		<include refid="UserOrRoleMenuAuthSelect"/>
+		<include refid="UserOrRoleMenuAuthWhere"/>
+	</select>
+	
+	<sql id="UserOrRoleMenuAuthSelect">
+		SELECT
+		  m.MENU_ID as menuId,
+		  m.PARENT_ID as parentId,
+		  m.TYPE as type,
+		  m.NAME as name,
+		  m.PATH as path,
+		  m.AUTH as auth,
+		  m.FUNCTIONS as functions,
+		  m.ALIVE_FLAG as aliveFlag,
+		  m.ADD_TIME as addTime,
+		  m.OPR_USER_ID as oprUserId,
+		  m.REMARK as remark,
+		  a.ROLE_ID as roleId,
+		  a.ROLE_AUTH_ID as roleAuthId,
+		  a.USER_ID as userId
+		FROM
+			role_auth a
+		INNER JOIN menu_button m ON a.MENU_ID = m.MENU_ID
+	</sql>
+	
+	<sql id="UserOrRoleMenuAuthWhere">
+	   <if test="roleAuthId !=null">and a.ROLE_AUTH_ID = #{roleAuthId,jdbcType=INTEGER}</if>
+	   <if test="userId != null and userId !=''">and a.USER_ID = #{userId,jdbcType=INTEGER}</if>
+       <if test="roleId != null and roleId !=''">and a.ROLE_ID = #{roleId,jdbcType=INTEGER}</if>
+       <if test="aliveFlag !=null">and m.ALIVE_FLAG = #{aliveFlag,jdbcType=INTEGER}</if>
+       <if test="menuId !=null and menuId !=''">and m.id = #{menuId,jdbcType=INTEGER}</if>
+	</sql>
+	
+</mapper>

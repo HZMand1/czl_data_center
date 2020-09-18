@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.paohe.sys.dao.RoleUserMapper" >
+	<resultMap id="BaseResultMap" type="cn.paohe.entity.model.sys.RoleUserEntity" >
+		<result column="ROLE_USER_ID" property="roleUserId" jdbcType="INTEGER" />
+		<result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+		<result column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+		<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+		<result column="ALIVE_FLAG" property="aliveFlag" jdbcType="INTEGER" />
+		<result column="ADD_USER_ID" property="addUserId" jdbcType="INTEGER" />
+		<result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+		<result column="OPR_USER_ID" property="oprUserId" jdbcType="INTEGER" />
+		<result column="OPR_TIME" property="oprTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        ROLE_USER_ID, ROLE_NAME, ROLE_ID, USER_ID,ALIVE_FLAG, ADD_USER_ID, ADD_TIME, OPR_USER_ID, OPR_TIME
+	</sql>
+	
+	<!-- 查询角色用户信息 -->
+	<select id="findUserByRole" resultType="cn.paohe.entity.vo.sys.UserRoleVo" parameterType="cn.paohe.entity.vo.sys.UserRoleVo">
+		<include refid="userRoleSelect"/>
+		<include refid="userRoleWhere"/>
+	</select>
+	
+	<sql id="userRoleSelect">
+		SELECT
+		  u.`USER_ID` AS userId,
+		  u.`P_USER_ID` AS parentUserId,
+		  u.`ACCOUNT` AS account,
+		  u.`USER_NAME` AS userName,
+		  u.`USE_NAME` AS useName,
+		  u.`PHONE` AS phone,
+		  u.`EMAIL` AS email,
+		  u.`ALIVE_FLAG` AS aliveFlag,
+		  r.`ROLE_ID` AS roleId,
+		  r.`ROLE_NAME` AS roleName,
+		  r.`ROLE_CODE` AS roleCode
+		FROM
+		  user_info u
+		  INNER JOIN role_user ru ON u.`USER_ID` = ru.`USER_ID`
+		  INNER JOIN role_info r ON ru.`ROLE_ID` = r.`ROLE_ID`
+	</sql>
+	
+	<sql id="userRoleWhere">
+	   <if test="userId !=null">and u.`USER_ID` = #{userId,jdbcType=INTEGER}</if>
+       <if test="account != null and account !=''">and u.ACCOUNT = #{account,jdbcType=VARCHAR}</if>
+       <if test="roleId != null">and r.`ROLE_ID` = #{roleId,jdbcType=INTEGER}</if>
+       <if test="roleName != null and roleName !=''">and r.`ROLE_NAME` like concat('%',#{roleName,jdbcType=VARCHAR},'%') </if>
+       <if test="roleCode != null and roleCode !=''">and r.`ROLE_CODE` = #{roleCode,jdbcType=VARCHAR} </if>
+       <if test="aliveFlag !=null">and u.`ALIVE_FLAG` = #{aliveFlag,jdbcType=INTEGER}</if>
+	</sql>
+	
+</mapper>
