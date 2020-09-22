@@ -6,6 +6,7 @@ import cn.paohe.model.auth.UserInfo;
 import cn.paohe.util.basetype.ObjectUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.JWT;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -53,25 +54,40 @@ public class UserUtil {
     }
 
     public static UserEntity getUserEntity() {
-        UserEntity ui = null;
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if(ObjectUtils.isNullObj(attributes)){
             return null;
         }
         HttpServletRequest request = attributes.getRequest();
         String userInfo = request.getHeader("user-info");
-        if(StringUtil.isBlank(userInfo)){
+        String token = request.getHeader("token");
+        if(StringUtil.isBlank(userInfo) && StringUtil.isBlank(token)){
             return null;
         }
-        String decode = null;
-        try {
-            decode = URLDecoder.decode(userInfo, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        if(StringUtil.isBlank(userInfo)){
+            if(StringUtil.isBlank(token)){
+                return null;
+            }
+            UserEntity userEntity = JwtUtil.getuserInfo(token);
+            if(!ObjectUtils.isNullObj(userEntity)){
+                return userEntity;
+            }
+            return null;
+        }else {
+            String decode = null;
+            try {
+                decode = URLDecoder.decode(userInfo, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            if (StringUtil.isBlank(decode)){
+                return null;
+            }
+            UserEntity ui = JSON.parseObject(decode, UserEntity.class);
+            if(!ObjectUtils.isNullObj(ui)){
+                return ui;
+            }
         }
-        if (!StringUtils.isEmpty(decode)) {
-            ui = JSON.parseObject(decode, UserEntity.class);
-        }
-        return ui;
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import cn.paohe.entity.model.user.UserEntity;
 import cn.paohe.sys.annotation.RequiresPermissions;
 import cn.paohe.user.service.IUserInfoService;
 import cn.paohe.vo.framework.AjaxResult;
+import cn.paohe.vo.framework.PageAjax;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,28 +28,27 @@ public class RestUserInfoController {
 
     @ApiOperation(value = "获取全部后台用户信息")
     @RequestMapping(value = "queryUserAllList", method = RequestMethod.POST)
-    public AjaxResult queryUserAllList(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity){
+    public AjaxResult queryUserAllList(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity) {
         AjaxResult ajaxResult = userInfoService.queryUserAllList(userEntity);
         return ajaxResult;
     }
 
     @ApiOperation(value = "分页获取后台用户信息")
     @RequestMapping(value = "queryUserAllPage", method = RequestMethod.POST)
-    public AjaxResult queryUserAllPage(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity){
-        AjaxResult ajaxResult = userInfoService.queryUserAllPage(userEntity);
-        return ajaxResult;
+    public PageAjax<UserEntity> queryUserAllPage(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity) {
+        return userInfoService.queryUserAllPage(userEntity);
     }
 
     @ApiOperation(value = "根据ID获取后台用户信息")
     @RequestMapping(value = "queryUserById", method = RequestMethod.POST)
-    public AjaxResult queryUserById(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity){
+    public AjaxResult queryUserById(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity) {
         AjaxResult ajaxResult = userInfoService.queryUserById(userEntity);
         return ajaxResult;
     }
 
     @ApiOperation(value = "根据Account查询会员信息")
     @RequestMapping(value = "queryUserByAccount", method = RequestMethod.POST)
-    public AjaxResult queryUserByAccount(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity){
+    public AjaxResult queryUserByAccount(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity) {
         AjaxResult ajaxResult = userInfoService.queryUserByAccount(userEntity);
         return ajaxResult;
     }
@@ -56,7 +56,7 @@ public class RestUserInfoController {
     @RequiresPermissions("user:insert")
     @ApiOperation(value = "新增后台用户信息")
     @RequestMapping(value = "insertUser", method = RequestMethod.POST)
-    public AjaxResult insertUser(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity){
+    public AjaxResult insertUser(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity) {
         AjaxResult ajaxResult = userInfoService.insertUser(userEntity);
         return ajaxResult;
     }
@@ -64,14 +64,14 @@ public class RestUserInfoController {
     @RequiresPermissions("user:update")
     @ApiOperation(value = "修改后台用户信息")
     @RequestMapping(value = "updateUserById", method = RequestMethod.POST)
-    public AjaxResult updateUserById(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity){
+    public AjaxResult updateUserById(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity) {
         AjaxResult ajaxResult = userInfoService.updateUserById(userEntity);
         return ajaxResult;
     }
 
     @ApiOperation(value = "修改后台用户密码")
     @RequestMapping(value = "updateUserPassword", method = RequestMethod.POST)
-    public AjaxResult updateUserPassword(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity){
+    public AjaxResult updateUserPassword(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity) {
         AjaxResult ajaxResult = userInfoService.updateUserPassword(userEntity);
         return ajaxResult;
     }
@@ -79,7 +79,7 @@ public class RestUserInfoController {
     @RequiresPermissions("user:delete")
     @ApiOperation(value = "删除后台用户信息")
     @RequestMapping(value = "deleteUserById", method = RequestMethod.POST)
-    public AjaxResult deleteUserById(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity){
+    public AjaxResult deleteUserById(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity) {
         AjaxResult ajaxResult = userInfoService.deleteUserById(userEntity);
         return ajaxResult;
     }
@@ -87,7 +87,7 @@ public class RestUserInfoController {
     @RequiresPermissions("user:enable")
     @ApiOperation(value = "启用、禁用后台用户信息")
     @RequestMapping(value = "enableUser", method = RequestMethod.POST)
-    public AjaxResult enableUser(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity){
+    public AjaxResult enableUser(@ApiParam(value = "用户实体类", required = true) @RequestBody UserEntity userEntity) {
         AjaxResult ajaxResult = userInfoService.enableUser(userEntity);
         return ajaxResult;
     }
@@ -95,7 +95,7 @@ public class RestUserInfoController {
     @RequiresPermissions("user:deleteRole")
     @ApiOperation(value = "删除用户")
     @RequestMapping(value = "delUser", method = RequestMethod.POST)
-    public AjaxResult delRole(@ApiParam(value = "userId数组", required = true) @RequestBody String[] ids){
+    public AjaxResult delRole(@ApiParam(value = "userId数组", required = true) @RequestBody String[] ids) {
         return userInfoService.delUser(ids);
     }
 }

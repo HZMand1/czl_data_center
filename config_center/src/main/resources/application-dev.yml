@@ -14,6 +14,9 @@ server:
 spring:
   application:
     name: config-center
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
   thymeleaf:
     prefix: classpath:/template/
     cache: false
@@ -101,4 +104,4 @@ redis:
 # 打印sql
 logging:
   level:
-    cn.paohe : DEBUG
+    cn.paohe.*.dao: DEBUG

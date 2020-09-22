@@ -66,12 +66,9 @@ public class LoginServiceImpl implements ILoginService {
             Map<String, String> map = new HashMap<>();
             map.put("account", "账号");
             map.put("password", "密码");
-//            map.put("appCode", "所属系统");
             CheckEntityUtils.checkEntity(user, map);
-            // 查库，有则登录成功并返回token
             user.setPassword(Md5.getMD5(user.getPassword().getBytes()));
             ArrayList<String> authList = new ArrayList<String>();
-            //种子种苗用户
             user = userEntityMapper.selectOne(user);
             if (user == null) {
                 ajaxResult.setRetcode(0);
@@ -97,7 +94,7 @@ public class LoginServiceImpl implements ILoginService {
             //为了通用，转成json
             JSONObject jsonObject = JSONObject.parseObject(jsonString);
             //生成token,并存入redis
-            String token = JwtUtil.sign(jsonObject.getString("account"), jsonObject.getString("password"));
+            String token = JwtUtil.sign(user.getAccount(),user.getUserId(),user.getPassword());
             //添加到redis并设置到期时间
             redisUtil.set(token, JSONObject.toJSONString(authList), EXPIRE_TIME);
             jsonObject.put("password", null);

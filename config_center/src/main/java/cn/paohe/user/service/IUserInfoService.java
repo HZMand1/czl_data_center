@@ -2,10 +2,11 @@ package cn.paohe.user.service;
 
 import cn.paohe.entity.model.user.UserEntity;
 import cn.paohe.vo.framework.AjaxResult;
+import cn.paohe.vo.framework.PageAjax;
 
 /**
  * TODO
- * 种子后台用户信息接口
+ * 用户信息接口
  * @version V1.0
  * @author: 黄芝民
  * @date: 2019/10/22 9:36
@@ -29,7 +30,7 @@ public interface IUserInfoService {
      * @date:      2019/10/22 9:53 
      * @throws   
      */ 
-    public  AjaxResult queryUserAllPage(UserEntity userEntity);
+    public PageAjax<UserEntity> queryUserAllPage(UserEntity userEntity);
 
    /**TODO 根据ID获取用户信息
     * @param:  id

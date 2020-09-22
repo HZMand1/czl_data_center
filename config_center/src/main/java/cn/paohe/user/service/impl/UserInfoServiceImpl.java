@@ -2,6 +2,7 @@ package cn.paohe.user.service.impl;
 
 import cn.paohe.base.component.annotation.TargetDataSource;
 import cn.paohe.base.utils.basetype.StringUtil;
+import cn.paohe.base.utils.check.AppUtil;
 import cn.paohe.entity.model.user.UserEntity;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.enums.Md5;
@@ -12,9 +13,9 @@ import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.utils.ErrorMessageUtils;
 import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.AjaxResult;
+import cn.paohe.vo.framework.PageAjax;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,15 +79,12 @@ public class UserInfoServiceImpl implements IUserInfoService {
      */
 
     @TargetDataSource(value = "center-r")
-    public AjaxResult queryUserAllPage(UserEntity userEntity) {
+    public PageAjax<UserEntity> queryUserAllPage(UserEntity userEntity) {
         PageHelper.startPage(userEntity.getStart(), userEntity.getPageSize());
         Example example = setLikeQueryParam(userEntity);
         example.setOrderByClause("ADD_TIME desc");
         List<UserEntity> resultList = userEntityMapper.selectByExample(example);
-        PageInfo<UserEntity> pageInfo = new PageInfo<UserEntity>(resultList);
-        AjaxResult result = new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "获取用户信息成功");
-        result.setData(pageInfo);
-        return result;
+        return AppUtil.returnPage(resultList);
     }
 
     /**
@@ -276,7 +274,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
             //删除redis缓存
             redisDataService.delete(SEED_USER_REDIS + "id_" + userEntity.getUserId());
             AjaxResult ajaxResult = new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value);
-            ajaxResult.setRetmsg(enable == 0 ? "后台用户启用成功" : "后台用户禁用成功");
+            ajaxResult.setRetmsg(enable == 1 ? "后台用户启用成功" : "后台用户禁用成功");
             ajaxResult.setData(userEntity);
             return ajaxResult;
         }
@@ -343,16 +341,16 @@ public class UserInfoServiceImpl implements IUserInfoService {
      */
     private AjaxResult checkAccount(UserEntity userEntity) {
         if (StringUtil.isBlank(userEntity.getAccount())) {
-            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "后台账号不能为空。");
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "账号不能为空。");
         }
         Example example = new Example(UserEntity.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("account", userEntity.getAccount());
         UserEntity result = userEntityMapper.selectOneByExample(example);
         if (ObjectUtils.isNullObj(result)) {
-            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "后台账号不存在。");
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "账号不存在。");
         }
-        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "后台账号已存在。");
+        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "账号已存在。");
     }
 
     /**
@@ -371,6 +369,9 @@ public class UserInfoServiceImpl implements IUserInfoService {
         if (ObjectUtils.isNullObj(userEntity.getAliveFlag())) {
             userEntity.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
         }
+        if(ObjectUtils.isNullObj(userEntity.getParentUserId())){
+            userEntity.setParentUserId(UserUtil.getUserEntity().getUserId());
+        }
 
         // 设置查询条件
         if (StringUtil.isNotBlank(userEntity.getUseName())) {
@@ -387,6 +388,9 @@ public class UserInfoServiceImpl implements IUserInfoService {
         }
         if (StringUtil.isNotBlank(userEntity.getEmail())) {
             criteria.andLike(UserEntity.key.email.toString(), userEntity.getEmail());
+        }
+        if (!ObjectUtils.isNullObj(userEntity.getParentUserId())) {
+            criteria.andEqualTo(UserEntity.key.parentUserId.toString(), userEntity.getParentUserId());
         }
         return example;
     }

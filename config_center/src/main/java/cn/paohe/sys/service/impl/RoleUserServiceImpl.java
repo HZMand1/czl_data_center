@@ -187,7 +187,7 @@ public class RoleUserServiceImpl implements IRoleUserService {
     }
 
     /**
-     * TODO 给角色分配用户
+     * TODO 给用户分配角色
      *
      * @param roleVo
      * @return AjaxResult
@@ -198,17 +198,9 @@ public class RoleUserServiceImpl implements IRoleUserService {
     @TargetDataSource(value = "center-w")
     public AjaxResult alterUserToRole(UserRoleVo roleVo) {
         try {
-            /*判断角色Id是否为空*/
             if (ObjectUtils.isNullObj(roleVo.getRoleId())) {
                 return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "用户id不能为空");
             }
-            /*判断角色名称是否为空*/
-			/*if(CollectionUtil.isEmpty(roleVo.getRoleNames())){
-				return new AjaxResult(RestHttpStatus.AJAX_CODE_NO.value, "角色名称数组roleNames不能为空");
-			}
-			if(CollectionUtil.isEmpty(roleVo.getRoleIds())){
-				return new AjaxResult(RestHttpStatus.AJAX_CODE_NO.value, "角色id数组roleIds不能为空");
-			}*/
             //删除角色下的所有用户
             //组装条件查询
             Condition cond = new Condition(RoleUserEntity.class);
@@ -219,13 +211,15 @@ public class RoleUserServiceImpl implements IRoleUserService {
                 for (int i = 0; i < roleVo.getRoleIds().length; i++) {
                     RoleUserEntity userVo = new RoleUserEntity();
                     userVo.setAddTime(new Date());
-//                    userVo.setRoleUserId(String.valueOf(SnowFlakeIds.get().nextId()));
+                    userVo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+                    userVo.setAddUserId(UserUtil.getUserEntity().getUserId());
                     userVo.setUserId(roleVo.getUserId());
                     userVo.setRoleId(roleVo.getRoleIds()[i]);
                     if (i < roleVo.getRoleNames().length) {
                         userVo.setRoleName(roleVo.getRoleNames()[i]);
                     }
                     userVo.setOprUserId(UserUtil.getUserEntity().getUserId());
+                    userVo.setOprTime(new Date());
                     roleUserMapper.insert(userVo);
                 }
                 return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "给用户分配角色成功", roleVo);

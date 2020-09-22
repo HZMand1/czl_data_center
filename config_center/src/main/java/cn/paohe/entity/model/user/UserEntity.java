@@ -18,7 +18,7 @@ import java.util.Date;
 public class UserEntity extends IfQuery {
 
     public static enum key{
-        userId ,account ,userName ,useName  ,phone ,
+        userId ,parentUserId,account ,userName ,useName  ,phone ,
         email ,aliveFlag,addUserId,addTime,oprUserId,oprTime
     }
 
