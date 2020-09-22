@@ -105,8 +105,8 @@ public class RestDataSourceController {
         }
         int enableCount = dataSourceService.updateDataSourceById(dataSourceInfo);
         if(enableCount > 0){
-            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"屏蔽成功",dataSourceInfo);
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"修改成功",dataSourceInfo);
         }
-        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"屏蔽失败",dataSourceInfo);
+        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"修改失败",dataSourceInfo);
     }
 }
