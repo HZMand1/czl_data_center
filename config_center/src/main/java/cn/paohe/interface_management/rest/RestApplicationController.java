@@ -26,7 +26,7 @@ import java.util.List;
  **/
 @RestController
 @CrossOrigin
-@RequestMapping("/rest/data/center/systemParam")
+@RequestMapping("/rest/data/center/app/")
 public class RestApplicationController {
 
     @Autowired
@@ -58,7 +58,7 @@ public class RestApplicationController {
         return applicationInfos;
     }
 
-    @RequiresPermissions("app:insertApp")
+    @RequiresPermissions("app:insert")
     @ApiOperation(value = "新增应用")
     @RequestMapping(value = "insertApp", method = RequestMethod.POST)
     public AjaxResult insertApp(@ApiParam(value = "应用实体Vo", required = true) @RequestBody ApplicationInfo applicationInfo) {
@@ -69,7 +69,7 @@ public class RestApplicationController {
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "新增失败",applicationInfo);
     }
 
-    @RequiresPermissions("app:enableApp")
+    @RequiresPermissions("app:enable")
     @ApiOperation(value = "屏蔽应用")
     @RequestMapping(value = "enableAppById", method = RequestMethod.POST)
     public AjaxResult enableAppById(@ApiParam(value = "应用实体Vo", required = true) @RequestBody ApplicationInfo applicationInfo) {
@@ -79,17 +79,17 @@ public class RestApplicationController {
         int enableCount = applicationService.enableAppById(applicationInfo);
         if (enableCount > 0) {
             // 屏蔽该应用下的所有接口
-            InterfaceInfo param = new InterfaceInfo();
-            param.setAliveFlag(DataCenterCollections.YesOrNo.NO.value);
-            InterfaceInfo condition = new InterfaceInfo();
-            condition.setApplicationId(applicationInfo.getApplicationId());
-            iInterfaceService.updateInterfaceByCondition(param,condition);
+//            InterfaceInfo param = new InterfaceInfo();
+//            param.setAliveFlag(DataCenterCollections.YesOrNo.NO.value);
+//            InterfaceInfo condition = new InterfaceInfo();
+//            condition.setApplicationId(applicationInfo.getApplicationId());
+//            iInterfaceService.updateInterfaceByCondition(param,condition);
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "屏蔽应用成功");
         }
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "屏蔽应用失败");
     }
 
-    @RequiresPermissions("app:deleteApp")
+    @RequiresPermissions("app:delete")
     @ApiOperation(value = "删除应用")
     @RequestMapping(value = "deleteAppById", method = RequestMethod.POST)
     public AjaxResult deleteAppById(@ApiParam(value = "应用实体Vo", required = true) @RequestBody ApplicationInfo applicationInfo) {
@@ -99,15 +99,15 @@ public class RestApplicationController {
         int deleteCount = applicationService.deleteAppById(applicationInfo);
         if (deleteCount > 0) {
             // 删除该应用下的所有接口
-            InterfaceInfo interfaceInfo = new InterfaceInfo();
-            interfaceInfo.setApplicationId(applicationInfo.getApplicationId());
-            iInterfaceService.deleteInterfaceByCondition(interfaceInfo);
+//            InterfaceInfo interfaceInfo = new InterfaceInfo();
+//            interfaceInfo.setApplicationId(applicationInfo.getApplicationId());
+//            iInterfaceService.deleteInterfaceByCondition(interfaceInfo);
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "删除应用成功");
         }
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "删除应用失败");
     }
 
-    @RequiresPermissions("app:updateApp")
+    @RequiresPermissions("app:update")
     @ApiOperation(value = "修改应用")
     @RequestMapping(value = "updateAppById", method = RequestMethod.POST)
     public AjaxResult updateAppById(@ApiParam(value = "应用实体Vo", required = true) @RequestBody ApplicationInfo applicationInfo) {
