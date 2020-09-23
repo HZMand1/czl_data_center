@@ -1,6 +1,7 @@
 package cn.paohe.interface_management.service;
 
 import cn.paohe.entity.model.InterfaceMag.InterfaceLabelInfo;
+import cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo;
 import cn.paohe.vo.framework.PageAjax;
 
 import java.util.List;
@@ -68,7 +69,7 @@ public interface IInterfaceLabelService {
      * @Date: 2020/9/16 14:37
      * @throws:
      */
-    public InterfaceLabelInfo queryInterfaceLabelById(InterfaceLabelInfo interfaceLabelInfo);
+    public InterfaceLabelInfoVo queryInterfaceLabelById(InterfaceLabelInfoVo interfaceLabelInfoVo);
 
     /**
      * TODO 查询全部接口标签源信息
@@ -79,7 +80,7 @@ public interface IInterfaceLabelService {
      * @Date: 2020/9/16 14:32
      * @throws:
      */
-    public List<InterfaceLabelInfo> queryInterfaceLabelList(InterfaceLabelInfo interfaceLabelInfo);
+    public List<InterfaceLabelInfoVo> queryInterfaceLabelList(InterfaceLabelInfoVo interfaceLabelInfoVo);
 
     /**
      * TODO 分页查询接口标签信息
@@ -90,5 +91,5 @@ public interface IInterfaceLabelService {
      * @Date: 2020/9/16 14:33
      * @throws:
      */
-    public PageAjax<InterfaceLabelInfo> queryPageInterfaceLabels(InterfaceLabelInfo interfaceLabelInfo);
+    public PageAjax<InterfaceLabelInfoVo> queryPageInterfaceLabels(InterfaceLabelInfoVo interfaceLabelInfoVo);
 }

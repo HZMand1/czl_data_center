@@ -84,7 +84,7 @@
 		LEFT JOIN interface_type_info t ON i.`TYPE_ID` = t.`TYPE_ID`
 		LEFT JOIN interface_label_info l ON i.`LABEL_ID` = l.`LABEL_ID`
 		WHERE i.`ALIVE_FLAG` = 1
-		<if test="addUserId != null and addUserId != ''">
+		<if test="addUserId != null">
 			AND i.`ADD_USER_ID` = #{addUserId}
 		</if>
 		<if test="applicationName != null and applicationName != ''">

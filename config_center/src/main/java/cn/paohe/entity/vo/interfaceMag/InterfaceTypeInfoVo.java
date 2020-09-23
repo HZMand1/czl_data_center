@@ -17,13 +17,13 @@ import java.util.List;
 public class InterfaceTypeInfoVo extends InterfaceTypeInfo {
 
     @ApiModelProperty(value = "接口标签集合")
-    private List<InterfaceLabelInfo> interfaceLabelInfos;
+    private List<InterfaceLabelInfoVo> interfaceLabelInfoVos;
 
-    public List<InterfaceLabelInfo> getInterfaceLabelInfos() {
-        return interfaceLabelInfos;
+    public List<InterfaceLabelInfoVo> getInterfaceLabelInfoVos() {
+        return interfaceLabelInfoVos;
     }
 
-    public void setInterfaceLabelInfos(List<InterfaceLabelInfo> interfaceLabelInfos) {
-        this.interfaceLabelInfos = interfaceLabelInfos;
+    public void setInterfaceLabelInfoVos(List<InterfaceLabelInfoVo> interfaceLabelInfoVos) {
+        this.interfaceLabelInfoVos = interfaceLabelInfoVos;
     }
 }

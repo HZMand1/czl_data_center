@@ -7,6 +7,7 @@ import cn.paohe.base.utils.check.AppUtil;
 import cn.paohe.entity.model.InterfaceMag.DataSourceInfo;
 import cn.paohe.entity.model.InterfaceMag.InterfaceLabelInfo;
 import cn.paohe.entity.model.InterfaceMag.InterfaceTypeInfo;
+import cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo;
 import cn.paohe.entity.vo.interfaceMag.InterfaceTypeInfoVo;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.dao.IInterfaceTypeMapper;
@@ -107,10 +108,10 @@ public class InterfaceTypeServiceImpl implements IInterfaceTypeService {
         List<InterfaceTypeInfo> list = iInterfaceTypeMapper.selectByCondition(condition);
         List<InterfaceTypeInfoVo> interfaceTypeInfoVos = BeanCopy.listCopyASM(list,InterfaceTypeInfoVo.class);
         for (InterfaceTypeInfoVo interfaceTypeInfoVo : interfaceTypeInfoVos) {
-            InterfaceLabelInfo interfaceLabelInfo = new InterfaceLabelInfo();
+            InterfaceLabelInfoVo interfaceLabelInfo = new InterfaceLabelInfoVo();
             interfaceLabelInfo.setTypeId(interfaceTypeInfoVo.getTypeId());
-            List<InterfaceLabelInfo> interfaceLabelInfos = iInterfaceLabelService.queryInterfaceLabelList(interfaceLabelInfo);
-            interfaceTypeInfoVo.setInterfaceLabelInfos(interfaceLabelInfos);
+            List<InterfaceLabelInfoVo> interfaceLabelInfos = iInterfaceLabelService.queryInterfaceLabelList(interfaceLabelInfo);
+            interfaceTypeInfoVo.setInterfaceLabelInfoVos(interfaceLabelInfos);
         }
         return interfaceTypeInfoVos;
     }
@@ -126,10 +127,10 @@ public class InterfaceTypeServiceImpl implements IInterfaceTypeService {
         List<InterfaceTypeInfo> list = iInterfaceTypeMapper.selectByCondition(condition);
         List<InterfaceTypeInfoVo> interfaceTypeInfoVos = BeanCopy.listCopyASM(list,InterfaceTypeInfoVo.class);
         for (InterfaceTypeInfoVo interfaceTypeInfoVo : interfaceTypeInfoVos) {
-            InterfaceLabelInfo interfaceLabelInfo = new InterfaceLabelInfo();
+            InterfaceLabelInfoVo interfaceLabelInfo = new InterfaceLabelInfoVo();
             interfaceLabelInfo.setTypeId(interfaceTypeInfoVo.getTypeId());
-            List<InterfaceLabelInfo> interfaceLabelInfos = iInterfaceLabelService.queryInterfaceLabelList(interfaceLabelInfo);
-            interfaceTypeInfoVo.setInterfaceLabelInfos(interfaceLabelInfos);
+            List<InterfaceLabelInfoVo> interfaceLabelInfos = iInterfaceLabelService.queryInterfaceLabelList(interfaceLabelInfo);
+            interfaceTypeInfoVo.setInterfaceLabelInfoVos(interfaceLabelInfos);
         }
         return AppUtil.returnPage(interfaceTypeInfoVos);
     }

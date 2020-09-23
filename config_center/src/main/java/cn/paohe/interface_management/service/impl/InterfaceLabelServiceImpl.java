@@ -5,6 +5,7 @@ import cn.paohe.base.utils.basetype.StringUtil;
 import cn.paohe.base.utils.check.AppUtil;
 import cn.paohe.entity.model.InterfaceMag.DataSourceInfo;
 import cn.paohe.entity.model.InterfaceMag.InterfaceLabelInfo;
+import cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.dao.IInterfaceLabelMapper;
 import cn.paohe.interface_management.service.IInterfaceLabelService;
@@ -88,29 +89,35 @@ public class InterfaceLabelServiceImpl implements IInterfaceLabelService {
 
     @TargetDataSource(value = "center-r")
     @Override
-    public InterfaceLabelInfo queryInterfaceLabelById(InterfaceLabelInfo interfaceLabelInfo) {
-        return iInterfaceLabelMapper.selectByPrimaryKey(interfaceLabelInfo);
+    public InterfaceLabelInfoVo queryInterfaceLabelById(InterfaceLabelInfoVo interfaceLabelInfoVo) {
+        return iInterfaceLabelMapper.queryLabelInfoById(interfaceLabelInfoVo);
     }
 
     @TargetDataSource(value = "center-r")
     @Override
-    public List<InterfaceLabelInfo> queryInterfaceLabelList(InterfaceLabelInfo interfaceLabelInfo) {
-        //条件
-        Condition condition = queryCondition(interfaceLabelInfo);
+    public List<InterfaceLabelInfoVo> queryInterfaceLabelList(InterfaceLabelInfoVo interfaceLabelInfoVo) {
+        // 设置默认值
+        if (ObjectUtils.isNullObj(interfaceLabelInfoVo.getAliveFlag())) {
+            interfaceLabelInfoVo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+        }
         //查询
-        List<InterfaceLabelInfo> list = iInterfaceLabelMapper.selectByCondition(condition);
+        List<InterfaceLabelInfoVo> list = iInterfaceLabelMapper.queryLabelInfoList(interfaceLabelInfoVo);
         return list;
     }
 
     @TargetDataSource(value = "center-r")
     @Override
-    public PageAjax<InterfaceLabelInfo> queryPageInterfaceLabels(InterfaceLabelInfo interfaceLabelInfo) {
+    public PageAjax<InterfaceLabelInfoVo> queryPageInterfaceLabels(InterfaceLabelInfoVo interfaceLabelInfoVo) {
+        // 设置默认值
+        if (ObjectUtils.isNullObj(interfaceLabelInfoVo.getAliveFlag())) {
+            interfaceLabelInfoVo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+        }
         //条件
-        Condition condition = queryCondition(interfaceLabelInfo);
+        Condition condition = queryCondition(interfaceLabelInfoVo);
         //分页
-        PageMethod.startPage(interfaceLabelInfo.getStart(), interfaceLabelInfo.getPageSize());
+        PageMethod.startPage(interfaceLabelInfoVo.getStart(), interfaceLabelInfoVo.getPageSize());
         //查询
-        List<InterfaceLabelInfo> list = iInterfaceLabelMapper.selectByCondition(condition);
+        List<InterfaceLabelInfoVo> list = iInterfaceLabelMapper.queryLabelInfoList(interfaceLabelInfoVo);
         return AppUtil.returnPage(list);
     }
 

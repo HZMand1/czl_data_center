@@ -1,7 +1,9 @@
 package cn.paohe.interface_management.rest;
 
+import cn.paohe.base.utils.basetype.BeanCopy;
 import cn.paohe.base.utils.basetype.StringUtil;
 import cn.paohe.entity.model.InterfaceMag.InterfaceLabelInfo;
+import cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.service.IInterfaceLabelService;
 import cn.paohe.sys.annotation.RequiresPermissions;
@@ -33,25 +35,25 @@ public class RestInterfaceLabelController {
 
     @ApiOperation(value = "根据ID获取接口标签信息")
     @RequestMapping(value = "queryInterfaceLabelById", method = RequestMethod.POST)
-    public AjaxResult queryInterfaceLabelById(@ApiParam(value = "接口标签信息实体", required = true) @RequestBody InterfaceLabelInfo interfaceLabelInfo) {
-        if (ObjectUtils.isNullObj(interfaceLabelInfo.getLabelId())) {
+    public AjaxResult queryInterfaceLabelById(@ApiParam(value = "接口标签信息实体", required = true) @RequestBody InterfaceLabelInfoVo interfaceLabelInfoVo) {
+        if (ObjectUtils.isNullObj(interfaceLabelInfoVo.getLabelId())) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "接口标签ID不能为空");
         }
-        InterfaceLabelInfo result = iInterfaceLabelService.queryInterfaceLabelById(interfaceLabelInfo);
-        return new AjaxResult(result);
+        InterfaceLabelInfo info = iInterfaceLabelService.queryInterfaceLabelById(interfaceLabelInfoVo);
+        return new AjaxResult(info);
     }
 
     @ApiOperation(value = "获取全部接口标签信息")
     @RequestMapping(value = "queryInterfaceLabelList", method = RequestMethod.POST)
-    public AjaxResult queryInterfaceLabelList(@ApiParam(value = "接口标签信息实体", required = true) @RequestBody InterfaceLabelInfo interfaceLabelInfo) {
-        List<InterfaceLabelInfo> result = iInterfaceLabelService.queryInterfaceLabelList(interfaceLabelInfo);
+    public AjaxResult queryInterfaceLabelList(@ApiParam(value = "接口标签信息实体", required = true) @RequestBody InterfaceLabelInfoVo interfaceLabelInfoVo) {
+        List<InterfaceLabelInfoVo> result = iInterfaceLabelService.queryInterfaceLabelList(interfaceLabelInfoVo);
         return new AjaxResult(result);
     }
 
     @ApiOperation(value = "分页获取接口标签信息")
     @RequestMapping(value = "queryPageInterfaceLabels", method = RequestMethod.POST)
-    public PageAjax<InterfaceLabelInfo> queryPageInterfaceLabels(@ApiParam(value = "接口标签信息实体", required = true) @RequestBody InterfaceLabelInfo interfaceLabelInfo) {
-        PageAjax<InterfaceLabelInfo> result = iInterfaceLabelService.queryPageInterfaceLabels(interfaceLabelInfo);
+    public PageAjax<InterfaceLabelInfoVo> queryPageInterfaceLabels(@ApiParam(value = "接口标签信息实体", required = true) @RequestBody InterfaceLabelInfoVo interfaceLabelInfoVo) {
+        PageAjax<InterfaceLabelInfoVo> result = iInterfaceLabelService.queryPageInterfaceLabels(interfaceLabelInfoVo);
         return result;
     }
 

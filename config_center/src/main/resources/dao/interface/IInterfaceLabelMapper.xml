@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.paohe.interface_management.dao.IInterfaceLabelMapper">
+    <sql id="Base_Column_List">
+    	l.`LABEL_ID` AS labelId,
+		  l.`LABEL_NAME` AS labelName,
+		  l.`TYPE_ID` AS typeId,
+		  t.`TYPE_NAME` AS typeName,
+		  l.`ALIVE_FLAG` AS aliveFlag,
+		  l.`ADD_USER_ID` AS addUserId,
+		  l.`ADD_TIME` AS `addTime`,
+		  l.`OPR_USER_ID` AS oprUserId,
+		  l.`OPR_TIME` AS oprTime
+	</sql>
+
+    <!-- 根据ID查询接口信息 -->
+    <select id="queryLabelInfoById" resultType="cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo" parameterType="cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM interface_label_info l
+        LEFT JOIN interface_type_info t on l.`TYPE_ID` = t.`TYPE_ID`
+        WHERE l.`ALIVE_FLAG` = 1 AND l.`LABEL_ID` = #{labelId}
+    </select>
+
+    <select id="queryLabelInfoList" resultType="cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo" parameterType="cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM interface_label_info l
+        LEFT JOIN interface_type_info t on l.`TYPE_ID` = t.`TYPE_ID`
+        WHERE l.`ALIVE_FLAG` = 1
+        <if test="addUserId != null">
+            AND l.`ADD_USER_ID` = #{addUserId}
+        </if>
+        <if test="typeId != null">
+            AND l.`TYPE_ID` = #{typeId}
+        </if>
+        <if test="labelName != null and labelName != ''">
+            AND l.`LABEL_NAME` LIKE CONCAT('%',#{labelName},'%')
+        </if>
+        <if test="typeName != null and typeName != ''">
+            AND t.`TYPE_NAME` LIKE CONCAT('%',#{typeName},'%')
+        </if>
+        ORDER BY l.`ADD_TIME` DESC
+    </select>
+</mapper>

@@ -1,5 +1,6 @@
 package cn.paohe.interface_management.rest;
 
+import cn.paohe.base.utils.basetype.StringUtil;
 import cn.paohe.entity.model.InterfaceMag.InterfaceInfo;
 import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
 import cn.paohe.enums.DataCenterCollections;
@@ -13,7 +14,9 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * TODO
@@ -59,11 +62,54 @@ public class RestInterfaceController {
     @ApiOperation(value = "新增接口信息")
     @RequestMapping(value = "insertInterface", method = RequestMethod.POST)
     public AjaxResult insertInterface(@ApiParam(value = "接口信息实体", required = true) @RequestBody InterfaceInfo interfaceInfo) {
+        Set<String> errorMsg = new HashSet<>(1);
+        boolean isPass = nullCheck(interfaceInfo, errorMsg);
+        if (!isPass) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, errorMsg.iterator().next());
+        }
         int insertCount = iInterfaceService.insertInterface(interfaceInfo);
         if(insertCount > 0){
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"新增成功",interfaceInfo);
         }
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"新增失败",interfaceInfo);
+    }
+
+    /**
+     * TODO 新增操作的非空判断
+     *
+     * @Param: purchaseOrderInfo
+     * @Param: errorMsg
+     * @return: boolean
+     * @author: 黄芝民
+     * @Date: 2020/5/26 16:06
+     * @throws:
+     */
+    private boolean nullCheck(InterfaceInfo interfaceInfo, Set<String> errorMsg) {
+        if (StringUtil.isBlank(interfaceInfo.getInterfaceName())) {
+            errorMsg.add("接口名称不能为空");
+            return false;
+        }
+        if (ObjectUtils.isNullObj(interfaceInfo.getApplicationId())) {
+            errorMsg.add("所属应用不能为空");
+            return false;
+        }
+        if (ObjectUtils.isNullObj(interfaceInfo.getDataSourceId())) {
+            errorMsg.add("所属数据源不能为空");
+            return false;
+        }
+        if (ObjectUtils.isNullObj(interfaceInfo.getTypeId())) {
+            errorMsg.add("所属类型不能为空");
+            return false;
+        }
+        if (ObjectUtils.isNullObj(interfaceInfo.getLabelId())) {
+            errorMsg.add("所属标签不能为空");
+            return false;
+        }
+        if (StringUtil.isBlank(interfaceInfo.getUrl())) {
+            errorMsg.add("请求连接不能为空");
+            return false;
+        }
+        return true;
     }
 
     @RequiresPermissions("interface:update")
