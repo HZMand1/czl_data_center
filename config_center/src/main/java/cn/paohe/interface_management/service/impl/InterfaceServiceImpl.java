@@ -1,6 +1,7 @@
 package cn.paohe.interface_management.service.impl;
 
 import cn.paohe.base.component.annotation.TargetDataSource;
+import cn.paohe.base.utils.basetype.RandomUtil;
 import cn.paohe.base.utils.basetype.StringUtil;
 import cn.paohe.base.utils.check.AppUtil;
 import cn.paohe.entity.model.InterfaceMag.InterfaceInfo;
@@ -12,6 +13,7 @@ import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.PageAjax;
 import com.github.pagehelper.page.PageMethod;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Condition;
@@ -48,6 +50,8 @@ public class InterfaceServiceImpl implements IInterfaceService {
         if (ObjectUtils.isNullObj(interfaceInfo.getAliveFlag())) {
             interfaceInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
         }
+        // 生成默认密钥
+        interfaceInfo.setSecretKey(RandomStringUtils.random(6,true,true));
         return iInterfaceMapper.insert(interfaceInfo);
     }
 

@@ -94,7 +94,7 @@ public class LoginServiceImpl implements ILoginService {
             //为了通用，转成json
             JSONObject jsonObject = JSONObject.parseObject(jsonString);
             //生成token,并存入redis
-            String token = JwtUtil.sign(user.getAccount(),user.getUserId(),user.getPassword());
+            String token = JwtUtil.sign(user.getAccount(),user.getUserId(),user.getApplicationId(),user.getPassword());
             //添加到redis并设置到期时间
             redisUtil.set(token, JSONObject.toJSONString(authList), EXPIRE_TIME);
             jsonObject.put("password", null);

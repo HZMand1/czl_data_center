@@ -77,7 +77,7 @@ public class RestInterfaceController {
     /**
      * TODO 新增操作的非空判断
      *
-     * @Param: purchaseOrderInfo
+     * @Param: interfaceInfo
      * @Param: errorMsg
      * @return: boolean
      * @author: 黄芝民

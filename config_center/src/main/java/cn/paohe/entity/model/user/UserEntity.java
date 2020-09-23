@@ -56,6 +56,10 @@ public class UserEntity extends IfQuery {
     @Column(name = "EMAIL")
     private String email;
 
+    @ApiModelProperty(value = "应用ID")
+    @Column(name = "APPLICATION_ID")
+    private Long applicationId;
+
     @ApiModelProperty(value = "逻辑状态标识，0:失效,1:启用")
     @Column(name = "ALIVE_FLAG")
     private Integer aliveFlag;
@@ -178,5 +182,13 @@ public class UserEntity extends IfQuery {
 
     public void setParentUserId(Long parentUserId) {
         this.parentUserId = parentUserId;
+    }
+
+    public Long getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
     }
 }

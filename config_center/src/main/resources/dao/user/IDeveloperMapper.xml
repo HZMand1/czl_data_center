@@ -3,8 +3,10 @@
 <mapper namespace="cn.paohe.user.dao.IDeveloperMapper">
 
     <!-- 查询角色用户信息 -->
-    <select id="queryUserList" resultType="cn.paohe.entity.model.user.UserEntity" parameterType="cn.paohe.entity.vo.user.UserEntityVo">
+    <select id="queryUserList" resultType="cn.paohe.entity.vo.user.UserEntityVo" parameterType="cn.paohe.entity.vo.user.UserEntityVo">
         SELECT
+        u.`APPLICATION_ID` as applicationId,
+        a.`APPLICATION_NAME` as applicationName,
         u.`ACCOUNT` AS account,
         u.`USER_ID` AS userId,
         u.`P_USER_ID` AS parentUserId,
@@ -18,8 +20,9 @@
         u.`ADD_TIME` AS `addTime`,
         u.`OPR_USER_ID` AS oprUserId,
         u.`OPR_TIME` AS oprTime
-        FROM
-        user_info u LEFT JOIN role_user r ON u.`USER_ID` = r.`USER_ID`
+        FROM user_info u
+        LEFT JOIN role_user r ON u.`USER_ID` = r.`USER_ID`
+        LEFT JOIN application_info a ON u.`APPLICATION_ID` = a.`APPLICATION_ID`
         WHERE u.`ALIVE_FLAG` = #{aliveFlag}
         <if test="parentUserId != null ">
             and u.`P_USER_ID` = #{parentUserId}
@@ -35,6 +38,9 @@
         </if>
         <if test="account != null and account != ''">
             and u.`ACCOUNT` LIKE CONCAT('%',#{account},'%')
+        </if>
+        <if test="applicationName != null and applicationName != ''">
+            and a.`APPLICATION_NAME` LIKE CONCAT('%',#{applicationName},'%')
         </if>
     </select>
 </mapper>

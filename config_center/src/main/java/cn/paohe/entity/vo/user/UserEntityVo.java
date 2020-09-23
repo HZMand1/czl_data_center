@@ -13,12 +13,15 @@ import io.swagger.annotations.ApiModelProperty;
  **/
 public class UserEntityVo extends UserEntity {
 
-    public static enum key{
+    public static enum key {
         roleId
     }
 
     @ApiModelProperty(value = "角色ID")
     private Long roleId;
+
+    @ApiModelProperty(value = "应用名称")
+    private String applicationName;
 
     public Long getRoleId() {
         return roleId;
@@ -26,5 +29,13 @@ public class UserEntityVo extends UserEntity {
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    public void setApplicationName(String applicationName) {
+        this.applicationName = applicationName;
     }
 }
