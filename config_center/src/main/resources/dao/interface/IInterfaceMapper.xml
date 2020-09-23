@@ -1,41 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.paohe.interface_management.dao.IInterfaceMapper" >
-	<resultMap id="BaseResultMap" type="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo" >
-		<result column="INTERFACE_ID" property="interfaceId" jdbcType="INTEGER" />
-		<result column="INTERFACE_NAME" property="interfaceName" jdbcType="VARCHAR" />
-
-		<result column="APPLICATION_ID" property="applicationId" jdbcType="INTEGER" />
-		<result column="APPLICATION_NAME" property="applicationName" jdbcType="VARCHAR" />
-		<result column="APPLICATION_CODE" property="applicationCode" jdbcType="VARCHAR" />
-
-		<result column="DATA_SOURCE_ID" property="dataSourceId" jdbcType="INTEGER" />
-		<result column="DATA_SOURCE_NAME" property="dataSourceName" jdbcType="VARCHAR" />
-
-		<result column="TYPE_ID" property="typeId" jdbcType="INTEGER" />
-		<result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
-
-		<result column="LABEL_ID" property="labelId" jdbcType="INTEGER" />
-		<result column="LABEL_NAME" property="labelName" jdbcType="VARCHAR" />
-
-		<result column="URL" property="url" jdbcType="VARCHAR" />
-		<result column="HEADER_INFO" property="headerInfo" jdbcType="VARCHAR" />
-		<result column="BODY_INFO" property="bodyInfo" jdbcType="VARCHAR" />
-		<result column="RESPONSE_INFO" property="responseInfo" jdbcType="VARCHAR" />
-		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
-		<result column="SECRET_KEY" property="secretKey" jdbcType="VARCHAR" />
-
-		<result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
-		<result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
-
-		<result column="ALIVE_FLAG" property="aliveFlag" jdbcType="INTEGER" />
-		<result column="ADD_USER_ID" property="addUserId" jdbcType="INTEGER" />
-		<result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
-
-		<result column="OPR_USER_ID" property="oprUserId" jdbcType="INTEGER" />
-		<result column="OPR_TIME" property="oprTime" jdbcType="TIMESTAMP" />
-	</resultMap>
-
 	<sql id="Base_Column_List" >
     	i.`INTERFACE_ID` as interfaceId,
 	    i.`INTERFACE_NAME` as interfaceName,
@@ -64,7 +29,7 @@
 	</sql>
 
 	<!-- 根据ID查询接口信息 -->
-	<select id="queryInterfaceById" resultMap="BaseResultMap" parameterType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo">
+	<select id="queryInterfaceById" resultType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo" parameterType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo">
 		SELECT
 			<include refid="Base_Column_List"/>
 		FROM interface_info i
@@ -75,7 +40,7 @@
 		WHERE i.`ALIVE_FLAG` = 1 AND i.`INTERFACE_ID` = #{interfaceId}
 	</select>
 
-	<select id="queryInterfaceList" resultMap="BaseResultMap" parameterType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo">
+	<select id="queryInterfaceList" resultType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo" parameterType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo">
 		SELECT
 			<include refid="Base_Column_List"/>
 		FROM interface_info i
