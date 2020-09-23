@@ -4,6 +4,7 @@ import cn.paohe.entity.model.InterfaceMag.InterfaceTypeInfo;
 import cn.paohe.entity.vo.interfaceMag.InterfaceTypeInfoVo;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.service.IInterfaceTypeService;
+import cn.paohe.sys.annotation.RequiresPermissions;
 import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
@@ -54,6 +55,7 @@ public class RestInterfaceTypeController {
         return result;
     }
 
+    @RequiresPermissions("type:insert")
     @ApiOperation(value = "新增接口类型信息")
     @RequestMapping(value = "insertInterfaceType", method = RequestMethod.POST)
     public AjaxResult insertInterfaceType(@ApiParam(value = "接口类型信息实体", required = true) @RequestBody InterfaceTypeInfo interfaceLabelInfo) {
@@ -64,6 +66,7 @@ public class RestInterfaceTypeController {
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"新增失败",interfaceLabelInfo);
     }
 
+    @RequiresPermissions("type:update")
     @ApiOperation(value = "修改接口类型信息")
     @RequestMapping(value = "updateInterfaceTypeById", method = RequestMethod.POST)
     public AjaxResult updateInterfaceTypeById(@ApiParam(value = "接口类型信息实体", required = true) @RequestBody InterfaceTypeInfo interfaceLabelInfo) {
@@ -77,6 +80,7 @@ public class RestInterfaceTypeController {
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"修改失败",interfaceLabelInfo);
     }
 
+    @RequiresPermissions("type:enable")
     @ApiOperation(value = "屏蔽接口类型信息")
     @RequestMapping(value = "enableInterfaceTypeById", method = RequestMethod.POST)
     public AjaxResult enableInterfaceTypeById(@ApiParam(value = "接口类型信息实体", required = true) @RequestBody InterfaceTypeInfo interfaceLabelInfo) {
@@ -90,6 +94,7 @@ public class RestInterfaceTypeController {
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"屏蔽失败",interfaceLabelInfo);
     }
 
+    @RequiresPermissions("type:delete")
     @ApiOperation(value = "删除接口类型信息")
     @RequestMapping(value = "deleteInterfaceTypeById", method = RequestMethod.POST)
     public AjaxResult deleteInterfaceTypeById(@ApiParam(value = "接口类型信息实体", required = true) @RequestBody InterfaceTypeInfo interfaceLabelInfo) {

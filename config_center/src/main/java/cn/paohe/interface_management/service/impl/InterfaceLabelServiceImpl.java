@@ -116,7 +116,7 @@ public class InterfaceLabelServiceImpl implements IInterfaceLabelService {
 
     private Condition queryCondition(InterfaceLabelInfo interfaceLabelInfo) {
         //条件
-        Condition condition = new Condition(DataSourceInfo.class);
+        Condition condition = new Condition(InterfaceLabelInfo.class);
         Example.Criteria criteria = condition.createCriteria();
         // 设置默认值
         if (ObjectUtils.isNullObj(interfaceLabelInfo.getAliveFlag())) {
