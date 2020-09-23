@@ -1,8 +1,10 @@
 package cn.paohe.interface_management.rest;
 
+import cn.paohe.base.utils.basetype.StringUtil;
 import cn.paohe.entity.model.InterfaceMag.InterfaceLabelInfo;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.service.IInterfaceLabelService;
+import cn.paohe.sys.annotation.RequiresPermissions;
 import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
@@ -53,9 +55,16 @@ public class RestInterfaceLabelController {
         return result;
     }
 
+    @RequiresPermissions("label:insert")
     @ApiOperation(value = "新增接口标签信息")
     @RequestMapping(value = "insertInterfaceLabel", method = RequestMethod.POST)
     public AjaxResult insertInterfaceLabel(@ApiParam(value = "接口标签信息实体", required = true) @RequestBody InterfaceLabelInfo interfaceLabelInfo) {
+        if(StringUtil.isBlank(interfaceLabelInfo.getLabelName())){
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"接口标签名称不能为空",interfaceLabelInfo);
+        }
+        if(ObjectUtils.isNullObj(interfaceLabelInfo.getTypeId())){
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"应用ID不能为空",interfaceLabelInfo);
+        }
         int count = iInterfaceLabelService.insertInterfaceLabel(interfaceLabelInfo);
         if (count > 0) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "新增成功", interfaceLabelInfo);
@@ -63,6 +72,7 @@ public class RestInterfaceLabelController {
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "新增失败", interfaceLabelInfo);
     }
 
+    @RequiresPermissions("label:update")
     @ApiOperation(value = "修改接口标签信息")
     @RequestMapping(value = "updateInterfaceLabelById", method = RequestMethod.POST)
     public AjaxResult updateInterfaceLabelById(@ApiParam(value = "接口标签信息实体", required = true) @RequestBody InterfaceLabelInfo interfaceLabelInfo) {
@@ -76,6 +86,7 @@ public class RestInterfaceLabelController {
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "修改失败", interfaceLabelInfo);
     }
 
+    @RequiresPermissions("label:enable")
     @ApiOperation(value = "屏蔽接口标签信息")
     @RequestMapping(value = "enableInterfaceLabelById", method = RequestMethod.POST)
     public AjaxResult enableInterfaceLabelById(@ApiParam(value = "接口标签信息实体", required = true) @RequestBody InterfaceLabelInfo interfaceLabelInfo) {
@@ -89,6 +100,7 @@ public class RestInterfaceLabelController {
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "屏蔽失败", interfaceLabelInfo);
     }
 
+    @RequiresPermissions("label:delete")
     @ApiOperation(value = "删除接口标签信息")
     @RequestMapping(value = "deleteInterfaceLabelById", method = RequestMethod.POST)
     public AjaxResult deleteInterfaceLabelById(@ApiParam(value = "接口标签信息实体", required = true) @RequestBody InterfaceLabelInfo interfaceLabelInfo) {
