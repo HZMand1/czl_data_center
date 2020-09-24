@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * TODO  角色控制类
  *
@@ -163,7 +165,7 @@ public class RestRoleInfoController {
     /**
      * TODO 删除角色
      *
-     * @param ids
+     * @param roleIds
      * @return
      * @throws
      * @author 黄芝民
@@ -172,7 +174,7 @@ public class RestRoleInfoController {
     @RequiresPermissions("role:delete")
     @ApiOperation(value = "删除角色")
     @RequestMapping(value = "delRole", method = RequestMethod.POST)
-    public AjaxResult delRole(@ApiParam(value = "roleId数组", required = true) @RequestBody String[] ids) {
-        return roleInfoService.delRole(ids);
+    public AjaxResult delRole(@ApiParam(value = "roleId数组", required = true) @RequestBody List<RoleInfoEntity> roleIds) {
+        return roleInfoService.delRole(roleIds);
     }
 }

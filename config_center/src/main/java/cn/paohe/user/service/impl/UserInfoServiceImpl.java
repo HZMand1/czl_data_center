@@ -265,12 +265,13 @@ public class UserInfoServiceImpl implements IUserInfoService {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "启用、禁用标识不能为空。");
         }
         //不能禁用admin
-        if (userEntity.getUserId().equals("566147096528")) {
+        if (StringUtil.equals(userEntity.getUserId(),1)) {
             ErrorMessageUtils.setErrorMessage("不能禁用超级管理员");
         }
         userEntity.setOprUserId(UserUtil.getUserEntity().getUserId());
-        int undateCount = userEntityMapper.updateByPrimaryKeySelective(userEntity);
-        if (undateCount > 0) {
+        userEntity.setOprTime(new Date());
+        int updateCount = userEntityMapper.updateByPrimaryKeySelective(userEntity);
+        if (updateCount > 0) {
             //删除redis缓存
             redisDataService.delete(SEED_USER_REDIS + "id_" + userEntity.getUserId());
             AjaxResult ajaxResult = new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value);
@@ -376,6 +377,9 @@ public class UserInfoServiceImpl implements IUserInfoService {
         // 设置查询条件
         if (StringUtil.isNotBlank(userEntity.getUseName())) {
             criteria.andLike(UserEntity.key.useName.toString(), userEntity.getUseName());
+        }
+        if (StringUtil.isNotBlank(userEntity.getUserName())) {
+            criteria.andLike(UserEntity.key.userName.toString(), userEntity.getUserName());
         }
         if (StringUtil.isNotBlank(userEntity.getAccount())) {
             criteria.andLike(UserEntity.key.account.toString(), userEntity.getAccount());

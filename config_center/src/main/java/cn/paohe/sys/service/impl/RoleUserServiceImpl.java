@@ -2,6 +2,7 @@ package cn.paohe.sys.service.impl;
 
 import cn.paohe.base.component.annotation.TargetDataSource;
 import cn.paohe.base.utils.basetype.StringUtil;
+import cn.paohe.entity.model.sys.RoleInfoEntity;
 import cn.paohe.entity.model.sys.RoleUserEntity;
 import cn.paohe.entity.vo.sys.UserRoleVo;
 import cn.paohe.enums.DataCenterCollections;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -34,21 +36,12 @@ import java.util.List;
  */
 @Transactional(rollbackFor = Exception.class)
 @Service("roleUserService")
-@SuppressWarnings("all")
 public class RoleUserServiceImpl implements IRoleUserService {
 
     private final static Logger log = LoggerFactory.getLogger(RoleUserServiceImpl.class);
 
-    @Autowired
+    @Resource
     private RoleUserMapper roleUserMapper;
-
-    @Autowired
-    private Environment env;
-
-    /**
-     * @Fields SSXT : 系统编号
-     */
-    private static String SSXT = null;
 
     /**
      * TODO 获取角色下的所有用户
@@ -189,42 +182,45 @@ public class RoleUserServiceImpl implements IRoleUserService {
     /**
      * TODO 给用户分配角色
      *
-     * @param roleVo
+     * @param userRoleVo
      * @return AjaxResult
      * @throws
      * @author: 黄芝民
      * @date: 2020年10月21日 上午11:18:47
      */
     @TargetDataSource(value = "center-w")
-    public AjaxResult alterUserToRole(UserRoleVo roleVo) {
+    public AjaxResult alterUserToRole(UserRoleVo userRoleVo) {
         try {
-            if (ObjectUtils.isNullObj(roleVo.getRoleId())) {
+            if (ObjectUtils.isNullObj(userRoleVo.getUserId())) {
                 return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "用户id不能为空");
             }
             //删除角色下的所有用户
             //组装条件查询
             Condition cond = new Condition(RoleUserEntity.class);
             Criteria criteria = cond.or();
-            criteria.andEqualTo(RoleUserEntity.key.userId.toString(), roleVo.getUserId());
-            int count = roleUserMapper.deleteByCondition(cond);
-            if (CollectionUtil.isNotEmpty(roleVo.getRoleNames()) && CollectionUtil.isNotEmpty(roleVo.getRoleIds())) {
-                for (int i = 0; i < roleVo.getRoleIds().length; i++) {
-                    RoleUserEntity userVo = new RoleUserEntity();
-                    userVo.setAddTime(new Date());
-                    userVo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-                    userVo.setAddUserId(UserUtil.getUserEntity().getUserId());
-                    userVo.setUserId(roleVo.getUserId());
-                    userVo.setRoleId(roleVo.getRoleIds()[i]);
-                    if (i < roleVo.getRoleNames().length) {
-                        userVo.setRoleName(roleVo.getRoleNames()[i]);
-                    }
-                    userVo.setOprUserId(UserUtil.getUserEntity().getUserId());
-                    userVo.setOprTime(new Date());
-                    roleUserMapper.insert(userVo);
+            criteria.andEqualTo(RoleUserEntity.key.userId.toString(), userRoleVo.getUserId());
+            // 移除旧的用户角色
+            roleUserMapper.deleteByCondition(cond);
+            // 分配新的角色
+            if (CollectionUtil.isNotEmpty(userRoleVo.getRoleInfoList())) {
+                for (RoleInfoEntity roleInfoEntity : userRoleVo.getRoleInfoList()) {
+                    RoleUserEntity roleUserEntity = new RoleUserEntity();
+                    roleUserEntity.setAddUserId(UserUtil.getUserEntity().getUserId());
+                    roleUserEntity.setAddTime(new Date());
+                    roleUserEntity.setOprUserId(UserUtil.getUserEntity().getUserId());
+                    roleUserEntity.setOprTime(new Date());
+                    roleUserEntity.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+                    // 用户ID
+                    roleUserEntity.setUserId(userRoleVo.getUserId());
+                    // 角色ID
+                    roleUserEntity.setRoleId(roleInfoEntity.getRoleId());
+                    // 角色名称
+                    roleUserEntity.setRoleName(roleInfoEntity.getRoleName());
+                    roleUserMapper.insert(roleUserEntity);
                 }
-                return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "给用户分配角色成功", roleVo);
+                return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "给用户分配角色成功", userRoleVo);
             }
-            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "操作成功", roleVo);
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "操作成功", userRoleVo);
         } catch (Exception e) {
             log.error("报错-位置：[RoleUserServiceImpl->alterRoleToUser]" + e);
             throw new SeedException("报错-位置：[RoleUserServiceImpl->alterRoleToUser]" + e.getMessage(), e);

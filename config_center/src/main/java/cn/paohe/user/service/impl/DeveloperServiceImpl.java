@@ -26,6 +26,7 @@ import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -116,16 +117,10 @@ public class DeveloperServiceImpl implements IDeveloperService {
                 UserRoleVo userRoleVo = new UserRoleVo();
                 // 用户ID
                 userRoleVo.setUserId(userEntity.getUserId());
-                // 角色ID
-                userRoleVo.setRoleId(roleInfo.getRoleId());
-                // 角色名称
-                userRoleVo.setRoleName(roleInfo.getRoleName());
-                // 角色IDs
-                Long roleIds[] = {roleInfo.getRoleId()};
-                userRoleVo.setRoleIds(roleIds);
-                // 角色名称s
-                String [] roleName = {roleInfo.getRoleName()};
-                userRoleVo.setRoleNames(roleName);
+                // 角色信息
+                List<RoleInfoEntity> roleInfoEntities = new ArrayList<>();
+                roleInfoEntities.add(roleInfo);
+                userRoleVo.setRoleInfoList(roleInfoEntities);
                 roleUserService.alterUserToRole(userRoleVo);
             }
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "新增开发者成功",userEntity);

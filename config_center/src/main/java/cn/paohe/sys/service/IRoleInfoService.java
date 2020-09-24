@@ -4,6 +4,8 @@ import cn.paohe.base.component.annotation.TargetDataSource;
 import cn.paohe.entity.model.sys.RoleInfoEntity;
 import cn.paohe.vo.framework.AjaxResult;
 
+import java.util.List;
+
 /**TODO  角色接口
  * @author:      黄芝民
  * @date:        2020年10月21日 上午10:20:33 
@@ -68,11 +70,11 @@ public interface IRoleInfoService {
 	public AjaxResult updateRoleEnable(RoleInfoEntity role);
 
 	/**TODO 删除角色
-	 * @param ids
+	 * @param roleIds
 	 * @return
 	 * @author 黄芝民
 	 * @date 2020/12/5 11:11
 	 * @throws
 	 */
-	AjaxResult delRole(String[] ids);
+	AjaxResult delRole(List<RoleInfoEntity> roleIds);
 }

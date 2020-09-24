@@ -1,7 +1,10 @@
 package cn.paohe.entity.vo.sys;
 
 
+import cn.paohe.entity.model.sys.RoleInfoEntity;
 import cn.paohe.entity.model.user.UserEntity;
+
+import java.util.List;
 
 /**TODO  用户角色扩展类
  * @author:      黄芝民
@@ -15,6 +18,8 @@ public class UserRoleVo extends UserEntity {
 	 * @Fields serialVersionUID : 用一句话描述这个变量表示什么 
 	 */ 
 	private static final long serialVersionUID = 1L;
+
+	private List<RoleInfoEntity> roleInfoList;
 	
 	/** 
 	 * @Fields userIds : 用户Id数组 
@@ -118,5 +123,13 @@ public class UserRoleVo extends UserEntity {
 
 	public void setRoleNames(String[] roleNames) {
 		this.roleNames = roleNames;
+	}
+
+	public List<RoleInfoEntity> getRoleInfoList() {
+		return roleInfoList;
+	}
+
+	public void setRoleInfoList(List<RoleInfoEntity> roleInfoList) {
+		this.roleInfoList = roleInfoList;
 	}
 }

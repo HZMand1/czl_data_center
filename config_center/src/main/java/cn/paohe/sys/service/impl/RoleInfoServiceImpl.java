@@ -271,7 +271,7 @@ public class RoleInfoServiceImpl implements IRoleInfoService {
     /**
      * TODO 删除角色
      *
-     * @param ids
+     * @param roleIds
      * @return
      * @throws
      * @author 黄芝民
@@ -279,9 +279,9 @@ public class RoleInfoServiceImpl implements IRoleInfoService {
      */
     @Override
     @Transactional
-    public AjaxResult delRole(String[] ids) {
-        for (String id : ids) {
-            int i = roleInfoMapper.deleteByPrimaryKey(id);
+    public AjaxResult delRole(List<RoleInfoEntity> roleIds) {
+        for (RoleInfoEntity roleInfoEntity : roleIds) {
+            int i = roleInfoMapper.deleteByPrimaryKey(roleInfoEntity);
             if (i < 1) {
                 ErrorMessageUtils.setErrorMessage("删除失败");
             }

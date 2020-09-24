@@ -1,7 +1,6 @@
 package cn.paohe.user.rest;
 
 import cn.paohe.base.utils.basetype.StringUtil;
-import cn.paohe.entity.model.InterfaceMag.InterfaceInfo;
 import cn.paohe.entity.model.user.UserEntity;
 import cn.paohe.entity.vo.user.UserEntityVo;
 import cn.paohe.enums.DataCenterCollections;
