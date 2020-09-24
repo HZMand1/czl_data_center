@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
  * @version      V1.0   
  * @copyright    广东跑合中药材有限公司 Copyright (c) 2020
  */
-@Api(description = "角色controller接口", tags = { "rest-seed-roleauth" })
+@Api("权限接口")
 @RestController
 @CrossOrigin
-@RequestMapping("/rest/data/center/roleauth/")
+@RequestMapping("/rest/data/center/role/auth/")
 public class RestRoleAuthController {
 	
 	@Autowired
@@ -86,7 +86,7 @@ public class RestRoleAuthController {
 	 * @date 2020/11/12 11:23
 	 * @throws
 	 */
-	@ApiOperation(value = "查询当前用户权限树")
+	@ApiOperation(value = "查询当前用户权限树-左边菜单栏")
 	@RequestMapping(value = "findAuthTree", method = RequestMethod.POST)
 	public AjaxResult findAuthTree(@RequestBody RoleMenuAuthVo authVo){
 		return new AjaxResult(roleAuthService.findAuthTree(authVo));

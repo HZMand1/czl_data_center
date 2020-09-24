@@ -156,7 +156,7 @@ public class RoleAuthServiceImpl implements IRoleAuthService {
     /**
      * TODO 给角色分配权限
      *
-     * @param Auth
+     * @param authVo
      * @return AjaxResult
      * @throws
      * @author: 黄芝民
@@ -182,12 +182,14 @@ public class RoleAuthServiceImpl implements IRoleAuthService {
 
             for (Long menuId : authVo.getMenuIds()) {
                 RoleAuthEntity entity = new RoleAuthEntity();
-//                entity.setRoleId(String.valueOf(SnowFlakeIds.get().nextId()));
+                entity.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
                 entity.setRoleId(authVo.getRoleId());
                 entity.setMenuId(menuId);
+                entity.setAddUserId(UserUtil.getUserEntity().getUserId());
                 entity.setAddTime(new Date());
                 //当前操作人
                 entity.setOprUserId(UserUtil.getUserEntity().getUserId());
+                entity.setOprTime(new Date());
                 roleAuthMapper.insert(entity);
             }
 

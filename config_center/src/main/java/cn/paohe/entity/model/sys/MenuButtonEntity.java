@@ -24,7 +24,7 @@ public class MenuButtonEntity extends ZTree {
 	
 	public static enum key{
         id ,parentId ,name ,path ,appCode ,function ,
-        type ,enable
+        type ,aliveFlag ,addUserId
     }
 
 	@ApiModelProperty(value = "主键ID")

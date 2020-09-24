@@ -248,7 +248,7 @@ public class RoleInfoServiceImpl implements IRoleInfoService {
                 return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "状态不能为空", role);
             }
             //不能禁用超管角色
-            if (role.getRoleId().equals("566296997620")) {
+            if (role.getRoleId().equals("1")) {
                 ErrorMessageUtils.setErrorMessage("不能禁用超管角色");
             }
             role.setOprUserId(UserUtil.getUserEntity().getUserId());

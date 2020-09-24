@@ -5,7 +5,6 @@ import cn.paohe.base.utils.basetype.StringUtil;
 import cn.paohe.entity.model.sys.MenuButtonEntity;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.exp.SeedException;
-import cn.paohe.service.base.RedisDataService;
 import cn.paohe.sys.dao.MenuButtonMapper;
 import cn.paohe.sys.service.IMenuButtonService;
 import cn.paohe.util.basetype.ObjectUtils;
@@ -17,14 +16,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -38,32 +35,12 @@ import java.util.List;
  */
 @Transactional(rollbackFor = Exception.class)
 @Service("menuInfoService")
-@SuppressWarnings("all")
 public class MenuButtonServiceImpl implements IMenuButtonService {
 
     private final static Logger log = LoggerFactory.getLogger(MenuButtonServiceImpl.class);
 
-    @Autowired
+    @Resource
     private MenuButtonMapper menuButtonMapper;
-
-    @Autowired
-    private RedisDataService redisDataService;
-
-    @Autowired
-    private Environment env;
-
-    @Autowired
-    private HttpServletRequest request;
-
-    /**
-     * @Fields SSXT : 系统编号
-     */
-    private static String SSXT = null;
-
-    /**
-     * @Fields SEED_MENU_REDIS : redis当中的key前缀
-     */
-    private static String SEED_MENU_REDIS = "seed_menu_";
 
     /**
      * TODO 获取菜单按钮列表
@@ -125,14 +102,7 @@ public class MenuButtonServiceImpl implements IMenuButtonService {
                 return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "Id不能为空");
             }
             AjaxResult result = new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "根据Id获取菜单按钮");
-            /*String menuEnitys = redisDataService.getData(SEED_MENU_REDIS + "id_" + id);*/
             MenuButtonEntity menuEnity = null;
-            //从缓存中获取
-			/*if(StringUtil.isNotBlank(menuEnitys)){
-				menuEnity = (MenuButtonEntity) JsonMapper.fromJsonString(menuEnitys, MenuButtonEntity.class);
-				result.setData(menuEnity);
-				return result;
-			}*/
             menuEnity = menuButtonMapper.selectByPrimaryKey(id);
             if (menuEnity == null) {
                 return result;
@@ -142,8 +112,6 @@ public class MenuButtonServiceImpl implements IMenuButtonService {
                 MenuButtonEntity vo = menuButtonMapper.selectByPrimaryKey(menuEnity.getParentId());
                 menuEnity.setParent(vo);
             }
-            //添加到redis缓存中
-            /*redisDataService.setData(SEED_MENU_REDIS + "id_" + menuEnity.getId(), JsonMapper.toJsonString(menuEnity));*/
             result.setData(menuEnity);
             return result;
         } catch (Exception e) {
@@ -251,15 +219,12 @@ public class MenuButtonServiceImpl implements IMenuButtonService {
                 return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "状态不能为空", menu);
             }
             //不能禁用菜单管理
-            if (menu.getMenuId().equals("568397778090")) {
+            if (StringUtil.equals(menu.getMenuId(),1)) {
                 ErrorMessageUtils.setErrorMessage("不能禁用菜单管理");
             }
             menu.setOprUserId(UserUtil.getUserEntity().getUserId());
             //先修改当前节点状态
             updateEnable(menu, menu.getAliveFlag());
-            /*获取当前节点的子节点*/
-            //AjaxResult menuNodes = findMenuNodes(menu);
-
             MenuButtonEntity entity = new MenuButtonEntity();
             entity.setMenuId(menu.getMenuId());
             entity.setAliveFlag(-1);
@@ -337,7 +302,8 @@ public class MenuButtonServiceImpl implements IMenuButtonService {
     public AjaxResult findMenuZtree(MenuButtonEntity menu) {
         Condition cond = new Condition(MenuButtonEntity.class);
         Criteria criteria = cond.or();
-        criteria.andIsNull(MenuButtonEntity.key.parentId.toString());
+        criteria.andEqualTo(MenuButtonEntity.key.addUserId.toString(),UserUtil.getUserEntity().getUserId());
+        criteria.andEqualTo(MenuButtonEntity.key.parentId.toString(),0);
         List<MenuButtonEntity> menuList = menuButtonMapper.selectByCondition(cond);
         if (CollectionUtil.isEmpty(menuList)) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "获取菜单树结构", menuList);
@@ -359,8 +325,9 @@ public class MenuButtonServiceImpl implements IMenuButtonService {
     public AjaxResult findEnableMenuZtree(MenuButtonEntity menu) {
         Condition cond = new Condition(MenuButtonEntity.class);
         Criteria criteria = cond.or();
-        criteria.andIsNull(MenuButtonEntity.key.parentId.toString());
-        criteria.andEqualTo(MenuButtonEntity.key.enable.toString(), DataCenterCollections.YesOrNo.YES.value);
+        criteria.andEqualTo(MenuButtonEntity.key.addUserId.toString(),UserUtil.getUserEntity().getUserId());
+        criteria.andEqualTo(MenuButtonEntity.key.parentId.toString(),0);
+        criteria.andEqualTo(MenuButtonEntity.key.aliveFlag.toString(), DataCenterCollections.YesOrNo.YES.value);
         List<MenuButtonEntity> menuList = menuButtonMapper.selectByCondition(cond);
         if (CollectionUtil.isEmpty(menuList)) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "获取菜单树结构", menuList);
@@ -389,7 +356,7 @@ public class MenuButtonServiceImpl implements IMenuButtonService {
             ErrorMessageUtils.setErrorMessage("请先删除子菜单");
         }
         //菜单管理和角色管理为必有菜单
-        if (menu.getMenuId().equals("568397778090")) {
+        if (menu.getMenuId().equals("1")) {
             ErrorMessageUtils.setErrorMessage("此项为系统固有菜单，不能删除");
         }
         int i = menuButtonMapper.deleteByPrimaryKey(menu.getMenuId());
@@ -407,7 +374,7 @@ public class MenuButtonServiceImpl implements IMenuButtonService {
         //enable的值为-1时查询全部生效和不生效的
         Integer enable = menu.getAliveFlag();
         if (enable != null && enable != -1) {
-            criteria.andEqualTo(MenuButtonEntity.key.enable.toString(), DataCenterCollections.YesOrNo.YES.value);
+            criteria.andEqualTo(MenuButtonEntity.key.aliveFlag.toString(), DataCenterCollections.YesOrNo.YES.value);
         }
         List<MenuButtonEntity> menuList = menuButtonMapper.selectByCondition(cond);
         return menuList;
