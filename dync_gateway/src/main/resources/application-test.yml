@@ -1,0 +1,29 @@
+server:
+   port: 12001
+   compression:
+      enabled: true
+   undertow:
+      uriEncoding: utf-8
+      io-threads: 8
+      worker-threads: 32
+      buffer-size: 32
+      buffers-per-region: 32
+      direct-buffers: true
+eureka:
+   client:
+      serviceUrl:
+         defaultZone: http://127.0.0.1:11001/eureka/
+spring: # spring 参数配置
+   application:
+      name: dync-gateway
+   profiles:
+      include: base,cache,es # 通过include参数引入需要的板块配置
+management:
+   endpoints:
+      web:
+         exposure:
+            include: '*'
+filter:
+   ip:
+      min-interval-time: 5000 #允许的最小请求间隔（毫秒）
+      max-malicious-time: 2 #允许的最大恶意请求次数

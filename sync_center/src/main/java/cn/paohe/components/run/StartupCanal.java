@@ -85,7 +85,7 @@ public class StartupCanal implements ApplicationRunner {
                 }
                 // 提交确认
                 connector.ack(batchId);
-            }
+             }
         } catch (InterruptedException e) {
             logger.error("func[syncDataByCanalConnetion] Exception [{} - {}] stackTrace[{}]",
                 new Object[] {e.getCause(), e.getMessage(), Arrays.deepToString(e.getStackTrace())});
