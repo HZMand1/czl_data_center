@@ -120,7 +120,7 @@
 					<include>**/*.yml</include>
 				</includes>
 				<excludes>
-					<exclude>properties/*</exclude>
+					<exclude>/properties/*</exclude>
 				</excludes>
 			</resource>
 		</resources>
