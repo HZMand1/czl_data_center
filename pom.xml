@@ -117,6 +117,7 @@
 					<include>**/*.properties</include>
 					<include>**/*.xml</include>
 					<include>**/*.xsd</include>
+					<include>**/*.yml</include>
 				</includes>
 				<excludes>
 					<exclude>properties/*</exclude>
