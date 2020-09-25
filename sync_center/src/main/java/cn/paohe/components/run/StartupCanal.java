@@ -1,9 +1,10 @@
 package cn.paohe.components.run;
 
-import java.net.InetSocketAddress;
-import java.util.Arrays;
-import java.util.List;
-
+import cn.paohe.components.utils.RedisUtil;
+import com.alibaba.otter.canal.client.CanalConnector;
+import com.alibaba.otter.canal.client.CanalConnectors;
+import com.alibaba.otter.canal.protocol.CanalEntry.*;
+import com.alibaba.otter.canal.protocol.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,25 +13,16 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.otter.canal.client.CanalConnector;
-import com.alibaba.otter.canal.client.CanalConnectors;
-import com.alibaba.otter.canal.protocol.CanalEntry.Entry;
-import com.alibaba.otter.canal.protocol.CanalEntry.EntryType;
-import com.alibaba.otter.canal.protocol.CanalEntry.EventType;
-import com.alibaba.otter.canal.protocol.CanalEntry.RowChange;
-import com.alibaba.otter.canal.protocol.CanalEntry.RowData;
-import com.alibaba.otter.canal.protocol.Message;
-
-import cn.paohe.components.utils.RedisUtil;
+import java.net.InetSocketAddress;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * 
  * @Copyright (c) by paohe information technology Co., Ltd.
  * @All right reserved.
  * @Project: sync_center
  * @File: StartupCanal.java
  * @Description: 启动springboot时启动canal类
- *
  * @Author: yuanzhenhui
  * @Date: 2020/06/30
  */
@@ -64,7 +56,7 @@ public class StartupCanal implements ApplicationRunner {
      */
     private void syncDataByCanalConnetion() {
         CanalConnector connector = CanalConnectors
-            .newSingleConnector(new InetSocketAddress(canalServerIp, canalServerPort), "example", "", "");
+                .newSingleConnector(new InetSocketAddress(canalServerIp, canalServerPort), "example", "", "");
         try {
             connector.connect();
             connector.subscribe(canalWhiteList);
@@ -85,10 +77,10 @@ public class StartupCanal implements ApplicationRunner {
                 }
                 // 提交确认
                 connector.ack(batchId);
-             }
+            }
         } catch (InterruptedException e) {
             logger.error("func[syncDataByCanalConnetion] Exception [{} - {}] stackTrace[{}]",
-                new Object[] {e.getCause(), e.getMessage(), Arrays.deepToString(e.getStackTrace())});
+                    new Object[]{e.getCause(), e.getMessage(), Arrays.deepToString(e.getStackTrace())});
             Thread.currentThread().interrupt();
         } finally {
             connector.disconnect();
@@ -98,8 +90,6 @@ public class StartupCanal implements ApplicationRunner {
     /**
      * 将数传送到redis
      *
-     *
-     * 
      * @param entrys
      */
     private void printEntry(List<Entry> entrys) {
@@ -107,7 +97,7 @@ public class StartupCanal implements ApplicationRunner {
         String tableName = null;
         for (Entry entry : entrys) {
             if (entry.getEntryType() == EntryType.TRANSACTIONBEGIN
-                || entry.getEntryType() == EntryType.TRANSACTIONEND) {
+                    || entry.getEntryType() == EntryType.TRANSACTIONEND) {
                 continue;
             } else {
                 tableName = entry.getHeader().getTableName();
@@ -116,12 +106,12 @@ public class StartupCanal implements ApplicationRunner {
                 rowChage = RowChange.parseFrom(entry.getStoreValue());
             } catch (Exception e) {
                 logger.error("func[printEntry] Exception [{} - {}] stackTrace[{}]",
-                    new Object[] {e.getCause(), e.getMessage(), Arrays.deepToString(e.getStackTrace())});
+                        new Object[]{e.getCause(), e.getMessage(), Arrays.deepToString(e.getStackTrace())});
             }
             EventType eventType = rowChage.getEventType();
             logger.debug(String.format(" --------- binlog[%s:%s] , name[%s,%s] , eventType : %s --------- ",
-                entry.getHeader().getLogfileName(), entry.getHeader().getLogfileOffset(),
-                entry.getHeader().getSchemaName(), entry.getHeader().getTableName(), eventType));
+                    entry.getHeader().getLogfileName(), entry.getHeader().getLogfileOffset(),
+                    entry.getHeader().getSchemaName(), entry.getHeader().getTableName(), eventType));
 
             List<RowData> rowDataList = rowChage.getRowDatasList();
             if (null != rowDataList && !rowDataList.isEmpty()) {
