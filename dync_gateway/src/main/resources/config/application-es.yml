@@ -1,5 +1,5 @@
 elasticsearch: # elasticsearch配置
-   host: ${elasticsearch.host} # 节点地址，使用逗号进行分割
+   host: 192.168.100.213:9200 # 节点地址，使用逗号进行分割
    #authorize: # 访问授权(由于2018年elasticsearch的全球大规模攻击，从这次开始elasticsearch将全部需要授权使用,es7对接时启用)
    #   username: elastic
    #   password: yzh0623

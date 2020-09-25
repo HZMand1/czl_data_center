@@ -1,5 +1,5 @@
 server:
-   port: ${server.port}
+   port: 12001
    compression:
       enabled: true
    undertow:
@@ -12,7 +12,7 @@ server:
 eureka:
    client:
       serviceUrl:
-         defaultZone: ${eureka.serviceUrl}
+         defaultZone: http://127.0.0.1:11001/eureka/
 spring: # spring 参数配置
    application:
       name: dync-gateway

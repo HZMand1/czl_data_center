@@ -1,12 +1,12 @@
 server:
-   port: ${server.port}
+   port: 14001
    servlet:
       context-path: /czl
    compression:
       enabled: true
    undertow:
       uriEncoding: utf-8
-      io-threads: 8
+      io-threads: 32
       worker-threads: 32
       buffer-size: 32
       buffers-per-region: 32
@@ -14,9 +14,6 @@ server:
 spring:
    application:
       name: config-center
-   jackson:
-      serialization:
-         write-dates-as-timestamps: true
    thymeleaf:
       prefix: classpath:/template/
       cache: false
@@ -24,10 +21,10 @@ spring:
       encoding: UTF-8
       content-type: text/html
    redis:
-      host: ${redis.host}
-      port: ${redis.port}
+      host: 127.0.0.1
+      port: 6379
       timeout: 5000
-      database: ${redis.database}
+      database: 1
       pool:
          maxActive: 1000
          maxIdle: 600
@@ -44,7 +41,7 @@ eureka:
    client:
       registry-fetch-interval-seconds: 30 # 缓存清单更新时间
       serviceUrl:
-         defaultZone: ${eureka.serviceUrl}
+         defaultZone: http://127.0.0.1:11001/eureka/
    instance: # eureka实例配置信息
       lease-renewal-interval-in-seconds: 30 # 服务续约间隔时间。默认每隔30秒，客户端会向服务端发送心跳。见DiscoveryClient.initScheduledTasks
       lease-expiration-duration-in-seconds: 90 # 服务失效时间。缺省为90秒服务端接收不到客户端的心跳，则剔除该客户端服务实例。
@@ -70,23 +67,23 @@ druid:
 jdbc:
    datasources: master,center-r,center-w
    master:
-      dsType: ${master.dsType}
-      driverClassName: ${master.driverClassName}
-      url: ${master.url}
-      username: ${master.username}
-      password: ${master.password}
+      dsType: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.100.211:10003/czl_data_center?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+      username: paohe
+      password: paohe!@#
    center-r:
-      dsType: ${center-r.dsType}
-      driverClassName: ${center-r.driverClassName}
-      url: ${center-r.url}
-      username: ${center-r.username}
-      password: ${center-r.password}
+      dsType: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.100.211:10003/czl_data_center?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+      username: paohe
+      password: paohe!@#
    center-w:
-      dsType: ${center-w.dsType}
-      driverClassName: ${center-w.driverClassName}
-      url: ${center-w.url}
-      username: ${center-w.username}
-      password: ${center-w.password}
+      dsType: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.100.211:10003/czl_data_center?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+      username: paohe
+      password: paohe!@#
 mybatis:
    type-aliases-package: cn.paohe.*.model
    mapper-locations: classpath*:dao/**/*.xml
@@ -104,4 +101,4 @@ redis:
 # 打印sql
 logging:
    level:
-      cn.paohe.*.dao: DEBUG
+      cn.paohe : DEBUG

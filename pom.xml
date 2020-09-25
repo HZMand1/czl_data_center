@@ -120,7 +120,7 @@
 					<include>**/*.yml</include>
 				</includes>
 				<excludes>
-					<exclude>/properties/*</exclude>
+					<exclude>properties/**</exclude>
 				</excludes>
 			</resource>
 		</resources>
@@ -158,7 +158,7 @@
 								<resource>
 									<!-- 指定resources插件处理哪个目录下的资源文件 -->
 									<directory>src/main/resources/properties/${package.environment}</directory>
-									<filtering>false</filtering>
+									<filtering>true</filtering>
 								</resource>
 							</resources>
 						</configuration>

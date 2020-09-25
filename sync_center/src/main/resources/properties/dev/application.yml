@@ -1,5 +1,5 @@
 server:
-   port: ${server.port}
+   port: 14001
    compression:
       enabled: true
    undertow:
@@ -12,11 +12,11 @@ server:
 eureka:
    client:
       serviceUrl:
-         defaultZone: ${eureka.serviceUrl}
+         defaultZone: http://127.0.0.1:11001/eureka/
 canal:
    server:
-      ip: ${canal.ip}
-      port: ${canal.port}
+      ip: 192.168.100.216
+      port: 11111
    batch:
       size: 1024
    white:
