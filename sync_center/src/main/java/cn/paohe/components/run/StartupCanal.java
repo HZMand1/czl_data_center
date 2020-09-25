@@ -97,6 +97,8 @@ public class StartupCanal implements ApplicationRunner {
 
     /**
      * 将数传送到redis
+     *
+     *
      * 
      * @param entrys
      */

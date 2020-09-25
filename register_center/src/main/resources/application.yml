@@ -1,5 +1,31 @@
+server:
+   port: ${server.port}
+   compression:
+      enabled: true
+   undertow:
+      uriEncoding: utf-8
+      io-threads: 8
+      worker-threads: 32
+      buffer-size: 32
+      buffers-per-region: 32
+      direct-buffers: true
 spring:
    application:
       name: register-center
-   profiles:
-      active: dev
+eureka:
+   instance:
+      lease-expiration-duration-in-seconds: 60
+      lease-renewal-interval-in-seconds: 15
+      prefer-ip-address: true
+      ip-address: ${eureka.ip-address}
+   client:
+      register-with-eureka: false
+      fetch-registry: false
+      service-url:
+         defaultZone: http://${eureka.instance.ip-address}:${server.port}/eureka/
+   server:
+      enable-self-preservation: true
+      disable-delta: false
+      sync-when-timestamp-differs: true
+      number-of-replication-retries: 10
+      peer-node-read-timeout-ms: 30000

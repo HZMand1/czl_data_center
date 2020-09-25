@@ -1,5 +1,28 @@
+server:
+   port: ${server.port}
+   compression:
+      enabled: true
+   undertow:
+      uriEncoding: utf-8
+      io-threads: 32
+      worker-threads: 32
+      buffer-size: 32
+      buffers-per-region: 32
+      direct-buffers: true
+eureka:
+   client:
+      serviceUrl:
+         defaultZone: ${eureka.serviceUrl}
+canal:
+   server:
+      ip: ${canal.ip}
+      port: ${canal.port}
+   batch:
+      size: 1024
+   white:
+      list: czl_data_center\..*
 spring: # spring 参数配置
    application:
       name: sync-center
    profiles:
-      active: dev
+      include: base,cache # 通过include参数引入需要的板块配置
