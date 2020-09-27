@@ -137,7 +137,7 @@ public class InterfaceTypeServiceImpl implements IInterfaceTypeService {
 
     private Condition queryCondition(InterfaceTypeInfo interfaceTypeInfo) {
         //条件
-        Condition condition = new Condition(DataSourceInfo.class);
+        Condition condition = new Condition(InterfaceTypeInfo.class);
         Example.Criteria criteria = condition.createCriteria();
         // 设置默认值
         if (ObjectUtils.isNullObj(interfaceTypeInfo.getAliveFlag())) {
