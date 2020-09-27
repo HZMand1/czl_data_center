@@ -48,9 +48,15 @@
 		LEFT JOIN data_source_info d ON i.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID`
 		LEFT JOIN interface_type_info t ON i.`TYPE_ID` = t.`TYPE_ID`
 		LEFT JOIN interface_label_info l ON i.`LABEL_ID` = l.`LABEL_ID`
-		WHERE i.`ALIVE_FLAG` = 1
+		WHERE 1 = 1
+		<if test="aliveFlag != null">
+			AND i.`ALIVE_FLAG` = #{aliveFlag}
+		</if>
 		<if test="addUserId != null">
 			AND i.`ADD_USER_ID` = #{addUserId}
+		</if>
+		<if test="interfaceName != null and interfaceName != ''">
+			AND i.`INTERFACE_NAME` LIKE CONCAT('%',#{interfaceName},'%')
 		</if>
 		<if test="applicationName != null and applicationName != ''">
 			AND a.`APPLICATION_NAME` LIKE CONCAT('%',#{applicationName},'%')
