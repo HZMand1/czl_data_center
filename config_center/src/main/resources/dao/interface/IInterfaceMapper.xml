@@ -37,7 +37,7 @@
 		LEFT JOIN data_source_info d ON i.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID`
 		LEFT JOIN interface_type_info t ON i.`TYPE_ID` = t.`TYPE_ID`
 		LEFT JOIN interface_label_info l ON i.`LABEL_ID` = l.`LABEL_ID`
-		WHERE i.`ALIVE_FLAG` = 1 AND i.`INTERFACE_ID` = #{interfaceId}
+		WHERE i.`INTERFACE_ID` = #{interfaceId}
 	</select>
 
 	<select id="queryInterfaceList" resultType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo" parameterType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo">
