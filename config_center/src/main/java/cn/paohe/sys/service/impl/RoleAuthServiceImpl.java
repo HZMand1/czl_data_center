@@ -259,7 +259,7 @@ public class RoleAuthServiceImpl implements IRoleAuthService {
         List<RoleMenuAuthVo> parentList = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(authVos) && !ObjectUtils.isNullObj(authVo.getMenuId())) {
             for (RoleMenuAuthVo vo : authVos) {
-                if (StringUtil.isNotBlank(vo.getParentId()) && vo.getParentId().equals(authVo.getMenuId())) {
+                if (StringUtil.isNotBlank(vo.getParentId()) && StringUtil.equals(vo.getParentId(),authVo.getMenuId())) {
                     parentList.add(vo);
                 }
             }
@@ -267,7 +267,7 @@ public class RoleAuthServiceImpl implements IRoleAuthService {
         }
         if (authVos != null && authVos.size() > 0) {
             for (RoleMenuAuthVo vo : authVos) {
-                if (StringUtil.isEmpty(vo.getParentId())) {
+                if (StringUtil.equals(vo.getParentId(),0)) {
                     parentList.add(vo);
                 }
             }
