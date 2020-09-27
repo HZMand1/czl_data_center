@@ -143,9 +143,9 @@ public class InterfaceTypeServiceImpl implements IInterfaceTypeService {
         Condition condition = new Condition(InterfaceTypeInfo.class);
         Example.Criteria criteria = condition.createCriteria();
         // 设置默认值
-        if (ObjectUtils.isNullObj(interfaceTypeInfo.getAliveFlag())) {
-            interfaceTypeInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-        }
+//        if (ObjectUtils.isNullObj(interfaceTypeInfo.getAliveFlag())) {
+//            interfaceTypeInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+//        }
         if (ObjectUtils.isNullObj(interfaceTypeInfo.getAddUserId())) {
             interfaceTypeInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
         }

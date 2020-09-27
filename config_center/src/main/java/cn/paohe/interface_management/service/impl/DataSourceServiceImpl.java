@@ -117,9 +117,9 @@ public class DataSourceServiceImpl implements IDataSourceService {
         Condition condition = new Condition(DataSourceInfo.class);
         Example.Criteria criteria = condition.createCriteria();
         // 设置默认值
-        if (ObjectUtils.isNullObj(dataSourceInfo.getAliveFlag())) {
-            dataSourceInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-        }
+//        if (ObjectUtils.isNullObj(dataSourceInfo.getAliveFlag())) {
+//            dataSourceInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+//        }
         if (ObjectUtils.isNullObj(dataSourceInfo.getAddUserId())) {
             dataSourceInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
         }

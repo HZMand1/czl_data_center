@@ -126,9 +126,9 @@ public class InterfaceLabelServiceImpl implements IInterfaceLabelService {
         Condition condition = new Condition(InterfaceLabelInfo.class);
         Example.Criteria criteria = condition.createCriteria();
         // 设置默认值
-        if (ObjectUtils.isNullObj(interfaceLabelInfo.getAliveFlag())) {
-            interfaceLabelInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-        }
+//        if (ObjectUtils.isNullObj(interfaceLabelInfo.getAliveFlag())) {
+//            interfaceLabelInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+//        }
         if (ObjectUtils.isNullObj(interfaceLabelInfo.getAddUserId())) {
             interfaceLabelInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
         }
