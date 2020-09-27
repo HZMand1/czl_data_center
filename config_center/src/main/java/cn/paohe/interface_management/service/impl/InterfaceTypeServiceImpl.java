@@ -125,6 +125,8 @@ public class InterfaceTypeServiceImpl implements IInterfaceTypeService {
         PageMethod.startPage(interfaceTypeInfo.getStart(), interfaceTypeInfo.getPageSize());
         //查询
         List<InterfaceTypeInfo> list = iInterfaceTypeMapper.selectByCondition(condition);
+        PageAjax<InterfaceTypeInfo> interfaceTypeInfoPageAjax = AppUtil.returnPage(list);
+        PageAjax<InterfaceTypeInfoVo> result = BeanCopy.objectCopyASM(interfaceTypeInfoPageAjax,PageAjax.class);
         List<InterfaceTypeInfoVo> interfaceTypeInfoVos = BeanCopy.listCopyASM(list,InterfaceTypeInfoVo.class);
         for (InterfaceTypeInfoVo interfaceTypeInfoVo : interfaceTypeInfoVos) {
             InterfaceLabelInfoVo interfaceLabelInfo = new InterfaceLabelInfoVo();
@@ -132,7 +134,8 @@ public class InterfaceTypeServiceImpl implements IInterfaceTypeService {
             List<InterfaceLabelInfoVo> interfaceLabelInfos = iInterfaceLabelService.queryInterfaceLabelList(interfaceLabelInfo);
             interfaceTypeInfoVo.setInterfaceLabelInfoVos(interfaceLabelInfos);
         }
-        return AppUtil.returnPage(interfaceTypeInfoVos);
+        result.setRows(interfaceTypeInfoVos);
+        return result;
     }
 
     private Condition queryCondition(InterfaceTypeInfo interfaceTypeInfo) {

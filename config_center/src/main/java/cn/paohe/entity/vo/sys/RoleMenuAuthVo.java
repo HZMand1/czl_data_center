@@ -37,10 +37,6 @@ public class RoleMenuAuthVo extends MenuButtonEntity implements Serializable {
 	 */ 
 	private Long userId;
 	
-	/** 
-	 * @Fields menuId : 菜单Id 
-	 */ 
-	private String menuId;
 
 	public Long getRoleAuthId() {
 		return roleAuthId;
@@ -74,7 +70,4 @@ public class RoleMenuAuthVo extends MenuButtonEntity implements Serializable {
 		this.menuIds = menuIds;
 	}
 
-	public void setMenuId(String menuId) {
-		this.menuId = menuId;
-	}
 }
