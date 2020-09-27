@@ -19,10 +19,12 @@ import cn.paohe.vo.framework.PageAjax;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
+import javax.annotation.Resource;
+
 @Service("RouterConfigService")
 public class RouterConfigServiceImpl implements RouterConfigService {
 
-    @Autowired
+    @Resource
     private RouterConfigMapper routerConfigMapper;
 
     @Autowired
