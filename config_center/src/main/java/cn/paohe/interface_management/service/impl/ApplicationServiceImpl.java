@@ -115,9 +115,9 @@ public class ApplicationServiceImpl implements IApplicationService {
         Condition condition = new Condition(ApplicationInfo.class);
         Example.Criteria criteria = condition.createCriteria();
         // 设置默认值
-        if (ObjectUtils.isNullObj(applicationInfo.getAliveFlag())) {
-            applicationInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-        }
+//        if (ObjectUtils.isNullObj(applicationInfo.getAliveFlag())) {
+//            applicationInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+//        }
         if (ObjectUtils.isNullObj(applicationInfo.getAddUserId())) {
             applicationInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
         }

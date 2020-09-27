@@ -19,7 +19,7 @@
         <include refid="Base_Column_List"/>
         FROM interface_label_info l
         LEFT JOIN interface_type_info t on l.`TYPE_ID` = t.`TYPE_ID`
-        WHERE l.`ALIVE_FLAG` = 1 AND l.`LABEL_ID` = #{labelId}
+        WHERE l.`LABEL_ID` = #{labelId}
     </select>
 
     <select id="queryLabelInfoList" resultType="cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo" parameterType="cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo">
@@ -27,7 +27,10 @@
         <include refid="Base_Column_List"/>
         FROM interface_label_info l
         LEFT JOIN interface_type_info t on l.`TYPE_ID` = t.`TYPE_ID`
-        WHERE l.`ALIVE_FLAG` = 1
+        WHERE 1 = 1
+        <if test="addUserId != null">
+            AND l.`ALIVE_FLAG` = #{aliveFlag}
+        </if>
         <if test="addUserId != null">
             AND l.`ADD_USER_ID` = #{addUserId}
         </if>
