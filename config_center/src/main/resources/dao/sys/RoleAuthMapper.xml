@@ -49,7 +49,7 @@
 	   <if test="userId != null and userId !=''">and a.USER_ID = #{userId,jdbcType=INTEGER}</if>
        <if test="roleId != null and roleId !=''">and a.ROLE_ID = #{roleId,jdbcType=INTEGER}</if>
        <if test="aliveFlag !=null">and m.ALIVE_FLAG = #{aliveFlag,jdbcType=INTEGER}</if>
-       <if test="menuId !=null and menuId !=''">and m.id = #{menuId,jdbcType=INTEGER}</if>
+       <if test="menuId !=null and menuId !=''">and m.MENU_ID = #{menuId,jdbcType=INTEGER}</if>
 	</sql>
 	
 </mapper>
