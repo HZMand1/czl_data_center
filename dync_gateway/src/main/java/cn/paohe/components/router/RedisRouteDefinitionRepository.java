@@ -9,6 +9,7 @@ import java.util.Map;
 import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
@@ -67,6 +68,16 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
                     predicatePath.setArgs(predicateParamsPath);
                     pdList.add(predicatePath);
                     rd.setPredicates(pdList);
+
+                    List<FilterDefinition> filters =new ArrayList<>();
+                    FilterDefinition filterDefinition = new FilterDefinition();
+                    //注意name
+                    filterDefinition.setName("StripPrefix");
+                    filterDefinition.addArg("parts","1");
+                    filters.add(filterDefinition);
+                    rd.setFilters(filters);
+
+
                     // 将路由发布到网关
                     gatewayRouteEntityList.add(rd);
                 }
