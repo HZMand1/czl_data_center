@@ -293,7 +293,7 @@ public class RoleAuthServiceImpl implements IRoleAuthService {
         for (RoleMenuAuthVo entity : parentList) {
             List<RoleMenuAuthVo> list = new ArrayList<>();
             for (RoleMenuAuthVo entity2 : entityList) {
-                if (entity.getMenuId().equals(entity2.getParentId())) {
+                if (StringUtil.equals(entity.getMenuId(),entity2.getParentId())) {
                     list.add(entity2);
                 }
                 if (list != null) {
