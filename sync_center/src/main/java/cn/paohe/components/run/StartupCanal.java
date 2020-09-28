@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
@@ -55,6 +56,7 @@ public class StartupCanal implements ApplicationRunner {
      * 通过canal连接同步mysql数据到redis
      */
     private void syncDataByCanalConnetion() {
+
         CanalConnector connector = CanalConnectors
                 .newSingleConnector(new InetSocketAddress(canalServerIp, canalServerPort), "example", "", "");
         try {
