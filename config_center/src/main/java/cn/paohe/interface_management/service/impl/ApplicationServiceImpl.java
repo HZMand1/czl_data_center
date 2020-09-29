@@ -8,6 +8,7 @@ import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.dao.IApplicationMapper;
 import cn.paohe.interface_management.service.IApplicationService;
 import cn.paohe.util.basetype.ObjectUtils;
+import cn.paohe.utils.SnowFlakeIds;
 import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.PageAjax;
 import com.github.pagehelper.page.PageMethod;
@@ -46,6 +47,15 @@ public class ApplicationServiceImpl implements IApplicationService {
         //默认可用
         if(ObjectUtils.isNullObj(applicationInfo.getAliveFlag())){
             applicationInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+        }
+        // 设置应用编号
+        String code = SnowFlakeIds.get().nextId() + "";
+        if(StringUtil.isBlank(applicationInfo.getApplicationCode())){
+            applicationInfo.setApplicationCode(code);
+        }
+        // 设置上下文根
+        if(StringUtil.isBlank(applicationInfo.getContextName())){
+            applicationInfo.setContextName("/" + code + "/**");
         }
         return applicationMapper.insert(applicationInfo);
     }

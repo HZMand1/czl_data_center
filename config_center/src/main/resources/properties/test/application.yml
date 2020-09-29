@@ -101,4 +101,6 @@ redis:
 # 打印sql
 logging:
    level:
-      cn.paohe : DEBUG
+      cn.paohe :
+gateway:
+   context: http://192.168.100.52:12001/

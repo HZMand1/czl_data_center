@@ -1,4 +1,4 @@
-package cn.paohe.enums;
+package cn.paohe.utils;
 
 import cn.paohe.base.utils.basetype.StringUtil;
 
@@ -160,5 +160,4 @@ public class SnowFlakeIds {
         }
         return val;
     }
-
 }

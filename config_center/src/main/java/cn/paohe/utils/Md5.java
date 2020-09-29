@@ -1,4 +1,4 @@
-package cn.paohe.enums;
+package cn.paohe.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

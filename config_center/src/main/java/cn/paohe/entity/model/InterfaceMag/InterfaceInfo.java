@@ -50,6 +50,10 @@ public class InterfaceInfo extends IfQuery {
     @Column(name = "LABEL_ID")
     private Long labelId;
 
+//    @ApiModelProperty(value = "服务器URL")
+//    @Column(name = "SERVER_URL")
+//    private String serverUrl;
+
     @ApiModelProperty(value = "请求URL")
     @Column(name = "URL")
     private String url;
@@ -253,4 +257,5 @@ public class InterfaceInfo extends IfQuery {
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }
+
 }

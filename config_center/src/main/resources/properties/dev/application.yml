@@ -102,3 +102,5 @@ redis:
 logging:
    level:
       cn.paohe : DEBUG
+gateway:
+   context: http://192.168.100.52:12001/

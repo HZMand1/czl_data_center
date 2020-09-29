@@ -69,6 +69,7 @@ public class RestInterfaceController {
         }
         int insertCount = iInterfaceService.insertInterface(interfaceInfo);
         if(insertCount > 0){
+            // 增加路由转发
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"新增成功",interfaceInfo);
         }
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"新增失败",interfaceInfo);
@@ -106,9 +107,13 @@ public class RestInterfaceController {
             return false;
         }
         if (StringUtil.isBlank(interfaceInfo.getUrl())) {
-            errorMsg.add("请求连接不能为空");
+            errorMsg.add("请求URL不能为空");
             return false;
         }
+//        if (StringUtil.isBlank(interfaceInfo.getServerUrl())) {
+//            errorMsg.add("服务器URL不能为空");
+//            return false;
+//        }
         return true;
     }
 

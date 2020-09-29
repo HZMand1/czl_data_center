@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import cn.paohe.entity.model.routeConfig.RouterConfig;
+import cn.paohe.router_config.service.RouterConfigService;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -15,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.paohe.ConfigApplication;
 import cn.paohe.base.utils.encryption.UUIDGenerator;
-import cn.paohe.model.RouterConfig;
 import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
