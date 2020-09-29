@@ -8,7 +8,6 @@ import cn.paohe.entity.model.user.UserEntity;
 import cn.paohe.entity.vo.sys.UserRoleVo;
 import cn.paohe.entity.vo.user.UserEntityVo;
 import cn.paohe.enums.DataCenterCollections;
-import cn.paohe.enums.Md5;
 import cn.paohe.sys.dao.RoleInfoMapper;
 import cn.paohe.sys.service.IRoleUserService;
 import cn.paohe.user.dao.IDeveloperMapper;
@@ -16,6 +15,7 @@ import cn.paohe.user.dao.UserEntityMapper;
 import cn.paohe.user.service.IDeveloperService;
 import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.utils.CollectionUtil;
+import cn.paohe.utils.Md5;
 import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
@@ -146,10 +146,7 @@ public class DeveloperServiceImpl implements IDeveloperService {
         //条件
         Condition condition = new Condition(UserEntityVo.class);
         Example.Criteria criteria = condition.createCriteria();
-        // 设置默认值
-        if (ObjectUtils.isNullObj(userEntityVo.getAliveFlag())) {
-            userEntityVo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-        }
+
         if (ObjectUtils.isNullObj(userEntityVo.getParentUserId())) {
             userEntityVo.setParentUserId(UserUtil.getUserEntity().getUserId());
         }

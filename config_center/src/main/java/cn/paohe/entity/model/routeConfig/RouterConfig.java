@@ -1,4 +1,4 @@
-package cn.paohe.model;
+package cn.paohe.entity.model.routeConfig;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

@@ -1,11 +1,8 @@
 package cn.paohe.components.router;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import cn.paohe.components.constants.CommonConstant;
+import cn.paohe.framework.utils.ref.ReflectUtil;
+import cn.paohe.vo.RouterConfigVO;
 import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,21 +12,21 @@ import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import cn.paohe.components.constants.CommonConstant;
-import cn.paohe.framework.utils.ref.ReflectUtil;
-import cn.paohe.vo.RouterConfigVO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
- * 
  * @Copyright (c) by paohe information technology Co., Ltd.
  * @All right reserved.
  * @Project: dync_gateway
  * @File: RedisRouteDefinitionRepository.java
  * @Description: redis动态路由定义储存器
- *
  * @Author: yuanzhenhui
  * @Date: 2020/07/03
  */
@@ -50,10 +47,11 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
                 RouterConfigVO result = ReflectUtil.map2Bean(v, RouterConfigVO.class);
                 // 先判断当前网关是否禁用
                 if (result.getStatus().equals("1")) {
-                    logger.debug(" --------- rourter can be use name : " + result.getInterfaceName() + " --------- ");
+                    logger.debug(" --------- router can be use name : " + result.getInterfaceName() + " --------- ");
                     RouteDefinition rd = new RouteDefinition();
                     // 定义动态路由的id名称
                     rd.setId(result.getInterfaceName());
+
                     // 定义映射的路径
                     URI uri = UriComponentsBuilder.fromHttpUrl(result.getMappingPath()).build().toUri();
                     rd.setUri(uri);
@@ -69,11 +67,11 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
                     pdList.add(predicatePath);
                     rd.setPredicates(pdList);
 
-                    List<FilterDefinition> filters =new ArrayList<>();
+                    List<FilterDefinition> filters = new ArrayList<>();
                     FilterDefinition filterDefinition = new FilterDefinition();
-                    //注意name
+                    //设置过滤
                     filterDefinition.setName("StripPrefix");
-                    filterDefinition.addArg("parts","1");
+                    filterDefinition.addArg("parts", "1");
                     filters.add(filterDefinition);
                     rd.setFilters(filters);
 

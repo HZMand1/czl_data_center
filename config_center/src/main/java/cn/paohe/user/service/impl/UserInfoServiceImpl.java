@@ -5,12 +5,12 @@ import cn.paohe.base.utils.basetype.StringUtil;
 import cn.paohe.base.utils.check.AppUtil;
 import cn.paohe.entity.model.user.UserEntity;
 import cn.paohe.enums.DataCenterCollections;
-import cn.paohe.enums.Md5;
 import cn.paohe.service.base.RedisDataService;
 import cn.paohe.user.dao.UserEntityMapper;
 import cn.paohe.user.service.IUserInfoService;
 import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.utils.ErrorMessageUtils;
+import cn.paohe.utils.Md5;
 import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
@@ -366,10 +366,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
     private Example setLikeQueryParam(UserEntity userEntity) {
         Example example = new Example(UserEntity.class);
         Example.Criteria criteria = example.createCriteria();
-        // 设置默认参数
-        if (ObjectUtils.isNullObj(userEntity.getAliveFlag())) {
-            userEntity.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-        }
+
         if(ObjectUtils.isNullObj(userEntity.getParentUserId())){
             userEntity.setParentUserId(UserUtil.getUserEntity().getUserId());
         }

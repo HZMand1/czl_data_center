@@ -1,25 +1,23 @@
-package cn.paohe.service.impl;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.baomidou.mybatisplus.toolkit.StringUtils;
-import com.github.pagehelper.page.PageMethod;
+package cn.paohe.router_config.service.impl;
 
 import cn.paohe.base.utils.check.AppUtil;
-import cn.paohe.components.feign.DyncRouterTrigger;
-import cn.paohe.dao.RouterConfigMapper;
-import cn.paohe.model.RouterConfig;
-import cn.paohe.service.RouterConfigService;
+import cn.paohe.entity.model.routeConfig.RouterConfig;
+import cn.paohe.router_config.components.feign.DyncRouterTrigger;
+import cn.paohe.router_config.dao.RouterConfigMapper;
+import cn.paohe.router_config.service.RouterConfigService;
 import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
+import com.baomidou.mybatisplus.toolkit.StringUtils;
+import com.github.pagehelper.page.PageMethod;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Condition;
+import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("RouterConfigService")
 public class RouterConfigServiceImpl implements RouterConfigService {
@@ -123,6 +121,15 @@ public class RouterConfigServiceImpl implements RouterConfigService {
             ar = new AjaxResult(0, "No routing data information was queried based on id");
         }
         return ar;
+    }
+
+    @Override
+    public List<RouterConfig> searchRouterConfigByName(String name) {
+        Example example = new Example(RouterConfig.class);
+        Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("interfaceName", name);
+        List<RouterConfig> routerConfigList = routerConfigMapper.selectByCondition(example);
+        return routerConfigList;
     }
 
     /**

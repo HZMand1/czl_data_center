@@ -1,12 +1,15 @@
 package cn.paohe.interface_management.rest;
 
+import cn.paohe.base.utils.basetype.StringUtil;
+import cn.paohe.base.utils.encryption.UUIDGenerator;
 import cn.paohe.entity.model.InterfaceMag.ApplicationInfo;
-import cn.paohe.entity.model.InterfaceMag.InterfaceInfo;
+import cn.paohe.entity.model.routeConfig.RouterConfig;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.service.IApplicationService;
-import cn.paohe.interface_management.service.IInterfaceService;
+import cn.paohe.router_config.service.RouterConfigService;
 import cn.paohe.sys.annotation.RequiresPermissions;
 import cn.paohe.util.basetype.ObjectUtils;
+import cn.paohe.utils.CollectionUtil;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +17,9 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * TODO
@@ -32,7 +37,7 @@ public class RestApplicationController {
     @Autowired
     private IApplicationService applicationService;
     @Autowired
-    private IInterfaceService iInterfaceService;
+    private RouterConfigService routerConfigService;
 
     @ApiOperation(value = "根据ID获取应用信息")
     @RequestMapping(value = "queryAppById", method = RequestMethod.POST)
@@ -62,11 +67,47 @@ public class RestApplicationController {
     @ApiOperation(value = "新增应用")
     @RequestMapping(value = "insertApp", method = RequestMethod.POST)
     public AjaxResult insertApp(@ApiParam(value = "应用实体Vo", required = true) @RequestBody ApplicationInfo applicationInfo) {
+        Set<String> errorMsg = new HashSet<>(1);
+        boolean isPass = nullCheck(applicationInfo, errorMsg);
+        if (!isPass) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, errorMsg.iterator().next());
+        }
         int insertCount = applicationService.insertApp(applicationInfo);
         if (insertCount > 0) {
-            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "新增成功",applicationInfo);
+            // update route config
+            RouterConfig routerConfig = new RouterConfig();
+            routerConfig.setId(UUIDGenerator.getUUID());
+            routerConfig.setInterfaceName(applicationInfo.getApplicationCode());
+            routerConfig.setContextName(applicationInfo.getContextName());
+            routerConfig.setDescription(applicationInfo.getDescription());
+            routerConfig.setMappingPath(applicationInfo.getMappingPath());
+            routerConfig.setStatus(DataCenterCollections.YesOrNo.YES.value + "");
+            routerConfigService.insertRouterConfig(routerConfig);
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "新增成功", applicationInfo);
         }
-        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "新增失败",applicationInfo);
+        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "新增失败", applicationInfo);
+    }
+
+    /**
+     * TODO 新增操作的非空判断
+     *
+     * @Param: interfaceInfo
+     * @Param: errorMsg
+     * @return: boolean
+     * @author: 黄芝民
+     * @Date: 2020/5/26 16:06
+     * @throws:
+     */
+    private boolean nullCheck(ApplicationInfo applicationInfo, Set<String> errorMsg) {
+        if (StringUtil.isBlank(applicationInfo.getApplicationName())) {
+            errorMsg.add("应用名称不能为空");
+            return false;
+        }
+        if (ObjectUtils.isNullObj(applicationInfo.getMappingPath())) {
+            errorMsg.add("应用转发地址不能为空");
+            return false;
+        }
+        return true;
     }
 
     @RequiresPermissions("app:enable")
@@ -78,12 +119,17 @@ public class RestApplicationController {
         }
         int enableCount = applicationService.enableAppById(applicationInfo);
         if (enableCount > 0) {
-            // 屏蔽该应用下的所有接口
-//            InterfaceInfo param = new InterfaceInfo();
-//            param.setAliveFlag(DataCenterCollections.YesOrNo.NO.value);
-//            InterfaceInfo condition = new InterfaceInfo();
-//            condition.setApplicationId(applicationInfo.getApplicationId());
-//            iInterfaceService.updateInterfaceByCondition(param,condition);
+            ApplicationInfo applicationInfo1 = applicationService.queryAppById(applicationInfo);
+            if (!ObjectUtils.isNullObj(applicationInfo1)) {
+                // 更新路由
+                List<RouterConfig> routerConfigList = routerConfigService.searchRouterConfigByName(applicationInfo1.getApplicationCode());
+                if(CollectionUtil.isNotEmpty(routerConfigList)){
+                    RouterConfig param = new RouterConfig();
+                    param.setId(routerConfigList.get(0).getId());
+                    param.setStatus(String.valueOf(applicationInfo.getAliveFlag()));
+                    routerConfigService.updateRouterConfig(param);
+                }
+            }
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "屏蔽应用成功");
         }
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "屏蔽应用失败");
@@ -98,10 +144,14 @@ public class RestApplicationController {
         }
         int deleteCount = applicationService.deleteAppById(applicationInfo);
         if (deleteCount > 0) {
-            // 删除该应用下的所有接口
-//            InterfaceInfo interfaceInfo = new InterfaceInfo();
-//            interfaceInfo.setApplicationId(applicationInfo.getApplicationId());
-//            iInterfaceService.deleteInterfaceByCondition(interfaceInfo);
+            ApplicationInfo applicationInfo1 = applicationService.queryAppById(applicationInfo);
+            if (!ObjectUtils.isNullObj(applicationInfo1)) {
+                // 删除路由
+                List<RouterConfig> routerConfigList = routerConfigService.searchRouterConfigByName(applicationInfo1.getApplicationCode());
+                if(CollectionUtil.isNotEmpty(routerConfigList)){
+                    routerConfigService.deleteRouterConfig(routerConfigList.get(0).getId());
+                }
+            }
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "删除应用成功");
         }
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "删除应用失败");
@@ -116,6 +166,19 @@ public class RestApplicationController {
         }
         int insertCount = applicationService.updateAppById(applicationInfo);
         if (insertCount > 0) {
+            ApplicationInfo applicationInfo1 = applicationService.queryAppById(applicationInfo);
+            if (!ObjectUtils.isNullObj(applicationInfo1)) {
+                // 删除路由
+                List<RouterConfig> routerConfigList = routerConfigService.searchRouterConfigByName(applicationInfo1.getApplicationCode());
+                if(CollectionUtil.isNotEmpty(routerConfigList)){
+                    RouterConfig rc = new RouterConfig();
+                    rc.setId(routerConfigList.get(0).getId());
+                    rc.setContextName(applicationInfo.getContextName());
+                    rc.setDescription(applicationInfo.getDescription());
+                    rc.setMappingPath(applicationInfo.getMappingPath());
+                    routerConfigService.updateRouterConfig(rc);
+                }
+            }
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "修改应用成功");
         }
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "修改应用失败");
