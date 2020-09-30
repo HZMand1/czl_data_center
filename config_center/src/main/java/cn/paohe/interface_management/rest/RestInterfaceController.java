@@ -5,6 +5,7 @@ import cn.paohe.entity.model.InterfaceMag.InterfaceInfo;
 import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.service.IInterfaceService;
+import cn.paohe.sys.annotation.AuthExclude;
 import cn.paohe.sys.annotation.RequiresPermissions;
 import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.vo.framework.AjaxResult;
@@ -49,6 +50,14 @@ public class RestInterfaceController {
     public AjaxResult queryInterfaceList(@ApiParam(value = "接口信息实体Vo", required = true) @RequestBody InterfaceInfoVo interfaceInfoVo) {
         List<InterfaceInfoVo> result = iInterfaceService.queryInterfaceVoList(interfaceInfoVo);
         return new AjaxResult(result);
+    }
+
+    @AuthExclude
+    @ApiOperation(value = "查询全部接口信息")
+    @RequestMapping(value = "getInterfaceList", method = RequestMethod.POST)
+    public List<InterfaceInfoVo> getInterfaceList(@ApiParam(value = "接口信息实体Vo", required = true) @RequestBody InterfaceInfoVo interfaceInfoVo) {
+        List<InterfaceInfoVo> result = iInterfaceService.queryInterfaceVoList(interfaceInfoVo);
+        return result;
     }
 
     @ApiOperation(value = "分页查询接口信息")

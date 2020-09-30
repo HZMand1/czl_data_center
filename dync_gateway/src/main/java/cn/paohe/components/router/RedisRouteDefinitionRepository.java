@@ -1,11 +1,15 @@
 package cn.paohe.components.router;
 
 import cn.paohe.components.constants.CommonConstant;
+import cn.paohe.framework.utils.RedisClient;
+import cn.paohe.framework.utils.base.ObjectUtils;
+import cn.paohe.framework.utils.base.StringUtil;
 import cn.paohe.framework.utils.ref.ReflectUtil;
 import cn.paohe.vo.RouterConfigVO;
 import org.assertj.core.util.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -35,15 +39,31 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
 
     public static final Logger logger = LoggerFactory.getLogger(RedisRouteDefinitionRepository.class);
 
+    @Autowired
+    private RedisClient redisClient;
+
     /**
      * 在redis中提取路由配置
      */
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
+
+        Map<String, HashMap<String, Object>> map = redisClient.hgetAllHash(CommonConstant.ROUTER_KEY);
+        Map<String, HashMap<String, Object>> configMap = new HashMap<>();
+        if (!ObjectUtils.isNullObj(map)) {
+            map.forEach((k, v) -> {
+                HashMap<String, Object> valMap = new HashMap<>();
+                for (Map.Entry<String, Object> entry : v.entrySet()) {
+                    valMap.put(StringUtil.underline2Camel(entry.getKey(), true), entry.getValue());
+                }
+                configMap.put(k, valMap);
+            });
+        }
+
         logger.debug(" --------- request has been coming --------- ");
         List<RouteDefinition> gatewayRouteEntityList = Lists.newArrayList();
-        if (null != CommonConstant.configMap) {
-            CommonConstant.configMap.forEach((k, v) -> {
+        if (null != configMap) {
+            configMap.forEach((k, v) -> {
                 RouterConfigVO result = ReflectUtil.map2Bean(v, RouterConfigVO.class);
                 // 先判断当前网关是否禁用
                 if (result.getStatus().equals("1")) {
