@@ -23,7 +23,7 @@ public class SyncConfigTask {
     private RedisClient redisClient;
 
     @SuppressWarnings("unchecked")
-    @Scheduled(cron = "10 * * * * ?")
+//    @Scheduled(cron = "10 * * * * ?")
     public void getRedisConfig() throws Exception {
         logger.debug(" --------- sync has began --------- ");
         Map<String, HashMap<String, Object>> map = redisClient.hgetAllHash(CommonConstant.ROUTER_KEY);

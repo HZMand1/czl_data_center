@@ -49,7 +49,7 @@ public class InterfaceServiceImpl implements IInterfaceService {
         }
         if (StringUtil.isBlank(interfaceInfo.getSecretKey())) {
             // 生成默认密钥
-            interfaceInfo.setSecretKey(SnowFlakeIds.get().nextId() + "");
+            interfaceInfo.setSecretKey("I" + SnowFlakeIds.get().nextId());
         }
         return iInterfaceMapper.insert(interfaceInfo);
     }

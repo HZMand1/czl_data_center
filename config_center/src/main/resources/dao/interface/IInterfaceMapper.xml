@@ -55,6 +55,9 @@
 		<if test="addUserId != null">
 			AND i.`ADD_USER_ID` = #{addUserId}
 		</if>
+		<if test="secretKey != null and secretKey != ''">
+			AND i.`SECRET_KEY` = #{secretKey}
+		</if>
 		<if test="interfaceName != null and interfaceName != ''">
 			AND i.`INTERFACE_NAME` LIKE CONCAT('%',#{interfaceName},'%')
 		</if>
