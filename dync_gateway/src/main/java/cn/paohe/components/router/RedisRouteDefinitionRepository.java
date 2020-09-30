@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @Copyright (c) by paohe information technology Co., Ltd.
@@ -38,6 +40,8 @@ import java.util.Map;
 public class RedisRouteDefinitionRepository implements RouteDefinitionRepository {
 
     public static final Logger logger = LoggerFactory.getLogger(RedisRouteDefinitionRepository.class);
+
+    private static final Pattern HTTP_URL_PATTERN = Pattern.compile("^(?i)(http|https):(//(([^@\\[/?#]*)@)?(\\[[\\p{XDigit}\\:\\.]*[%\\p{Alnum}]*\\]|[^\\[/?#:]*)(:(\\d*(?:\\{[^/]+?\\})?))?)?([^?#]*)(\\?(.*))?");
 
     @Autowired
     private RedisClient redisClient;
@@ -72,32 +76,38 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
                     // 定义动态路由的id名称
                     rd.setId(result.getInterfaceName());
 
-                    // 定义映射的路径
-                    URI uri = UriComponentsBuilder.fromHttpUrl(result.getMappingPath()).build().toUri();
-                    rd.setUri(uri);
+                    // 校验域名是否是可用的URL 连接
+                    Matcher matcher = HTTP_URL_PATTERN.matcher(result.getMappingPath());
+                    if (matcher.matches()) {
+                        // 定义映射的路径
+                        URI uri = UriComponentsBuilder.fromHttpUrl(result.getMappingPath()).build().toUri();
+                        rd.setUri(uri);
 
-                    // 设置断言
-                    List<PredicateDefinition> pdList = new ArrayList<>();
-                    // 设置Path断言，拦截访问路径为设定值的请求
-                    PredicateDefinition predicatePath = new PredicateDefinition();
-                    predicatePath.setName("Path");
-                    Map<String, String> predicateParamsPath = new HashMap<>(1);
-                    predicateParamsPath.put("pattern", result.getContextName());
-                    predicatePath.setArgs(predicateParamsPath);
-                    pdList.add(predicatePath);
-                    rd.setPredicates(pdList);
+                        // 设置断言
+                        List<PredicateDefinition> pdList = new ArrayList<>();
+                        // 设置Path断言，拦截访问路径为设定值的请求
+                        PredicateDefinition predicatePath = new PredicateDefinition();
+                        predicatePath.setName("Path");
+                        Map<String, String> predicateParamsPath = new HashMap<>(1);
+                        predicateParamsPath.put("pattern", result.getContextName());
+                        predicatePath.setArgs(predicateParamsPath);
+                        pdList.add(predicatePath);
+                        rd.setPredicates(pdList);
 
-                    List<FilterDefinition> filters = new ArrayList<>();
-                    FilterDefinition filterDefinition = new FilterDefinition();
-                    //设置过滤
-                    filterDefinition.setName("StripPrefix");
-                    filterDefinition.addArg("parts", "1");
-                    filters.add(filterDefinition);
-                    rd.setFilters(filters);
+                        List<FilterDefinition> filters = new ArrayList<>();
+                        FilterDefinition filterDefinition = new FilterDefinition();
+                        //设置过滤
+                        filterDefinition.setName("StripPrefix");
+                        filterDefinition.addArg("parts", "1");
+                        filters.add(filterDefinition);
+                        rd.setFilters(filters);
 
-
-                    // 将路由发布到网关
-                    gatewayRouteEntityList.add(rd);
+                        // 将路由发布到网关
+                        gatewayRouteEntityList.add(rd);
+                    }else {
+                        // 打印出不符合规范的路由地址
+                        logger.debug(" --------- 不规范的路由地址 : " + result.getMappingPath() + " --------- ");
+                    }
                 }
             });
         }
