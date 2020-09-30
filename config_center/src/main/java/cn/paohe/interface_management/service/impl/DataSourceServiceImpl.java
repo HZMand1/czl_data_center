@@ -120,8 +120,9 @@ public class DataSourceServiceImpl implements IDataSourceService {
 //        if (ObjectUtils.isNullObj(dataSourceInfo.getAliveFlag())) {
 //            dataSourceInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
 //        }
-        if (ObjectUtils.isNullObj(dataSourceInfo.getAddUserId())) {
-            dataSourceInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
+        Long loginId = UserUtil.getUserEntity().getUserId();
+        if (ObjectUtils.isNullObj(dataSourceInfo.getAddUserId()) && StringUtil.equals(1,loginId)) {
+            dataSourceInfo.setAddUserId(loginId);
         }
 
         // 设置查询条件
