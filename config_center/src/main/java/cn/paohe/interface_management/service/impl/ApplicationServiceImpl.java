@@ -129,7 +129,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 //            applicationInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
 //        }
         Long loginId = UserUtil.getUserEntity().getUserId();
-        if (ObjectUtils.isNullObj(applicationInfo.getAddUserId()) && StringUtil.equals(1,loginId)) {
+        if (ObjectUtils.isNullObj(applicationInfo.getAddUserId()) && !StringUtil.equals(1,loginId)) {
             applicationInfo.setAddUserId(loginId);
         }
 

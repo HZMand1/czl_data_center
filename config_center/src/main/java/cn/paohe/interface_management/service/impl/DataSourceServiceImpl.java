@@ -121,7 +121,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
 //            dataSourceInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
 //        }
         Long loginId = UserUtil.getUserEntity().getUserId();
-        if (ObjectUtils.isNullObj(dataSourceInfo.getAddUserId()) && StringUtil.equals(1,loginId)) {
+        if (ObjectUtils.isNullObj(dataSourceInfo.getAddUserId()) && !StringUtil.equals(1,loginId)) {
             dataSourceInfo.setAddUserId(loginId);
         }
 

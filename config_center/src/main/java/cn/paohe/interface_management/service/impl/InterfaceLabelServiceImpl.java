@@ -130,7 +130,7 @@ public class InterfaceLabelServiceImpl implements IInterfaceLabelService {
 //            interfaceLabelInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
 //        }
         Long loginId = UserUtil.getUserEntity().getUserId();
-        if (ObjectUtils.isNullObj(interfaceLabelInfo.getAddUserId()) && StringUtil.equals(1,loginId)) {
+        if (ObjectUtils.isNullObj(interfaceLabelInfo.getAddUserId()) && !StringUtil.equals(1,loginId)) {
             interfaceLabelInfo.setAddUserId(loginId);
         }
 
