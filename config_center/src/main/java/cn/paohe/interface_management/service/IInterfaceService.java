@@ -117,4 +117,15 @@ public interface IInterfaceService {
      * @throws:
      */
     public PageAjax<InterfaceInfoVo> queryPageInterfaceVoList(InterfaceInfoVo interfaceInfoVo);
+
+    /**
+     * TODO 分页查询接口信息
+     *
+     * @Param: interfaceInfo
+     * @return: pageAjax
+     * @author: 黄芝民
+     * @Date: 2020/9/16 14:33
+     * @throws:
+     */
+    public PageAjax<InterfaceInfoVo> queryDeveloperPage(InterfaceInfoVo interfaceInfoVo);
 }

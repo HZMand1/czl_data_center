@@ -46,7 +46,7 @@ public class DeveloperBusinessServiceImpl implements IDeveloperBusinessService {
             }
             interfaceLabelInfoVo.setApplicationId(applicationId);
         }
-        PageAjax<InterfaceInfoVo> pageAjax = iInterfaceService.queryPageInterfaceVoList(interfaceLabelInfoVo);
+        PageAjax<InterfaceInfoVo> pageAjax = iInterfaceService.queryDeveloperPage(interfaceLabelInfoVo);
         List<InterfaceInfoVo> interfaceInfoVos = pageAjax.getRows();
         for (InterfaceInfoVo interfaceInfoVo : interfaceInfoVos) {
             // 加密 取MD5 的后8位作为密钥
