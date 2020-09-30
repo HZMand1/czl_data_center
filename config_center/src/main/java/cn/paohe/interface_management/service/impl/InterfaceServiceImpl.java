@@ -121,7 +121,7 @@ public class InterfaceServiceImpl implements IInterfaceService {
     @Override
     public PageAjax<InterfaceInfoVo> queryPageInterfaceVoList(InterfaceInfoVo interfaceInfoVo) {
         Long loginUserId = UserUtil.getUserEntity().getUserId();
-        if(ObjectUtils.isNullObj(interfaceInfoVo.getAddUserId())){
+        if(ObjectUtils.isNullObj(interfaceInfoVo.getAddUserId()) && !StringUtil.equals(1,loginUserId)){
             interfaceInfoVo.setAddUserId(loginUserId);
         }
         //分页
