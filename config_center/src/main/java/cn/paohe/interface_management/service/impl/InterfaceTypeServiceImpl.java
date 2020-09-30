@@ -147,7 +147,7 @@ public class InterfaceTypeServiceImpl implements IInterfaceTypeService {
 //            interfaceTypeInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
 //        }
         Long loginId = UserUtil.getUserEntity().getUserId();
-        if (ObjectUtils.isNullObj(interfaceTypeInfo.getAddUserId()) && StringUtil.equals(1,loginId)) {
+        if (ObjectUtils.isNullObj(interfaceTypeInfo.getAddUserId()) && !StringUtil.equals(1,loginId)) {
             interfaceTypeInfo.setAddUserId(loginId);
         }
 
