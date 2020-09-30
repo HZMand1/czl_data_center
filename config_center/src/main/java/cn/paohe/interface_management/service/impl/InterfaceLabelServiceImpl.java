@@ -129,8 +129,9 @@ public class InterfaceLabelServiceImpl implements IInterfaceLabelService {
 //        if (ObjectUtils.isNullObj(interfaceLabelInfo.getAliveFlag())) {
 //            interfaceLabelInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
 //        }
-        if (ObjectUtils.isNullObj(interfaceLabelInfo.getAddUserId())) {
-            interfaceLabelInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
+        Long loginId = UserUtil.getUserEntity().getUserId();
+        if (ObjectUtils.isNullObj(interfaceLabelInfo.getAddUserId()) && StringUtil.equals(1,loginId)) {
+            interfaceLabelInfo.setAddUserId(loginId);
         }
 
         // 设置查询条件
