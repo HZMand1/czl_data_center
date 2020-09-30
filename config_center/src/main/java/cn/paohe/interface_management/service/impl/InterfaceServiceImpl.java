@@ -120,6 +120,10 @@ public class InterfaceServiceImpl implements IInterfaceService {
     @TargetDataSource(value = "center-r")
     @Override
     public PageAjax<InterfaceInfoVo> queryPageInterfaceVoList(InterfaceInfoVo interfaceInfoVo) {
+        Long loginUserId = UserUtil.getUserEntity().getUserId();
+        if(ObjectUtils.isNullObj(interfaceInfoVo.getAddUserId())){
+            interfaceInfoVo.setAddUserId(loginUserId);
+        }
         //分页
         PageMethod.startPage(interfaceInfoVo.getStart(), interfaceInfoVo.getPageSize());
         //查询
