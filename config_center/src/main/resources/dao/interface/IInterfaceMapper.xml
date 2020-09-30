@@ -61,6 +61,9 @@
 		<if test="applicationId != null">
 			AND i.`APPLICATION_ID` = #{applicationId}
 		</if>
+		<if test="dataSourceId != null">
+			AND i.`DATA_SOURCE_ID` = #{dataSourceId}
+		</if>
 		<if test="interfaceName != null and interfaceName != ''">
 			AND i.`INTERFACE_NAME` LIKE CONCAT('%',#{interfaceName},'%')
 		</if>
@@ -73,8 +76,14 @@
 		<if test="dataSourceName != null and dataSourceName != ''">
 			AND d.`DATA_SOURCE_NAME` LIKE CONCAT('%',#{dataSourceName},'%')
 		</if>
+		<if test="typeId != null">
+			AND i.`TYPE_ID` = #{typeId}
+		</if>
 		<if test="typeName != null and typeName != ''">
 			AND t.`TYPE_NAME` LIKE CONCAT('%',#{typeName},'%')
+		</if>
+		<if test="labelId != null">
+			AND i.`LABEL_ID` = #{labelId}
 		</if>
 		<if test="labelName != null and labelName != ''">
 			AND l.`LABEL_NAME` LIKE CONCAT('%',#{labelName},'%')
