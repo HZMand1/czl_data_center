@@ -57,6 +57,13 @@ public class ApplicationServiceImpl implements IApplicationService {
         if(StringUtil.isBlank(applicationInfo.getContextName())){
             applicationInfo.setContextName("/" + code + "/**");
         }
+        // 处理下路由地址
+        if(StringUtil.isNotBlank(applicationInfo.getMappingPath())){
+            String temp = applicationInfo.getMappingPath().substring(applicationInfo.getMappingPath().length() - 1,applicationInfo.getMappingPath().length());
+            if(StringUtil.equals(temp,"/")){
+                applicationInfo.setMappingPath(applicationInfo.getMappingPath().substring(0,applicationInfo.getMappingPath().length() - 1));
+            }
+        }
         return applicationMapper.insert(applicationInfo);
     }
 
