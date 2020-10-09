@@ -55,7 +55,7 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
         // 校验接口 是否超出了访问时间
         if (!ObjectUtils.isNullObj(interfaceInfoVo.getStartTime()) && !ObjectUtils.isNullObj(interfaceInfoVo.getEndTime())) {
             // 当前时间
-            if (DateUtil.compareDateStr(interfaceInfoVo.getStartTime(), new Date()) > 0 && DateUtil.compareDateStr(interfaceInfoVo.getEndTime(), new Date()) < 0) {
+            if (DateUtil.compareDateStr(new Date(),interfaceInfoVo.getStartTime()) > 0 && DateUtil.compareDateStr(new Date(),interfaceInfoVo.getEndTime()) < 0) {
                 return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "current interface out of connection time range."));
             }
         }
@@ -66,4 +66,5 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
     public int getOrder() {
         return 4;
     }
+
 }
