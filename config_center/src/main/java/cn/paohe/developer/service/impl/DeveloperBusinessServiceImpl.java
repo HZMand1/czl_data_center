@@ -49,11 +49,13 @@ public class DeveloperBusinessServiceImpl implements IDeveloperBusinessService {
         PageAjax<InterfaceInfoVo> pageAjax = iInterfaceService.queryDeveloperPage(interfaceLabelInfoVo);
         List<InterfaceInfoVo> interfaceInfoVos = pageAjax.getRows();
         for (InterfaceInfoVo interfaceInfoVo : interfaceInfoVos) {
-            // 加密 取MD5 的后8位作为密钥
-            String secretKey = Md5.getMD5(interfaceInfoVo.getSecretKey().getBytes());
-            secretKey = secretKey.substring(secretKey.length() - 8, secretKey.length());
-            interfaceInfoVo.setSecretKey(secretKey);
-
+            if(StringUtil.isBlank(interfaceInfoVo.getUrl())){
+                continue;
+            }
+            String temp = interfaceInfoVo.getUrl().substring(0,1);
+            if(!StringUtil.equals(temp,"/")){
+                interfaceInfoVo.setUrl("/" + interfaceInfoVo.getUrl());
+            }
             // 开发者访问地址
             String url = gatewayContext + interfaceInfoVo.getApplicationCode() + interfaceInfoVo.getUrl();
             interfaceInfoVo.setUrl(url);
