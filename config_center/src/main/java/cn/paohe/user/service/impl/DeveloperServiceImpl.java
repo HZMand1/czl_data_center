@@ -72,10 +72,6 @@ public class DeveloperServiceImpl implements IDeveloperService {
     @Override
     public PageAjax<UserEntity> queryDeveloperPage(UserEntityVo userEntityVo) {
         //条件
-        // 设置默认值
-        if (ObjectUtils.isNullObj(userEntityVo.getAliveFlag())) {
-            userEntityVo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-        }
         if (ObjectUtils.isNullObj(userEntityVo.getParentUserId())) {
             userEntityVo.setParentUserId(UserUtil.getUserEntity().getUserId());
         }
