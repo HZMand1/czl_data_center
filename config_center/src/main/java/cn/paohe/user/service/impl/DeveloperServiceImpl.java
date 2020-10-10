@@ -71,9 +71,10 @@ public class DeveloperServiceImpl implements IDeveloperService {
     @TargetDataSource(value = "center-r")
     @Override
     public PageAjax<UserEntity> queryDeveloperPage(UserEntityVo userEntityVo) {
+        Long loginUserId = UserUtil.getUserEntity().getUserId();
         //条件
-        if (ObjectUtils.isNullObj(userEntityVo.getParentUserId())) {
-            userEntityVo.setParentUserId(UserUtil.getUserEntity().getUserId());
+        if (ObjectUtils.isNullObj(userEntityVo.getParentUserId()) && !StringUtil.equals(1,loginUserId)) {
+            userEntityVo.setParentUserId(loginUserId);
         }
         // 默认只查开发者的 id 为 2
         if(ObjectUtils.isNullObj(userEntityVo.getRoleId())){
