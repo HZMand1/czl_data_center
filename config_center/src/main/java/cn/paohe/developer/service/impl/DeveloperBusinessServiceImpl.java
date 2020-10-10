@@ -45,6 +45,7 @@ public class DeveloperBusinessServiceImpl implements IDeveloperBusinessService {
                 return new PageAjax<>();
             }
             interfaceLabelInfoVo.setApplicationId(applicationId);
+            interfaceLabelInfoVo.setAddUserId(UserUtil.getUserEntity().getParentUserId());
         }
         PageAjax<InterfaceInfoVo> pageAjax = iInterfaceService.queryDeveloperPage(interfaceLabelInfoVo);
         List<InterfaceInfoVo> interfaceInfoVos = pageAjax.getRows();
