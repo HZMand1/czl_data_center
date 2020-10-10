@@ -94,12 +94,12 @@ public class JwtUtil {
      * @param secret   用户的密码
      * @return 加密的token
      */
-    public static String sign(String username,Long userId,Long applicationId, String secret) {
+    public static String sign(String username,Long userId,Long parentUserId,Long applicationId, String secret) {
         Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         Algorithm algorithm = Algorithm.HMAC256(secret);
         // 附带username信息
         return JWT.create()
-                .withClaim("username", username).withClaim("userId",userId).withClaim("applicationId",applicationId)
+                .withClaim("username", username).withClaim("userId",userId).withClaim("parentUserId",parentUserId).withClaim("applicationId",applicationId)
                 .withExpiresAt(date)
                 .sign(algorithm);
     }
