@@ -24,7 +24,7 @@
         LEFT JOIN role_user r ON u.`USER_ID` = r.`USER_ID`
         LEFT JOIN application_info a ON u.`APPLICATION_ID` = a.`APPLICATION_ID`
         WHERE 1 = 1
-        <if test="aliveFlag != null ">
+        <if test="aliveFlag != null">
             and u.`ALIVE_FLAG` = #{aliveFlag}
         </if>
         <if test="parentUserId != null ">
