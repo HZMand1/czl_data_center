@@ -183,15 +183,9 @@ public class RestApplicationController {
                 // 删除路由
                 List<RouterConfig> routerConfigList = routerConfigService.searchRouterConfigByName(applicationInfo1.getApplicationCode());
                 if(CollectionUtil.isNotEmpty(routerConfigList)){
-                    RouterConfig rc = new RouterConfig();
-                    rc.setId(routerConfigList.get(0).getId());
-                    rc.setContextName(applicationInfo.getContextName());
-                    rc.setDescription(applicationInfo.getDescription());
-                    rc.setMappingPath(applicationInfo.getMappingPath());
-                    routerConfigService.updateRouterConfig(rc);
-                }else {
-                    insertRouter(applicationInfo1);
+                    routerConfigService.deleteRouterConfig(routerConfigList.get(0).getId());
                 }
+                insertRouter(applicationInfo1);
             }
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "修改应用成功");
         }
