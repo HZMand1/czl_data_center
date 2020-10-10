@@ -48,6 +48,11 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
         if (ObjectUtils.isNullObj(interfaceInfoVo)) {
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "can't get interface info by secret key."));
         }
+        //校验当前密钥的接口信息是否一致
+        String currentUrl = exchange.getRequest().getURI().getPath();
+        if(!StringUtil.equals(currentUrl,interfaceInfoVo.getUrl())){
+            return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "The secretKey key does not belong to the current interface."));
+        }
         // 校验接口是否被屏蔽了
         if (StringUtil.equals(0, interfaceInfoVo.getAliveFlag())) {
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "current interface enable now."));
