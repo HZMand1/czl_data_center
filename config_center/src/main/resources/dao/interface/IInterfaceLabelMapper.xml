@@ -28,7 +28,7 @@
         FROM interface_label_info l
         LEFT JOIN interface_type_info t on l.`TYPE_ID` = t.`TYPE_ID`
         WHERE 1 = 1
-        <if test="addUserId != null">
+        <if test="aliveFlag != null">
             AND l.`ALIVE_FLAG` = #{aliveFlag}
         </if>
         <if test="addUserId != null">
