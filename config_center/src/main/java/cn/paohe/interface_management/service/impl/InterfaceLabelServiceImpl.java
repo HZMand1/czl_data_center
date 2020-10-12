@@ -108,8 +108,6 @@ public class InterfaceLabelServiceImpl implements IInterfaceLabelService {
     @TargetDataSource(value = "center-r")
     @Override
     public PageAjax<InterfaceLabelInfoVo> queryPageInterfaceLabels(InterfaceLabelInfoVo interfaceLabelInfoVo) {
-        //条件
-        Condition condition = queryCondition(interfaceLabelInfoVo);
         //分页
         PageMethod.startPage(interfaceLabelInfoVo.getStart(), interfaceLabelInfoVo.getPageSize());
         //查询
