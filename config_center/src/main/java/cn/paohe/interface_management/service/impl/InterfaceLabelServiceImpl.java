@@ -108,10 +108,6 @@ public class InterfaceLabelServiceImpl implements IInterfaceLabelService {
     @TargetDataSource(value = "center-r")
     @Override
     public PageAjax<InterfaceLabelInfoVo> queryPageInterfaceLabels(InterfaceLabelInfoVo interfaceLabelInfoVo) {
-        // 设置默认值
-        if (ObjectUtils.isNullObj(interfaceLabelInfoVo.getAliveFlag())) {
-            interfaceLabelInfoVo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-        }
         //条件
         Condition condition = queryCondition(interfaceLabelInfoVo);
         //分页
@@ -125,10 +121,6 @@ public class InterfaceLabelServiceImpl implements IInterfaceLabelService {
         //条件
         Condition condition = new Condition(InterfaceLabelInfo.class);
         Example.Criteria criteria = condition.createCriteria();
-        // 设置默认值
-//        if (ObjectUtils.isNullObj(interfaceLabelInfo.getAliveFlag())) {
-//            interfaceLabelInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-//        }
         Long loginId = UserUtil.getUserEntity().getUserId();
         if (ObjectUtils.isNullObj(interfaceLabelInfo.getAddUserId()) && !StringUtil.equals(1,loginId)) {
             interfaceLabelInfo.setAddUserId(loginId);
