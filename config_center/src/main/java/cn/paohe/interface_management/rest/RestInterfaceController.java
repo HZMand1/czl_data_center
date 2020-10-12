@@ -158,4 +158,18 @@ public class RestInterfaceController {
         }
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"屏蔽失败",interfaceInfo);
     }
+
+    @RequiresPermissions("interface:enables")
+    @ApiOperation(value = "屏蔽接口信息")
+    @RequestMapping(value = "enableInterfaceByIds", method = RequestMethod.POST)
+    public AjaxResult enableInterfaceById(@ApiParam(value = "接口信息实体", required = true) @RequestBody List<InterfaceInfoVo> interfaceInfoVoList) {
+        int count = 0;
+        for (InterfaceInfo interfaceInfo : interfaceInfoVoList){
+            count = count + iInterfaceService.enableInterfaceById(interfaceInfo);
+        }
+        if(count > 0){
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"批量屏蔽成功",interfaceInfoVoList);
+        }
+        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"批量屏蔽失败",interfaceInfoVoList);
+    }
 }
