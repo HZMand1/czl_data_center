@@ -108,6 +108,10 @@ public class InterfaceLabelServiceImpl implements IInterfaceLabelService {
     @TargetDataSource(value = "center-r")
     @Override
     public PageAjax<InterfaceLabelInfoVo> queryPageInterfaceLabels(InterfaceLabelInfoVo interfaceLabelInfoVo) {
+        Long loginUserId = UserUtil.getUserEntity().getUserId();
+        if(ObjectUtils.isNullObj(interfaceLabelInfoVo.getAddUserId()) && !StringUtil.equals(1,loginUserId)){
+            interfaceLabelInfoVo.setAddUserId(loginUserId);
+        }
         //分页
         PageMethod.startPage(interfaceLabelInfoVo.getStart(), interfaceLabelInfoVo.getPageSize());
         //查询
