@@ -7,11 +7,13 @@ import cn.paohe.entity.model.routeConfig.RouterConfig;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.service.IApplicationService;
 import cn.paohe.router_config.service.RouterConfigService;
+import cn.paohe.sys.annotation.AuthExclude;
 import cn.paohe.sys.annotation.RequiresPermissions;
 import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.utils.CollectionUtil;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,17 @@ public class RestApplicationController {
     @ApiOperation(value = "根据ID获取应用信息")
     @RequestMapping(value = "queryAppById", method = RequestMethod.POST)
     public AjaxResult queryAppById(@ApiParam(value = "应用实体Vo", required = true) @RequestBody ApplicationInfo applicationInfo) {
+        if (ObjectUtils.isNullObj(applicationInfo.getApplicationId())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "应用ID不能为空");
+        }
+        ApplicationInfo result = applicationService.queryAppById(applicationInfo);
+        return new AjaxResult(result);
+    }
+
+    @AuthExclude
+    @ApiOperation(value = "根据ID获取应用信息")
+    @RequestMapping(value = "queryAppInfoById", method = RequestMethod.POST)
+    public AjaxResult queryAppInfoById(@ApiParam(value = "应用实体Vo", required = true) @RequestBody ApplicationInfo applicationInfo) {
         if (ObjectUtils.isNullObj(applicationInfo.getApplicationId())) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "应用ID不能为空");
         }

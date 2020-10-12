@@ -5,16 +5,24 @@ import cn.paohe.framework.utils.base.DateUtil;
 import cn.paohe.framework.utils.base.ObjectUtils;
 import cn.paohe.framework.utils.base.StringUtil;
 import cn.paohe.framework.utils.rest.AjaxResult;
+import cn.paohe.interfaceMsg.service.IApplicationService;
 import cn.paohe.interfaceMsg.service.IInterfaceService;
 import cn.paohe.vo.InterfaceInfoVo;
+import cn.paohe.vo.RouterConfigVO;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.support.NotFoundException;
+import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.util.Date;
 
 /**
@@ -30,6 +38,8 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
 
     @Autowired
     private IInterfaceService iInterfaceService;
+    @Autowired
+    private IApplicationService applicationService;
 
     /**
      * 接口的唯一信息 ，密钥 用于获取结构的相关信息，并作校验
@@ -57,6 +67,23 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
         if(!StringUtil.equals(currentUrl,path)){
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "The secretKey key does not belong to the current interface."));
         }
+        // 校验路由信息是否一致
+        JSONObject param = new JSONObject();
+        param.put("applicationId",interfaceInfoVo.getApplicationId());
+        JSONObject applicationJson = applicationService.queryAppById(param);
+        if(ObjectUtils.isNullObj(applicationJson)){
+            return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get applicationInfo by " + interfaceInfoVo.getApplicationId()));
+        }
+        JSONObject routerJson = JSON.parseObject(JSON.toJSONString(exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR)));
+        if(ObjectUtils.isNullObj(routerJson)){
+            return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get router info."));
+        }
+        String targetRouter = routerJson.getString("uri");
+        String routerUrl = applicationJson.getString("mappingPath");
+        if(!targetRouter.contains(routerUrl)){
+            return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "router address can't match"));
+        }
+
         // 校验接口是否被屏蔽了
         if (StringUtil.equals(0, interfaceInfoVo.getAliveFlag())) {
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "current interface enable now."));
@@ -68,6 +95,7 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
                 return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "current interface out of connection time range."));
             }
         }
+
         return chain.filter(exchange);
     }
 

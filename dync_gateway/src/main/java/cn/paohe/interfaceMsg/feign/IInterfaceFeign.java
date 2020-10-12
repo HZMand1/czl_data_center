@@ -1,6 +1,8 @@
 package cn.paohe.interfaceMsg.feign;
 
+import cn.paohe.framework.utils.rest.AjaxResult;
 import cn.paohe.vo.InterfaceInfoVo;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -17,6 +19,25 @@ import java.util.List;
 @FeignClient(value = "config-center")
 public interface IInterfaceFeign {
 
+    /**
+     * TODO 获取接口信息
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2020/10/12 15:13
+     * @throws:
+     */
     @PostMapping("/czl/rest/data/center/interface/getInterfaceList")
     public List<InterfaceInfoVo> getInterfaceList(InterfaceInfoVo interfaceInfoVo);
+
+    /**
+     * TODO 获取应用信息
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2020/10/12 15:14
+     * @throws:
+     */
+    @PostMapping("/czl/rest/data/center/app/queryAppInfoById")
+    public AjaxResult queryAppById(JSONObject jsonObject);
 }
