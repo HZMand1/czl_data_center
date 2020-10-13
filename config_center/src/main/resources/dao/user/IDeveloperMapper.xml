@@ -45,5 +45,6 @@
         <if test="applicationName != null and applicationName != ''">
             and a.`APPLICATION_NAME` LIKE CONCAT('%',#{applicationName},'%')
         </if>
+        ORDER BY u.`ADD_TIME` DESC
     </select>
 </mapper>
