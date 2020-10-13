@@ -44,5 +44,5 @@ public interface IInterfaceMapper extends MyMapper<InterfaceInfo> {
      * @Date:    2020/10/13 10:45
      * @throws:
      */
-    public int updateInterfaceDateById(InterfaceInfo param);
+    public int updateInterfaceInfoById(InterfaceInfo param);
 }

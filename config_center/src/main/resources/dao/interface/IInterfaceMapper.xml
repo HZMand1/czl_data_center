@@ -97,8 +97,24 @@
 		 ORDER BY i.`ADD_TIME` DESC
 	</select>
 
-	<update id="updateInterfaceDateById" parameterType="cn.paohe.entity.model.InterfaceMag.InterfaceInfo">
-		update interface_info set `START_TIME` = #{startTime},
-	    `END_TIME` = #{endTime} where INTERFACE_ID = #{interfaceId}
+	<update id="updateInterfaceInfoById" parameterType="cn.paohe.entity.model.InterfaceMag.InterfaceInfo">
+		update interface_info set
+	    `INTERFACE_NAME` = #{interfaceName},
+	    `APPLICATION_ID` = #{applicationId},
+	    `DATA_SOURCE_ID` = #{dataSourceId},
+	    `TYPE_ID` = #{typeId},
+		`LABEL_ID` = #{labelId},
+	    `URL` = #{url},
+	    `HEADER_INFO` = #{headerInfo},
+	    `BODY_INFO` = #{bodyInfo},
+	    `RESPONSE_INFO` = #{responseInfo},
+	    `DESCRIPTION` = #{description},
+	    `SECRET_KEY` = #{secretKey},
+	    `START_TIME` = #{startTime},
+	    `END_TIME` = #{endTime},
+	    `OPR_USER_ID` = #{oprUserId},
+	    `OPR_TIME` = #{oprTime}
+	    WHERE INTERFACE_ID = #{interfaceId}
+
 	</update>
 </mapper>

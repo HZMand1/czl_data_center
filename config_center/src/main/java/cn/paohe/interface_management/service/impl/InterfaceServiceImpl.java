@@ -1,7 +1,6 @@
 package cn.paohe.interface_management.service.impl;
 
 import cn.paohe.base.component.annotation.TargetDataSource;
-import cn.paohe.base.utils.basetype.BeanCopy;
 import cn.paohe.base.utils.basetype.StringUtil;
 import cn.paohe.base.utils.check.AppUtil;
 import cn.paohe.entity.model.InterfaceMag.InterfaceInfo;
@@ -16,7 +15,6 @@ import cn.paohe.vo.framework.PageAjax;
 import com.github.pagehelper.page.PageMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -65,17 +63,7 @@ public class InterfaceServiceImpl implements IInterfaceService {
             interfaceInfo.setOprUserId(UserUtil.getUserEntity().getUserId());
             interfaceInfo.setOprTime(new Date());
         }
-        int count = iInterfaceMapper.updateByPrimaryKeySelective(interfaceInfo);
-        if(count > 0){
-            if(ObjectUtils.isNullObj(interfaceInfo.getStartTime()) || ObjectUtils.isNullObj(interfaceInfo.getEndTime())){
-                InterfaceInfo param = new InterfaceInfo();
-                param.setInterfaceId(interfaceInfo.getInterfaceId());
-                param.setStartTime(interfaceInfo.getStartTime());
-                param.setEndTime(interfaceInfo.getEndTime());
-                iInterfaceMapper.updateInterfaceDateById(param);
-            }
-        }
-        return iInterfaceMapper.updateByPrimaryKeySelective(interfaceInfo);
+        return iInterfaceMapper.updateInterfaceInfoById(interfaceInfo);
     }
 
     @TargetDataSource(value = "center-w")
