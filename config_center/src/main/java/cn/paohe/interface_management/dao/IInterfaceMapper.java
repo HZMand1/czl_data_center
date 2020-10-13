@@ -35,4 +35,14 @@ public interface IInterfaceMapper extends MyMapper<InterfaceInfo> {
      * @throws:
      */
     public List<InterfaceInfoVo> queryInterfaceList(InterfaceInfoVo interfaceInfoVo);
+
+    /**
+     * TODO 根据ID跟新接口的时间
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2020/10/13 10:45
+     * @throws:
+     */
+    public int updateInterfaceDateById(InterfaceInfo param);
 }

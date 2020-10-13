@@ -96,4 +96,9 @@
 		</if>
 		 ORDER BY i.`ADD_TIME` DESC
 	</select>
+
+	<update id="updateInterfaceDateById" parameterType="cn.paohe.entity.model.InterfaceMag.InterfaceInfo">
+		update interface_info set `START_TIME` = #{startTime},
+	    `END_TIME` = #{endTime} where INTERFACE_ID = #{interfaceId}
+	</update>
 </mapper>
