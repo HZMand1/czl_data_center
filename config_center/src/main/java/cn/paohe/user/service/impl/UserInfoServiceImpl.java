@@ -367,7 +367,7 @@ public class UserInfoServiceImpl implements IUserInfoService {
         Example example = new Example(UserEntity.class);
         Example.Criteria criteria = example.createCriteria();
 
-        if(ObjectUtils.isNullObj(userEntity.getParentUserId())){
+        if(ObjectUtils.isNullObj(userEntity.getParentUserId()) && !StringUtil.equals(1,UserUtil.getUserEntity().getUserId())){
             userEntity.setParentUserId(UserUtil.getUserEntity().getUserId());
         }
 
