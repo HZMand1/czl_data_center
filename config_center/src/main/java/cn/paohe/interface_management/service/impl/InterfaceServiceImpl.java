@@ -63,7 +63,7 @@ public class InterfaceServiceImpl implements IInterfaceService {
             interfaceInfo.setOprUserId(UserUtil.getUserEntity().getUserId());
             interfaceInfo.setOprTime(new Date());
         }
-        return iInterfaceMapper.updateByPrimaryKeySelective(interfaceInfo);
+        return iInterfaceMapper.updateByPrimaryKey(interfaceInfo);
     }
 
     @TargetDataSource(value = "center-w")
