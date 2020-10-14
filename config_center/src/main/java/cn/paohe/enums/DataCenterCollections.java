@@ -13,6 +13,7 @@ import java.util.Date;
  */
 public class DataCenterCollections {
 
+    public static final String PERCENT_SIGN = "%";
     /**
      * TODO  http请求响应状态码
      *

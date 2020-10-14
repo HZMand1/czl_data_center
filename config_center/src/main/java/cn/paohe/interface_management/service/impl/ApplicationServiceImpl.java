@@ -148,10 +148,10 @@ public class ApplicationServiceImpl implements IApplicationService {
             criteria.andEqualTo(ApplicationInfo.key.addUserId.toString(), applicationInfo.getAddUserId());
         }
         if (StringUtil.isNotBlank(applicationInfo.getApplicationName())) {
-            criteria.andLike(ApplicationInfo.key.applicationName.toString(), applicationInfo.getApplicationName());
+            criteria.andLike(ApplicationInfo.key.applicationName.toString(), DataCenterCollections.PERCENT_SIGN + applicationInfo.getApplicationName() + DataCenterCollections.PERCENT_SIGN);
         }
         if (StringUtil.isNotBlank(applicationInfo.getApplicationCode())) {
-            criteria.andEqualTo(ApplicationInfo.key.applicationCode.toString(), applicationInfo.getApplicationCode());
+            criteria.andLike(ApplicationInfo.key.applicationCode.toString(), DataCenterCollections.PERCENT_SIGN + applicationInfo.getApplicationCode() + DataCenterCollections.PERCENT_SIGN);
         }
         //排序
         condition.setOrderByClause("ADD_TIME DESC");

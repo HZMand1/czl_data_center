@@ -133,10 +133,10 @@ public class DataSourceServiceImpl implements IDataSourceService {
             criteria.andEqualTo(DataSourceInfo.key.addUserId.toString(), dataSourceInfo.getAddUserId());
         }
         if (StringUtil.isNotBlank(dataSourceInfo.getDataSourceName())) {
-            criteria.andLike(DataSourceInfo.key.dataSourceName.toString(), dataSourceInfo.getDataSourceName());
+            criteria.andLike(DataSourceInfo.key.dataSourceName.toString(), DataCenterCollections.PERCENT_SIGN + dataSourceInfo.getDataSourceName() + DataCenterCollections.PERCENT_SIGN);
         }
         if (StringUtil.isNotBlank(dataSourceInfo.getDataSourceCode())) {
-            criteria.andEqualTo(DataSourceInfo.key.dataSourceCode.toString(), dataSourceInfo.getDataSourceCode());
+            criteria.andLike(DataSourceInfo.key.dataSourceCode.toString(), DataCenterCollections.PERCENT_SIGN + dataSourceInfo.getDataSourceCode() + DataCenterCollections.PERCENT_SIGN);
         }
         //排序
         condition.setOrderByClause("ADD_TIME DESC");

@@ -373,22 +373,22 @@ public class UserInfoServiceImpl implements IUserInfoService {
 
         // 设置查询条件
         if (StringUtil.isNotBlank(userEntity.getUseName())) {
-            criteria.andLike(UserEntity.key.useName.toString(), userEntity.getUseName());
+            criteria.andLike(UserEntity.key.useName.toString(), DataCenterCollections.PERCENT_SIGN + userEntity.getUseName() + DataCenterCollections.PERCENT_SIGN);
         }
         if (StringUtil.isNotBlank(userEntity.getUserName())) {
-            criteria.andLike(UserEntity.key.userName.toString(), userEntity.getUserName());
+            criteria.andLike(UserEntity.key.userName.toString(), DataCenterCollections.PERCENT_SIGN + userEntity.getUserName() + DataCenterCollections.PERCENT_SIGN);
         }
         if (StringUtil.isNotBlank(userEntity.getAccount())) {
-            criteria.andLike(UserEntity.key.account.toString(), userEntity.getAccount());
+            criteria.andLike(UserEntity.key.account.toString(), DataCenterCollections.PERCENT_SIGN + userEntity.getAccount() + DataCenterCollections.PERCENT_SIGN);
         }
         if (StringUtil.isNotBlank(userEntity.getPhone())) {
-            criteria.andLike(UserEntity.key.phone.toString(), userEntity.getPhone());
+            criteria.andLike(UserEntity.key.phone.toString(), DataCenterCollections.PERCENT_SIGN + userEntity.getPhone() + DataCenterCollections.PERCENT_SIGN);
         }
         if (!ObjectUtils.isNullObj(userEntity.getAliveFlag())) {
             criteria.andEqualTo(UserEntity.key.aliveFlag.toString(), userEntity.getAliveFlag());
         }
         if (StringUtil.isNotBlank(userEntity.getEmail())) {
-            criteria.andLike(UserEntity.key.email.toString(), userEntity.getEmail());
+            criteria.andLike(UserEntity.key.email.toString(), DataCenterCollections.PERCENT_SIGN + userEntity.getEmail() + DataCenterCollections.PERCENT_SIGN);
         }
         if (!ObjectUtils.isNullObj(userEntity.getParentUserId())) {
             criteria.andEqualTo(UserEntity.key.parentUserId.toString(), userEntity.getParentUserId());

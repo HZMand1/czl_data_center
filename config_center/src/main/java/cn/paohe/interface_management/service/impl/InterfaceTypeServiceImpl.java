@@ -159,7 +159,7 @@ public class InterfaceTypeServiceImpl implements IInterfaceTypeService {
             criteria.andEqualTo(InterfaceTypeInfo.key.addUserId.toString(), interfaceTypeInfo.getAddUserId());
         }
         if (StringUtil.isNotBlank(interfaceTypeInfo.getTypeName())) {
-            criteria.andLike(InterfaceTypeInfo.key.typeName.toString(), interfaceTypeInfo.getTypeName());
+            criteria.andLike(InterfaceTypeInfo.key.typeName.toString(), DataCenterCollections.PERCENT_SIGN + interfaceTypeInfo.getTypeName() + DataCenterCollections.PERCENT_SIGN);
         }
         //排序
         condition.setOrderByClause("ADD_TIME DESC");

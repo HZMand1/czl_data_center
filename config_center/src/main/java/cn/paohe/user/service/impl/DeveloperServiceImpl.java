@@ -163,10 +163,10 @@ public class DeveloperServiceImpl implements IDeveloperService {
             criteria.andEqualTo(UserEntityVo.key.roleId.toString(), userEntityVo.getRoleId());
         }
         if (StringUtil.isNotBlank(userEntityVo.getUseName())) {
-            criteria.andLike(UserEntity.key.useName.toString(), userEntityVo.getUseName());
+            criteria.andLike(UserEntity.key.useName.toString(), DataCenterCollections.PERCENT_SIGN + userEntityVo.getUseName() + DataCenterCollections.PERCENT_SIGN);
         }
         if (StringUtil.isNotBlank(userEntityVo.getUserName())) {
-            criteria.andEqualTo(UserEntity.key.userName.toString(), userEntityVo.getUserName());
+            criteria.andLike(UserEntity.key.userName.toString(), DataCenterCollections.PERCENT_SIGN + userEntityVo.getUserName() + DataCenterCollections.PERCENT_SIGN);
         }
         //排序
         condition.setOrderByClause("ADD_TIME DESC");
