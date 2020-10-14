@@ -109,7 +109,6 @@
 	    `BODY_INFO` = #{bodyInfo},
 	    `RESPONSE_INFO` = #{responseInfo},
 	    `DESCRIPTION` = #{description},
-	    `SECRET_KEY` = #{secretKey},
 	    `START_TIME` = #{startTime},
 	    `END_TIME` = #{endTime},
 	    `OPR_USER_ID` = #{oprUserId},
