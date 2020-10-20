@@ -34,9 +34,9 @@ public class InterfaceInfo extends IfQuery {
     @Column(name = "INTERFACE_NAME")
     private String interfaceName;
 
-    @ApiModelProperty(value = "所属应用ID")
-    @Column(name = "APPLICATION_ID")
-    private Long applicationId;
+//    @ApiModelProperty(value = "所属应用ID")
+//    @Column(name = "APPLICATION_ID")
+//    private Long applicationId;
 
     @ApiModelProperty(value = "所属数据源ID")
     @Column(name = "DATA_SOURCE_ID")
@@ -122,13 +122,13 @@ public class InterfaceInfo extends IfQuery {
         this.interfaceName = interfaceName;
     }
 
-    public Long getApplicationId() {
-        return applicationId;
-    }
-
-    public void setApplicationId(Long applicationId) {
-        this.applicationId = applicationId;
-    }
+//    public Long getApplicationId() {
+//        return applicationId;
+//    }
+//
+//    public void setApplicationId(Long applicationId) {
+//        this.applicationId = applicationId;
+//    }
 
     public Long getDataSourceId() {
         return dataSourceId;

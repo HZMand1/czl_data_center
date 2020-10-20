@@ -105,7 +105,7 @@ public class RestApplicationController {
     private void insertRouter(ApplicationInfo applicationInfo){
         RouterConfig routerConfig = new RouterConfig();
         routerConfig.setId(UUIDGenerator.getUUID());
-        routerConfig.setInterfaceName(applicationInfo.getApplicationCode());
+        routerConfig.setInterfaceName(applicationInfo.getRouterPath());
         routerConfig.setContextName(applicationInfo.getContextName());
         routerConfig.setDescription(applicationInfo.getDescription());
         routerConfig.setMappingPath(applicationInfo.getMappingPath());
@@ -147,7 +147,7 @@ public class RestApplicationController {
             ApplicationInfo applicationInfo1 = applicationService.queryAppById(applicationInfo);
             if (!ObjectUtils.isNullObj(applicationInfo1)) {
                 // 更新路由
-                List<RouterConfig> routerConfigList = routerConfigService.searchRouterConfigByName(applicationInfo1.getApplicationCode());
+                List<RouterConfig> routerConfigList = routerConfigService.searchRouterConfigByName(applicationInfo1.getRouterPath());
                 if(CollectionUtil.isNotEmpty(routerConfigList)){
                     RouterConfig param = new RouterConfig();
                     param.setId(routerConfigList.get(0).getId());
@@ -172,7 +172,7 @@ public class RestApplicationController {
         if (deleteCount > 0) {
             if (!ObjectUtils.isNullObj(applicationInfo1)) {
                 // 删除路由
-                List<RouterConfig> routerConfigList = routerConfigService.searchRouterConfigByName(applicationInfo1.getApplicationCode());
+                List<RouterConfig> routerConfigList = routerConfigService.searchRouterConfigByName(applicationInfo1.getRouterPath());
                 if(CollectionUtil.isNotEmpty(routerConfigList)){
                     routerConfigService.deleteRouterConfig(routerConfigList.get(0).getId());
                 }
@@ -194,7 +194,7 @@ public class RestApplicationController {
             ApplicationInfo applicationInfo1 = applicationService.queryAppById(applicationInfo);
             if (!ObjectUtils.isNullObj(applicationInfo1)) {
                 // 删除路由
-                List<RouterConfig> routerConfigList = routerConfigService.searchRouterConfigByName(applicationInfo1.getApplicationCode());
+                List<RouterConfig> routerConfigList = routerConfigService.searchRouterConfigByName(applicationInfo1.getRouterPath());
                 if(CollectionUtil.isNotEmpty(routerConfigList)){
                     routerConfigService.deleteRouterConfig(routerConfigList.get(0).getId());
                 }

@@ -4,9 +4,6 @@
 	<sql id="Base_Column_List" >
     	i.`INTERFACE_ID` as interfaceId,
 	    i.`INTERFACE_NAME` as interfaceName,
-	    i.`APPLICATION_ID` as applicationId,
-	    a.`APPLICATION_NAME` as applicationName,
-	    a.`APPLICATION_CODE` as applicationCode,
 	    i.`DATA_SOURCE_ID` as dataSourceId,
 	    d.`DATA_SOURCE_NAME` as dataSourceName,
 	    i.`TYPE_ID` as typeId,
@@ -33,7 +30,6 @@
 		SELECT
 			<include refid="Base_Column_List"/>
 		FROM interface_info i
-		LEFT JOIN application_info a ON i.`APPLICATION_ID` = a.`APPLICATION_ID`
 		LEFT JOIN data_source_info d ON i.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID`
 		LEFT JOIN interface_type_info t ON i.`TYPE_ID` = t.`TYPE_ID`
 		LEFT JOIN interface_label_info l ON i.`LABEL_ID` = l.`LABEL_ID`
@@ -44,7 +40,6 @@
 		SELECT
 			<include refid="Base_Column_List"/>
 		FROM interface_info i
-		LEFT JOIN application_info a ON i.`APPLICATION_ID` = a.`APPLICATION_ID`
 		LEFT JOIN data_source_info d ON i.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID`
 		LEFT JOIN interface_type_info t ON i.`TYPE_ID` = t.`TYPE_ID`
 		LEFT JOIN interface_label_info l ON i.`LABEL_ID` = l.`LABEL_ID`
@@ -58,20 +53,11 @@
 		<if test="secretKey != null and secretKey != ''">
 			AND i.`SECRET_KEY` = #{secretKey}
 		</if>
-		<if test="applicationId != null">
-			AND i.`APPLICATION_ID` = #{applicationId}
-		</if>
 		<if test="dataSourceId != null">
 			AND i.`DATA_SOURCE_ID` = #{dataSourceId}
 		</if>
 		<if test="interfaceName != null and interfaceName != ''">
 			AND i.`INTERFACE_NAME` LIKE CONCAT('%',#{interfaceName},'%')
-		</if>
-		<if test="applicationName != null and applicationName != ''">
-			AND a.`APPLICATION_NAME` LIKE CONCAT('%',#{applicationName},'%')
-		</if>
-		<if test="applicationCode != null and applicationCode != ''">
-			AND a.`APPLICATION_CODE` LIKE CONCAT('%',#{applicationCode},'%')
 		</if>
 		<if test="dataSourceName != null and dataSourceName != ''">
 			AND d.`DATA_SOURCE_NAME` LIKE CONCAT('%',#{dataSourceName},'%')
@@ -100,7 +86,6 @@
 	<update id="updateInterfaceInfoById" parameterType="cn.paohe.entity.model.InterfaceMag.InterfaceInfo">
 		update interface_info set
 	    `INTERFACE_NAME` = #{interfaceName},
-	    `APPLICATION_ID` = #{applicationId},
 	    `DATA_SOURCE_ID` = #{dataSourceId},
 	    `TYPE_ID` = #{typeId},
 		`LABEL_ID` = #{labelId},

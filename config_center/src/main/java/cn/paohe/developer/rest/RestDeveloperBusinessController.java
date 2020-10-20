@@ -1,7 +1,9 @@
 package cn.paohe.developer.rest;
 
 import cn.paohe.developer.service.IDeveloperBusinessService;
+import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
 import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
+import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.vo.framework.PageAjax;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,10 +26,17 @@ public class RestDeveloperBusinessController {
     @Autowired
     private IDeveloperBusinessService developerBusinessService;
 
-    @ApiOperation(value = "分页查询接口信息")
+    @ApiOperation(value = "分页统计查询接口信息")
+    @RequestMapping(value = "queryDeveloperDateSourcePage", method = RequestMethod.POST)
+    public PageAjax<AppSourceInterInfoVo> queryDeveloperDateSourcePage(@ApiParam(value = "接口信息实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {
+        PageAjax<AppSourceInterInfoVo> result = developerBusinessService.queryDeveloperDateSourcePage(appSourceInterInfoVo);
+        return result;
+    }
+
+    @ApiOperation(value = "分页统计查询接口信息")
     @RequestMapping(value = "queryDeveloperInterPage", method = RequestMethod.POST)
-    public PageAjax<InterfaceInfoVo> queryPageInterfaceList(@ApiParam(value = "接口信息实体Vo", required = true) @RequestBody InterfaceInfoVo interfaceInfoVo) {
-        PageAjax<InterfaceInfoVo> result = developerBusinessService.queryDeveloperInterPage(interfaceInfoVo);
+    public PageAjax<AppSourceInterInfoVo> queryDeveloperInterPage(@ApiParam(value = "接口信息实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {
+        PageAjax<AppSourceInterInfoVo> result = developerBusinessService.queryDeveloperInterPage(appSourceInterInfoVo);
         return result;
     }
 }

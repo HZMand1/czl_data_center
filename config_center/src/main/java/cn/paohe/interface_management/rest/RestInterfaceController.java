@@ -99,10 +99,10 @@ public class RestInterfaceController {
             errorMsg.add("接口名称不能为空");
             return false;
         }
-        if (ObjectUtils.isNullObj(interfaceInfo.getApplicationId())) {
-            errorMsg.add("所属应用不能为空");
-            return false;
-        }
+//        if (ObjectUtils.isNullObj(interfaceInfo.getApplicationId())) {
+//            errorMsg.add("所属应用不能为空");
+//            return false;
+//        }
         if (ObjectUtils.isNullObj(interfaceInfo.getDataSourceId())) {
             errorMsg.add("所属数据源不能为空");
             return false;

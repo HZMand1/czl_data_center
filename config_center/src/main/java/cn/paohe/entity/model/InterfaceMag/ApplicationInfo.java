@@ -36,6 +36,14 @@ public class ApplicationInfo extends IfQuery {
     @Column(name = "APPLICATION_CODE")
     private String applicationCode;
 
+    @ApiModelProperty(value = "应用负责人")
+    @Column(name = "APP_USER_NAME")
+    private String appUserName;
+
+    @ApiModelProperty(value = "应用负责人联系电话")
+    @Column(name = "PHONE")
+    private String phone;
+
     @ApiModelProperty(value = "上下文名称")
     @Column(name = "CONTEXT_NAME")
     private String contextName;
@@ -43,6 +51,10 @@ public class ApplicationInfo extends IfQuery {
     @ApiModelProperty(value = "描述")
     @Column(name = "DESCRIPTION")
     private String description;
+
+    @ApiModelProperty(value = "路由器映射地址")
+    @Column(name = "ROUTER_PATH")
+    private String routerPath;
 
     @ApiModelProperty(value = "映射路径")
     @Column(name = "MAPPING_PATH")
@@ -154,5 +166,29 @@ public class ApplicationInfo extends IfQuery {
 
     public void setMappingPath(String mappingPath) {
         this.mappingPath = mappingPath;
+    }
+
+    public String getRouterPath() {
+        return routerPath;
+    }
+
+    public void setRouterPath(String routerPath) {
+        this.routerPath = routerPath;
+    }
+
+    public String getAppUserName() {
+        return appUserName;
+    }
+
+    public void setAppUserName(String appUserName) {
+        this.appUserName = appUserName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

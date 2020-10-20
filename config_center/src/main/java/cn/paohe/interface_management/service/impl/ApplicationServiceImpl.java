@@ -48,10 +48,10 @@ public class ApplicationServiceImpl implements IApplicationService {
         if(ObjectUtils.isNullObj(applicationInfo.getAliveFlag())){
             applicationInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
         }
-        // 设置应用编号
+        // 设置路由映射地址
         String code = SnowFlakeIds.get().nextId() + "";
-        if(StringUtil.isBlank(applicationInfo.getApplicationCode())){
-            applicationInfo.setApplicationCode(code);
+        if(StringUtil.isBlank(applicationInfo.getRouterPath())){
+            applicationInfo.setRouterPath(code);
         }
         // 设置上下文根
         if(StringUtil.isBlank(applicationInfo.getContextName())){
