@@ -71,7 +71,7 @@ public class DeveloperBusinessServiceImpl implements IDeveloperBusinessService {
             appSourceInterInfoVo.setAddUserId(UserUtil.getUserEntity().getParentUserId());
         }
         appSourceInterInfoVo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-        PageAjax<AppSourceInterInfoVo> pageAjax = appSourceInterService.queryCountPageAppInterface(appSourceInterInfoVo);
+        PageAjax<AppSourceInterInfoVo> pageAjax = appSourceInterService.queryPageAppInterface(appSourceInterInfoVo);
         List<AppSourceInterInfoVo> interfaceInfoVos = pageAjax.getRows();
         for (AppSourceInterInfoVo appInfo : interfaceInfoVos) {
             if(StringUtil.isBlank(appInfo.getUrl())){
