@@ -44,6 +44,16 @@ public interface IAppSourceInterService {
      * @Date:    2020/9/16 14:30
      * @throws:
      */
+    public int deleteBySourceId(AppSourceInterInfo appSourceInterInfo);
+
+    /**
+     * TODO 禁用/启用应用接口关系
+     * @Param:   applicationInfo
+     * @return:  int
+     * @author:  黄芝民
+     * @Date:    2020/9/16 14:30
+     * @throws:
+     */
     public int enableAppInterfaceById(AppSourceInterInfo appSourceInterInfo);
 
     /**

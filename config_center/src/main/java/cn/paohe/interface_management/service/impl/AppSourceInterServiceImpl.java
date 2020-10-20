@@ -15,6 +15,8 @@ import com.github.pagehelper.page.PageMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Condition;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -30,9 +32,6 @@ import java.util.List;
  **/
 @Service
 public class AppSourceInterServiceImpl implements IAppSourceInterService {
-
-    @Autowired
-    private IInterfaceService interfaceService;
 
     @Resource
     private IAppSourceInterMapper appSourceInterMapper;
@@ -54,8 +53,19 @@ public class AppSourceInterServiceImpl implements IAppSourceInterService {
     @TargetDataSource(value = "center-w")
     @Transactional(rollbackFor = Exception.class)
     @Override
+    public int deleteBySourceId(AppSourceInterInfo appSourceInterInfo) {
+        Condition condition = new Condition(AppSourceInterInfo.class);
+        Example.Criteria criteria = condition.createCriteria();
+        criteria.andEqualTo(AppSourceInterInfo.key.dataSourceId.name(),appSourceInterInfo.getDataSourceId());
+        int count = appSourceInterMapper.deleteByExample(condition);
+        return count;
+    }
+
+    @TargetDataSource(value = "center-w")
+    @Transactional(rollbackFor = Exception.class)
+    @Override
     public int enableAppInterfaceById(AppSourceInterInfo appSourceInterInfo) {
-        return appSourceInterMapper.updateByPrimaryKey(appSourceInterInfo);
+        return appSourceInterMapper.updateByPrimaryKeySelective(appSourceInterInfo);
     }
 
     @TargetDataSource(value = "center-r")

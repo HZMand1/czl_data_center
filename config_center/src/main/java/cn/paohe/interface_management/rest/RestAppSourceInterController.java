@@ -60,6 +60,19 @@ public class RestAppSourceInterController {
         return result;
     }
 
+    @ApiOperation(value = "删除数据源")
+    @RequestMapping(value = "deleteBySourceId", method = RequestMethod.POST)
+    public AjaxResult deleteBySourceId(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {
+        if (ObjectUtils.isNullObj(appSourceInterInfoVo.getDataSourceId())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"数据源ID不能为空");
+        }
+        int count = appSourceInterService.deleteBySourceId(appSourceInterInfoVo);
+        if(count > 0){
+            return new AjaxResult();
+        }
+        return new AjaxResult(DataCenterCollections.YesOrNo.NO.value);
+    }
+
     @ApiOperation(value = "禁用/启用接口关系")
     @RequestMapping(value = "enableAppInterfaceById", method = RequestMethod.POST)
     public AjaxResult enableAppInterfaceById(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {
