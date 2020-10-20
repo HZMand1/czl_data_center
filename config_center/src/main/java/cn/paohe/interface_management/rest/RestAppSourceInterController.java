@@ -60,6 +60,22 @@ public class RestAppSourceInterController {
         return result;
     }
 
+    @ApiOperation(value = "禁用/启用接口关系")
+    @RequestMapping(value = "enableAppInterfaceById", method = RequestMethod.POST)
+    public AjaxResult enableAppInterfaceById(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {
+        if (ObjectUtils.isNullObj(appSourceInterInfoVo.getId())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"主键ID不能为空");
+        }
+        if (ObjectUtils.isNullObj(appSourceInterInfoVo.getAliveFlag())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"操作标识不能为空");
+        }
+        int count = appSourceInterService.enableAppInterfaceById(appSourceInterInfoVo);
+        if(count > 0){
+            return new AjaxResult();
+        }
+        return new AjaxResult(DataCenterCollections.YesOrNo.NO.value);
+    }
+
     @ApiOperation(value = "应用添加数据源")
     @RequestMapping(value = "appAddDataSource", method = RequestMethod.POST)
     public AjaxResult appAddDataSource(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {

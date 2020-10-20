@@ -44,7 +44,7 @@ public interface IAppSourceInterService {
      * @Date:    2020/9/16 14:30
      * @throws:
      */
-    public int deleteAppInterfaceById(AppSourceInterInfo appSourceInterInfo);
+    public int enableAppInterfaceById(AppSourceInterInfo appSourceInterInfo);
 
     /**
      * TODO 分页查询应用接口信息

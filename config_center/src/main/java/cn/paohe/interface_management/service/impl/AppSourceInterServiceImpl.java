@@ -54,8 +54,8 @@ public class AppSourceInterServiceImpl implements IAppSourceInterService {
     @TargetDataSource(value = "center-w")
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int deleteAppInterfaceById(AppSourceInterInfo appSourceInterInfo) {
-        return appSourceInterMapper.deleteByPrimaryKey(appSourceInterInfo);
+    public int enableAppInterfaceById(AppSourceInterInfo appSourceInterInfo) {
+        return appSourceInterMapper.updateByPrimaryKey(appSourceInterInfo);
     }
 
     @TargetDataSource(value = "center-r")
