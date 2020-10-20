@@ -19,13 +19,9 @@ public class AppSourceInterInfoVo extends AppSourceInterInfo {
     @ApiModelProperty(value = "接口数量")
     private Integer interfaceCount;
 
-    public Integer getInterfaceCount() {
-        return interfaceCount;
-    }
-
-    public void setInterfaceCount(Integer interfaceCount) {
-        this.interfaceCount = interfaceCount;
-    }
+    @ApiModelProperty(value = "数据源名称")
+    @Column(name = "DATA_SOURCE_NAME")
+    private String dataSourceName;
 
     @ApiModelProperty(value = "接口名称")
     @Column(name = "INTERFACE_NAME")
@@ -83,5 +79,21 @@ public class AppSourceInterInfoVo extends AppSourceInterInfo {
 
     public void setInterfaceName(String interfaceName) {
         this.interfaceName = interfaceName;
+    }
+
+    public Integer getInterfaceCount() {
+        return interfaceCount;
+    }
+
+    public void setInterfaceCount(Integer interfaceCount) {
+        this.interfaceCount = interfaceCount;
+    }
+
+    public String getDataSourceName() {
+        return dataSourceName;
+    }
+
+    public void setDataSourceName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
     }
 }

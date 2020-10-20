@@ -17,8 +17,10 @@
         SELECT
         <include refid="Base_Column_List"/>
         ,
+        d.`DATA_SOURCE_NAME` as dataSourceName,
         count(a.`APPLICATION_ID`) as interfaceCount
         FROM `app_source_inter` a
+        LEFT JOIN data_source_info d ON a.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID`
         WHERE 1 = 1
         <if test="aliveFlag != null">
             AND a.`ALIVE_FLAG` = #{aliveFlag}
@@ -32,13 +34,14 @@
         <if test="dataSourceId != null">
             AND a.`DATA_SOURCE_ID` = #{dataSourceId}
         </if>
-        GROUP BY a.`APPLICATION_ID`
+        GROUP BY a.`DATA_SOURCE_ID`
         ORDER BY a.`ADD_TIME` DESC
     </select>
 
     <select id="queryAppSourceInterList" resultType="cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo" parameterType="cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo">
         SELECT
         <include refid="Base_Column_List"/>,
+        d.`DATA_SOURCE_NAME` as dataSourceName,
         p.ROUTER_PATH as routerPath,
         i.`INTERFACE_NAME` as interfaceName,
         t.`TYPE_NAME` as typeName,
@@ -46,6 +49,7 @@
         i.`URL` as url
         FROM `app_source_inter` a
         LEFT JOIN application_info p ON a.`APPLICATION_ID` = p.`APPLICATION_ID`
+        LEFT JOIN data_source_info d ON a.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID`
         LEFT JOIN interface_info i ON a.`DATA_SOURCE_ID` = i.`DATA_SOURCE_ID` AND a.`INTERFACE_ID` = i.`INTERFACE_ID`
         LEFT JOIN interface_type_info t ON i.`TYPE_ID` = t.`TYPE_ID`
         LEFT JOIN interface_label_info l ON i.`LABEL_ID` = l.`LABEL_ID`
