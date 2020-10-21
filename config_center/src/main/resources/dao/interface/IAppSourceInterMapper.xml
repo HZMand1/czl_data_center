@@ -34,6 +34,9 @@
         <if test="dataSourceId != null">
             AND a.`DATA_SOURCE_ID` = #{dataSourceId}
         </if>
+        <if test="dataSourceName != null">
+            AND d.`DATA_SOURCE_NAME` = #{dataSourceName}
+        </if>
         GROUP BY a.`DATA_SOURCE_ID`
         ORDER BY a.`ADD_TIME` DESC
     </select>
