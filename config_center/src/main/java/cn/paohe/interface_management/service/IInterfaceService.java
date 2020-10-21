@@ -119,7 +119,7 @@ public interface IInterfaceService {
     public PageAjax<InterfaceInfoVo> queryPageInterfaceVoList(InterfaceInfoVo interfaceInfoVo);
 
     /**
-     * TODO 分页查询接口信息
+     * TODO 开发者页面分页查询接口信息
      *
      * @Param: interfaceInfo
      * @return: pageAjax
@@ -128,4 +128,15 @@ public interface IInterfaceService {
      * @throws:
      */
     public PageAjax<InterfaceInfoVo> queryDeveloperPage(InterfaceInfoVo interfaceInfoVo);
+
+    /**
+     * TODO 应用管理页面-通过数据源ID获取未关联应用的接口数据
+     *
+     * @Param: interfaceInfo
+     * @return: pageAjax
+     * @author: 黄芝民
+     * @Date: 2020/9/16 14:33
+     * @throws:
+     */
+    public PageAjax<InterfaceInfoVo> queryPageAppInterfaceBySourceId(InterfaceInfoVo interfaceInfoVo);
 }

@@ -45,4 +45,14 @@ public interface IInterfaceMapper extends MyMapper<InterfaceInfo> {
      * @throws:
      */
     public int updateInterfaceInfoById(InterfaceInfo param);
+
+    /**
+     * TODO 应用管理页面-通过数据源ID获取未关联应用的接口数据
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2020/10/21 9:15
+     * @throws:
+     */
+    List<InterfaceInfoVo> queryPageAppInterfaceBySourceId(InterfaceInfoVo interfaceInfoVo);
 }

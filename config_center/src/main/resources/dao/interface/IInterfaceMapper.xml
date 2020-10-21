@@ -99,6 +99,44 @@
 	    `OPR_USER_ID` = #{oprUserId},
 	    `OPR_TIME` = #{oprTime}
 	    WHERE INTERFACE_ID = #{interfaceId}
-
 	</update>
+
+	<select id="queryPageAppInterfaceBySourceId" resultType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo" parameterType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM interface_info i
+		LEFT JOIN data_source_info d ON i.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID`
+		LEFT JOIN interface_type_info t ON i.`TYPE_ID` = t.`TYPE_ID`
+		LEFT JOIN interface_label_info l ON i.`LABEL_ID` = l.`LABEL_ID`
+		WHERE NOT EXISTS (SELECT s.`INTERFACE_ID` FROM app_source_inter s WHERE  i.`INTERFACE_ID` = s.`INTERFACE_ID` AND s.`APPLICATION_ID` = #{applicationId})
+		<if test="aliveFlag != null">
+			AND i.`ALIVE_FLAG` = #{aliveFlag}
+		</if>
+		<if test="addUserId != null">
+			AND i.`ADD_USER_ID` = #{addUserId}
+		</if>
+		<if test="dataSourceId != null">
+			AND i.`DATA_SOURCE_ID` = #{dataSourceId}
+		</if>
+		<if test="interfaceName != null and interfaceName != ''">
+			AND i.`INTERFACE_NAME` LIKE CONCAT('%',#{interfaceName},'%')
+		</if>
+		<if test="dataSourceName != null and dataSourceName != ''">
+			AND d.`DATA_SOURCE_NAME` LIKE CONCAT('%',#{dataSourceName},'%')
+		</if>
+		<if test="typeId != null">
+			AND i.`TYPE_ID` = #{typeId}
+		</if>
+		<if test="typeName != null and typeName != ''">
+			AND t.`TYPE_NAME` LIKE CONCAT('%',#{typeName},'%')
+		</if>
+		<if test="labelId != null">
+			AND i.`LABEL_ID` = #{labelId}
+		</if>
+		<if test="labelName != null and labelName != ''">
+			AND l.`LABEL_NAME` LIKE CONCAT('%',#{labelName},'%')
+		</if>
+		ORDER BY i.`ADD_TIME` DESC
+	</select>
+
 </mapper>

@@ -13,6 +13,9 @@ import io.swagger.annotations.ApiModelProperty;
  **/
 public class InterfaceInfoVo extends InterfaceInfo {
 
+    @ApiModelProperty(value = "所属应用ID")
+    private Long applicationId;
+
     @ApiModelProperty(value = "应用名称")
     private String applicationName;
 
@@ -66,5 +69,13 @@ public class InterfaceInfoVo extends InterfaceInfo {
 
     public void setLabelName(String labelName) {
         this.labelName = labelName;
+    }
+
+    public Long getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
     }
 }

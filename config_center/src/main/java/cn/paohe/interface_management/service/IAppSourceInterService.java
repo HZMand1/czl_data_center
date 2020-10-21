@@ -37,7 +37,17 @@ public interface IAppSourceInterService {
     public int insertAppInterfaceList(List<AppSourceInterInfo> appSourceInterInfoList);
 
     /**
-     * TODO 删除应用接口关系
+     * TODO 删除接口
+     * @Param:   applicationInfo
+     * @return:  int
+     * @author:  黄芝民
+     * @Date:    2020/9/16 14:30
+     * @throws:
+     */
+    public int deleteById(AppSourceInterInfo appSourceInterInfo);
+
+    /**
+     * TODO 删除数据源
      * @Param:   applicationInfo
      * @return:  int
      * @author:  黄芝民

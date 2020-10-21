@@ -140,4 +140,14 @@ public class InterfaceServiceImpl implements IInterfaceService {
         List<InterfaceInfoVo> list = iInterfaceMapper.queryInterfaceList(interfaceInfoVo);
         return AppUtil.returnPage(list);
     }
+
+    @TargetDataSource(value = "center-r")
+    @Override
+    public PageAjax<InterfaceInfoVo> queryPageAppInterfaceBySourceId(InterfaceInfoVo interfaceInfoVo) {
+        //分页
+        PageMethod.startPage(interfaceInfoVo.getStart(), interfaceInfoVo.getPageSize());
+        //查询
+        List<InterfaceInfoVo> list = iInterfaceMapper.queryPageAppInterfaceBySourceId(interfaceInfoVo);
+        return AppUtil.returnPage(list);
+    }
 }

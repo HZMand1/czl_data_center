@@ -3,23 +3,17 @@ package cn.paohe.interface_management.service.impl;
 import cn.paohe.base.component.annotation.TargetDataSource;
 import cn.paohe.base.utils.check.AppUtil;
 import cn.paohe.entity.model.InterfaceMag.AppSourceInterInfo;
-import cn.paohe.entity.model.InterfaceMag.InterfaceInfo;
 import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
-import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
 import cn.paohe.interface_management.dao.IAppSourceInterMapper;
 import cn.paohe.interface_management.service.IAppSourceInterService;
-import cn.paohe.interface_management.service.IInterfaceService;
-import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
 import com.github.pagehelper.page.PageMethod;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +42,13 @@ public class AppSourceInterServiceImpl implements IAppSourceInterService {
     @Override
     public int insertAppInterfaceList(List<AppSourceInterInfo> appSourceInterInfoList) {
         return appSourceInterMapper.insertList(appSourceInterInfoList);
+    }
+
+    @TargetDataSource(value = "center-w")
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int deleteById(AppSourceInterInfo appSourceInterInfo) {
+        return appSourceInterMapper.deleteByPrimaryKey(appSourceInterInfo);
     }
 
     @TargetDataSource(value = "center-w")
