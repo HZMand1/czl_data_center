@@ -45,6 +45,7 @@ public class RestAppSourceInterController {
         if (ObjectUtils.isNullObj(appSourceInterInfoVo.getApplicationId())) {
             return new PageAjax<AppSourceInterInfoVo>(Collections.emptyList(), DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "应用ID不能为空");
         }
+        appSourceInterInfoVo.setAddUserId(UserUtil.getUserEntity().getUserId());
         PageAjax<AppSourceInterInfoVo> result = appSourceInterService.queryCountPageAppInterface(appSourceInterInfoVo);
         return result;
     }
@@ -55,13 +56,14 @@ public class RestAppSourceInterController {
         if (ObjectUtils.isNullObj(appSourceInterInfoVo.getApplicationId())) {
             return new PageAjax<AppSourceInterInfoVo>(Collections.emptyList(), DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "应用ID不能为空");
         }
+        appSourceInterInfoVo.setAddUserId(UserUtil.getUserEntity().getUserId());
         PageAjax<AppSourceInterInfoVo> result = appSourceInterService.queryPageAppInterface(appSourceInterInfoVo);
         return result;
     }
 
     @ApiOperation(value = "删除接口关联关系")
-    @RequestMapping(value = "deleteBySourceId", method = RequestMethod.POST)
-    public AjaxResult deleteBySourceId(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfo appSourceInterInfo) {
+    @RequestMapping(value = "deleteById", method = RequestMethod.POST)
+    public AjaxResult deleteById(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfo appSourceInterInfo) {
         if (ObjectUtils.isNullObj(appSourceInterInfo.getId())) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "应用接口关联关系ID不能为空");
         }
@@ -133,11 +135,13 @@ public class RestAppSourceInterController {
         appSourceInterInfo.setDataSourceId(appSourceInterInfoVo.getDataSourceId());
         // 接口ID
         appSourceInterInfo.setInterfaceId(appSourceInterInfoVo.getInterfaceId());
+        // 可用
+        appSourceInterInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
         // 添加用户ID
         appSourceInterInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
         // 添加时间
         appSourceInterInfo.setAddTime(new Date());
-        int count = appSourceInterService.insertAppInterface(appSourceInterInfoVo);
+        int count = appSourceInterService.insertAppInterface(appSourceInterInfo);
         if(count  > 0){
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"新增成功",appSourceInterInfo);
         }
