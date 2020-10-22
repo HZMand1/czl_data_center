@@ -93,7 +93,7 @@
           d.`OPR_USER_ID` as oprUserId
         from
           data_source_info d
-          where not exists (select * from app_source_inter a where a.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID` and a.`APPLICATION_ID` = #{applicationId})
+          where not exists (select * from app_source_inter a where a.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID` and a.`APPLICATION_ID` = #{applicationId} and a.`ADD_USER_ID` = #{addUserId})
          <if test="addUserId != null">
              AND d.`ADD_USER_ID` = #{addUserId}
          </if>
