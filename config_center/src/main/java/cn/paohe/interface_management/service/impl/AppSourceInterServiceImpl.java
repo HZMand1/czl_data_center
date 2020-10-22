@@ -7,7 +7,9 @@ import cn.paohe.entity.model.InterfaceMag.DataSourceInfo;
 import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
 import cn.paohe.interface_management.dao.IAppSourceInterMapper;
 import cn.paohe.interface_management.service.IAppSourceInterService;
+import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.vo.framework.PageAjax;
+import com.alibaba.druid.sql.visitor.functions.Isnull;
 import com.github.pagehelper.page.PageMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,5 +99,26 @@ public class AppSourceInterServiceImpl implements IAppSourceInterService {
         //查询
         List<DataSourceInfo> list = appSourceInterMapper.addDataSourceList(appSourceInterInfoVo);
         return list;
+    }
+
+    @TargetDataSource(value = "center-r")
+    @Override
+    public List<AppSourceInterInfo> queryAppInterfaceList(AppSourceInterInfo appSourceInterInfo) {
+        Condition condition = new Condition(AppSourceInterInfo.class);
+        Example.Criteria criteria = condition.createCriteria();
+        if(!ObjectUtils.isNullObj(appSourceInterInfo.getApplicationId())){
+            criteria.andEqualTo(AppSourceInterInfo.key.applicationId.name(),appSourceInterInfo.getApplicationId());
+        }
+        if(!ObjectUtils.isNullObj(appSourceInterInfo.getDataSourceId())){
+            criteria.andEqualTo(AppSourceInterInfo.key.dataSourceId.name(),appSourceInterInfo.getDataSourceId());
+        }
+        if(!ObjectUtils.isNullObj(appSourceInterInfo.getInterfaceId())){
+            criteria.andEqualTo(AppSourceInterInfo.key.interfaceId.name(),appSourceInterInfo.getInterfaceId());
+        }
+        if(!ObjectUtils.isNullObj(appSourceInterInfo.getAddUserId())){
+            criteria.andEqualTo(AppSourceInterInfo.key.addUserId.name(),appSourceInterInfo.getAddUserId());
+        }
+        List<AppSourceInterInfo> appSourceInterInfos = appSourceInterMapper.selectByCondition(condition);
+        return appSourceInterInfos;
     }
 }

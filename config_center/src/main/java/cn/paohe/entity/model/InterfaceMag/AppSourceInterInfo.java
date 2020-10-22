@@ -17,7 +17,7 @@ import java.util.Date;
 @Table(name = "app_source_inter")
 public class AppSourceInterInfo extends IfQuery {
     public static enum key{
-        id ,applicationId,applicationName ,dataSourceId ,dataSourceName,aliveFlag ,addUserId ,oprUserId ,
+        id ,applicationId,applicationName ,dataSourceId ,interfaceId,aliveFlag ,addUserId ,oprUserId ,
         addTime ,oprTime
     }
 

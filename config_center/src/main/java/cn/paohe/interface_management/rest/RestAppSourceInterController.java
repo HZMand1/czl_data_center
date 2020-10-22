@@ -1,5 +1,6 @@
 package cn.paohe.interface_management.rest;
 
+import cn.paohe.base.utils.basetype.StringUtil;
 import cn.paohe.entity.model.InterfaceMag.AppSourceInterInfo;
 import cn.paohe.entity.model.InterfaceMag.DataSourceInfo;
 import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
@@ -76,16 +77,38 @@ public class RestAppSourceInterController {
     }
 
     @ApiOperation(value = "删除数据源")
-    @RequestMapping(value = "deleteBySourceId", method = RequestMethod.POST)
-    public AjaxResult deleteBySourceId(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {
-        if (ObjectUtils.isNullObj(appSourceInterInfoVo.getDataSourceId())) {
+    @RequestMapping(value = "enableAppDataInter", method = RequestMethod.POST)
+    public AjaxResult deleteBySourceId(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfo appSourceInterInfo) {
+        if (ObjectUtils.isNullObj(appSourceInterInfo.getApplicationId())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "应用ID不能为空");
+        }
+        if (ObjectUtils.isNullObj(appSourceInterInfo.getDataSourceId())) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "数据源ID不能为空");
         }
-        int count = appSourceInterService.deleteBySourceId(appSourceInterInfoVo);
-        if (count > 0) {
-            return new AjaxResult();
+        if (ObjectUtils.isNullObj(appSourceInterInfo.getDataSourceId())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "数据源ID不能为空");
         }
-        return new AjaxResult(DataCenterCollections.YesOrNo.NO.value);
+        // 新增关系
+        if(StringUtil.equals(DataCenterCollections.YesOrNo.YES.value,appSourceInterInfo.getAliveFlag())){
+            // 默认全部关联
+            appSourceInterInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+
+            // 新增人和时间
+            appSourceInterInfo.setAddTime(new Date());
+            appSourceInterInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
+            appSourceInterService.insertAppInterface(appSourceInterInfo);
+            return new AjaxResult(appSourceInterInfo);
+        }
+        // 删除关系
+        List<AppSourceInterInfo> appSourceInterInfos = appSourceInterService.queryAppInterfaceList(appSourceInterInfo);
+        if (CollectionUtil.isNotEmpty(appSourceInterInfos)) {
+            AppSourceInterInfo result = appSourceInterInfos.get(0);
+            AppSourceInterInfo param = new AppSourceInterInfo();
+            param.setId(result.getId());
+            appSourceInterService.deleteById(result);
+            return new AjaxResult(result);
+        }
+        return new AjaxResult(DataCenterCollections.YesOrNo.NO.value,"操作关联关系异常");
     }
 
     @ApiOperation(value = "禁用/启用接口关系")

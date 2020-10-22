@@ -96,4 +96,14 @@ public interface IAppSourceInterService {
      * @throws:
      */
     List<DataSourceInfo> addDataSourceList(AppSourceInterInfoVo appSourceInterInfoVo);
+
+    /**
+     * TODO 查询全部应用关系
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2020/10/22 10:59
+     * @throws:
+     */
+    List<AppSourceInterInfo> queryAppInterfaceList(AppSourceInterInfo appSourceInterInfo);
 }
