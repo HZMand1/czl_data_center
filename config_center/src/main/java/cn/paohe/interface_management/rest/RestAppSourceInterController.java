@@ -112,6 +112,7 @@ public class RestAppSourceInterController {
         if (ObjectUtils.isNullObj(interfaceInfoVo.getApplicationId())) {
             return new PageAjax<InterfaceInfoVo>(Collections.EMPTY_LIST,DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "应用ID不能为空");
         }
+        interfaceInfoVo.setAddUserId(UserUtil.getUserEntity().getUserId());
         PageAjax<InterfaceInfoVo> interfaceInfos = interfaceService.queryPageAppInterfaceBySourceId(interfaceInfoVo);
         return interfaceInfos;
     }
