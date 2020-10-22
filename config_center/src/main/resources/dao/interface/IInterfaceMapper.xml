@@ -104,11 +104,13 @@
 	<select id="queryPageAppInterfaceBySourceId" resultType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo" parameterType="cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo">
 		SELECT
 		<include refid="Base_Column_List"/>
+		,
+		s.id as appSourceInterId
 		FROM interface_info i
 		LEFT JOIN data_source_info d ON i.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID`
 		LEFT JOIN interface_type_info t ON i.`TYPE_ID` = t.`TYPE_ID`
 		LEFT JOIN interface_label_info l ON i.`LABEL_ID` = l.`LABEL_ID`
-		WHERE NOT EXISTS (SELECT s.`INTERFACE_ID` FROM app_source_inter s WHERE  i.`INTERFACE_ID` = s.`INTERFACE_ID` AND s.`APPLICATION_ID` = #{applicationId})
+		LEFT JOIN app_source_inter s ON  i.`INTERFACE_ID` = s.`INTERFACE_ID` AND s.`APPLICATION_ID` = #{applicationId})
 		<if test="aliveFlag != null">
 			AND i.`ALIVE_FLAG` = #{aliveFlag}
 		</if>

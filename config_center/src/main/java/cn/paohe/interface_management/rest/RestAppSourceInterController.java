@@ -125,26 +125,34 @@ public class RestAppSourceInterController {
         if (ObjectUtils.isNullObj(appSourceInterInfoVo.getDataSourceId())) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "数据源ID不能为空");
         }
-        if (ObjectUtils.isNullObj(appSourceInterInfoVo.getInterfaceId())) {
-            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "接口ID不能为空");
+        // 获取接口信息
+        InterfaceInfoVo interfaceInfo = new InterfaceInfoVo();
+        interfaceInfo.setDataSourceId(appSourceInterInfoVo.getDataSourceId());
+        List<InterfaceInfoVo> interfaceInfos = interfaceService.queryInterfaceVoList(interfaceInfo);
+        if(CollectionUtil.isEmpty(interfaceInfos)){
+            return new AjaxResult();
         }
-        AppSourceInterInfo appSourceInterInfo = new AppSourceInterInfo();
-        // 应用ID
-        appSourceInterInfo.setApplicationId(appSourceInterInfoVo.getApplicationId());
-        // 数据源ID
-        appSourceInterInfo.setDataSourceId(appSourceInterInfoVo.getDataSourceId());
-        // 接口ID
-        appSourceInterInfo.setInterfaceId(appSourceInterInfoVo.getInterfaceId());
-        // 可用
-        appSourceInterInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-        // 添加用户ID
-        appSourceInterInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
-        // 添加时间
-        appSourceInterInfo.setAddTime(new Date());
-        int count = appSourceInterService.insertAppInterface(appSourceInterInfo);
-        if(count  > 0){
-            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"新增成功",appSourceInterInfo);
+        List<AppSourceInterInfo> appSourceInterInfos = new ArrayList<>(interfaceInfos.size());
+        for (InterfaceInfoVo info : interfaceInfos) {
+            AppSourceInterInfo appSourceInterInfo = new AppSourceInterInfoVo();
+            // 应用ID
+            appSourceInterInfo.setApplicationId(appSourceInterInfoVo.getApplicationId());
+            // 数据源ID
+            appSourceInterInfo.setDataSourceId(appSourceInterInfoVo.getDataSourceId());
+            // 接口ID
+            appSourceInterInfo.setInterfaceId(info.getInterfaceId());
+            // 默认全部关联
+            appSourceInterInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+
+            // 新增人和时间
+            appSourceInterInfo.setAddTime(new Date());
+            appSourceInterInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
+            appSourceInterInfos.add(appSourceInterInfo);
         }
-        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value);
+        if(CollectionUtil.isNotEmpty(appSourceInterInfos)){
+            appSourceInterService.insertAppInterfaceList(appSourceInterInfos);
+        }
+        return new AjaxResult();
+
     }
 }

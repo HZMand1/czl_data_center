@@ -31,6 +31,9 @@ public class InterfaceInfoVo extends InterfaceInfo {
     @ApiModelProperty(value = "标签名称")
     private String labelName;
 
+    @ApiModelProperty(value = "应用关联ID")
+    private Long appSourceInterId;
+
     public String getApplicationName() {
         return applicationName;
     }
@@ -77,5 +80,13 @@ public class InterfaceInfoVo extends InterfaceInfo {
 
     public void setApplicationId(Long applicationId) {
         this.applicationId = applicationId;
+    }
+
+    public Long getAppSourceInterId() {
+        return appSourceInterId;
+    }
+
+    public void setAppSourceInterId(Long appSourceInterId) {
+        this.appSourceInterId = appSourceInterId;
     }
 }
