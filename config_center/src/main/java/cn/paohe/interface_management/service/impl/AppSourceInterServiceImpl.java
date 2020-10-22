@@ -3,6 +3,7 @@ package cn.paohe.interface_management.service.impl;
 import cn.paohe.base.component.annotation.TargetDataSource;
 import cn.paohe.base.utils.check.AppUtil;
 import cn.paohe.entity.model.InterfaceMag.AppSourceInterInfo;
+import cn.paohe.entity.model.InterfaceMag.DataSourceInfo;
 import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
 import cn.paohe.interface_management.dao.IAppSourceInterMapper;
 import cn.paohe.interface_management.service.IAppSourceInterService;
@@ -80,7 +81,6 @@ public class AppSourceInterServiceImpl implements IAppSourceInterService {
         return AppUtil.returnPage(list);
     }
 
-    @TargetDataSource(value = "center-r")
     @Transactional(rollbackFor = Exception.class)
     @Override
     public PageAjax<AppSourceInterInfoVo> queryCountPageAppInterface(AppSourceInterInfoVo appSourceInterInfoVo) {
@@ -89,5 +89,13 @@ public class AppSourceInterServiceImpl implements IAppSourceInterService {
         //查询
         List<AppSourceInterInfoVo> list = appSourceInterMapper.queryCountAppSourceInterList(appSourceInterInfoVo);
         return AppUtil.returnPage(list);
+    }
+
+    @TargetDataSource(value = "center-r")
+    @Override
+    public List<DataSourceInfo> addDataSourceList(AppSourceInterInfoVo appSourceInterInfoVo) {
+        //查询
+        List<DataSourceInfo> list = appSourceInterMapper.addDataSourceList(appSourceInterInfoVo);
+        return list;
     }
 }

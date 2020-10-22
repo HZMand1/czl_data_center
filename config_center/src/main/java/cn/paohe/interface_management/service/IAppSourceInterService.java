@@ -1,6 +1,7 @@
 package cn.paohe.interface_management.service;
 
 import cn.paohe.entity.model.InterfaceMag.AppSourceInterInfo;
+import cn.paohe.entity.model.InterfaceMag.DataSourceInfo;
 import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
 import cn.paohe.vo.framework.PageAjax;
 
@@ -86,4 +87,13 @@ public interface IAppSourceInterService {
      */
     public PageAjax<AppSourceInterInfoVo> queryCountPageAppInterface(AppSourceInterInfoVo appSourceInterInfoVo);
 
+    /**
+     * TODO 查询供应商页面的未关联的数据源信息
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2020/10/22 10:59
+     * @throws:
+     */
+    List<DataSourceInfo> addDataSourceList(AppSourceInterInfoVo appSourceInterInfoVo);
 }

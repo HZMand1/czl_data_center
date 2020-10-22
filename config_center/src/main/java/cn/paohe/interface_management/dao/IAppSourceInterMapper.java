@@ -2,6 +2,7 @@ package cn.paohe.interface_management.dao;
 
 import cn.paohe.base.business.dao.MyMapper;
 import cn.paohe.entity.model.InterfaceMag.AppSourceInterInfo;
+import cn.paohe.entity.model.InterfaceMag.DataSourceInfo;
 import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
 
 import java.util.List;
@@ -35,4 +36,14 @@ public interface IAppSourceInterMapper extends MyMapper<AppSourceInterInfo> {
      * @throws:
      */
     List<AppSourceInterInfoVo> queryAppSourceInterList(AppSourceInterInfoVo appSourceInterInfoVo);
+
+    /**
+     * TODO 获取未关联的数据源
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2020/10/22 11:01
+     * @throws:
+     */
+    List<DataSourceInfo> addDataSourceList(AppSourceInterInfoVo appSourceInterInfoVo);
 }

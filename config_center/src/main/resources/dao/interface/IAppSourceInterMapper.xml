@@ -80,4 +80,28 @@
         </if>
         ORDER BY a.`ADD_TIME` DESC
     </select>
+
+     <select id="addDataSourceList" parameterType="cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo" resultType="cn.paohe.entity.model.InterfaceMag.DataSourceInfo">
+         select
+          d.`DATA_SOURCE_ID` as dataSourceId,
+          d.`DATA_SOURCE_NAME` as dataSourceName,
+          d.`DATA_SOURCE_CODE` as dataSourceCode,
+          d.`ALIVE_FLAG` as aliveFlag,
+          d.`ADD_USER_ID` as addUserId,
+          d.`ADD_TIME` as addTime,
+          d.`OPR_TIME` as oprTime,
+          d.`OPR_USER_ID` as oprUserId
+        from
+          data_source_info d
+          where not exists (select * from app_source_inter a where a.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID` and a.`APPLICATION_ID` = #{applicationId})
+         <if test="addUserId != null">
+             AND d.`ADD_USER_ID` = #{addUserId}
+         </if>
+         <if test="aliveFlag != null">
+             AND d.`ALIVE_FLAG` = #{aliveFlag}
+         </if>
+         <if test="interfaceName != null">
+             AND d`DATA_SOURCE_NAME` LIKE CONCAT('%',#{dataSourceName},'%')
+         </if>
+     </select>
 </mapper>

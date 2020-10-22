@@ -1,6 +1,7 @@
 package cn.paohe.interface_management.rest;
 
 import cn.paohe.entity.model.InterfaceMag.AppSourceInterInfo;
+import cn.paohe.entity.model.InterfaceMag.DataSourceInfo;
 import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
 import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
 import cn.paohe.enums.DataCenterCollections;
@@ -155,5 +156,16 @@ public class RestAppSourceInterController {
         }
         return new AjaxResult();
 
+    }
+
+    @ApiOperation(value = "数据源信息列表")
+    @RequestMapping(value = "addDataSourceList", method = RequestMethod.POST)
+    public AjaxResult addDataSourceList(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {
+        if (ObjectUtils.isNullObj(appSourceInterInfoVo.getApplicationId())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "应用ID不能为空");
+        }
+        appSourceInterInfoVo.setAddUserId(UserUtil.getUserEntity().getUserId());
+        List<DataSourceInfo> dataSourceInfos = appSourceInterService.addDataSourceList(appSourceInterInfoVo);
+        return new AjaxResult(dataSourceInfos);
     }
 }
