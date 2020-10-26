@@ -50,7 +50,7 @@ public interface IInterfaceFeign {
      * @throws:
      */
     @PostMapping("/czl/rest/data/center/app/interface/getAppDataSourceBySecretKey")
-    public JSONObject getAppDataSourceBySecretKey(JSONObject jsonObject);
+    public AjaxResult getAppDataSourceBySecretKey(JSONObject jsonObject);
 
 
 }

@@ -1,7 +1,10 @@
 package cn.paohe.interfaceMsg.service.impl;
 
+import cn.paohe.framework.utils.base.StringUtil;
+import cn.paohe.framework.utils.rest.AjaxResult;
 import cn.paohe.interfaceMsg.feign.IInterfaceFeign;
 import cn.paohe.interfaceMsg.service.IAppSourceDataInterService;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +26,11 @@ public class AppSourceDataInterServiceImpl implements IAppSourceDataInterService
 
     @Override
     public JSONObject getAppDataSourceBySecretKey(JSONObject jsonObject) {
-        JSONObject jsonObject1 = interfaceFeign.getAppDataSourceBySecretKey(jsonObject);
-        return jsonObject1;
+        AjaxResult ajaxResult = interfaceFeign.getAppDataSourceBySecretKey(jsonObject);
+        if(StringUtil.equals(1,ajaxResult.getRetcode())){
+            JSONObject jsonObject1 = JSON.parseObject(JSON.toJSONString(ajaxResult.getData()));
+            return jsonObject1;
+        }
+        return null;
     }
 }

@@ -72,12 +72,10 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
         }
         // 获取应用接口关联信息
         JSONObject queryParam = new JSONObject();
-        queryParam.put("applicationId",interfaceInfoVo.getSecretKey());
+        queryParam.put("secretKey",interfaceInfoVo.getSecretKey());
         JSONObject appSourceInterInfo = appSourceDataInterService.getAppDataSourceBySecretKey(queryParam);
         if(ObjectUtils.isNullObj(appSourceInterInfo)){
-            if(ObjectUtils.isNullObj(appSourceInterInfo)){
-                return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get app and interface info by " + interfaceInfoVo.getSecretKey()));
-            }
+            return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get app and interface info by " + interfaceInfoVo.getSecretKey()));
         }
 
         // 校验路由信息是否一致

@@ -8,11 +8,13 @@ import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.service.IAppSourceInterService;
 import cn.paohe.interface_management.service.IInterfaceService;
+import cn.paohe.sys.annotation.AuthExclude;
 import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.utils.CollectionUtil;
 import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,17 +201,19 @@ public class RestAppSourceInterController {
         return new AjaxResult(dataSourceInfos);
     }
 
-
     @ApiOperation(value = "根据接口密钥ID获取关联信息")
     @RequestMapping(value = "getAppDataSourceBySecretKey", method = RequestMethod.POST)
-    public AppSourceInterInfo getAppDataSourceBySecretKey(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {
+    @AuthExclude
+    public AjaxResult getAppDataSourceBySecretKey(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody JSONObject jsonObject) {
+        AppSourceInterInfoVo appSourceInterInfoVo = new AppSourceInterInfoVo();
+        appSourceInterInfoVo.setSecretKey(jsonObject.getString("secretKey"));
         if (ObjectUtils.isNullObj(appSourceInterInfoVo.getSecretKey())) {
-            return null;
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO);
         }
         List<AppSourceInterInfo> appSourceInterInfos = appSourceInterService.queryAppInterfaceList(appSourceInterInfoVo);
         if(CollectionUtil.isNotEmpty(appSourceInterInfos)){
-            return appSourceInterInfos.get(0);
+            return new AjaxResult(appSourceInterInfos.get(0));
         }
-        return null;
+        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO);
     }
 }
