@@ -46,6 +46,7 @@
         <include refid="Base_Column_List"/>,
         d.`DATA_SOURCE_NAME` as dataSourceName,
         p.ROUTER_PATH as routerPath,
+        i.`SECRET_KEY` as secretKey,
         i.`INTERFACE_NAME` as interfaceName,
         t.`TYPE_NAME` as typeName,
         l.`LABEL_NAME` as labelName,
