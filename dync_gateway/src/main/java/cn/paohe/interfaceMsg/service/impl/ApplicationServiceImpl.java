@@ -33,4 +33,14 @@ public class ApplicationServiceImpl implements IApplicationService {
         }
         return null;
     }
+
+    @Override
+    public JSONObject queryAppInfoByKey(JSONObject jsonObject) {
+        AjaxResult ajaxResult = iInterfaceFeign.queryAppInfoByKey(jsonObject);
+        if(StringUtil.equals(1,ajaxResult.getRetcode())){
+            JSONObject jsonObject1 = JSON.parseObject(JSON.toJSONString(ajaxResult.getData()));
+            return jsonObject1;
+        }
+        return null;
+    }
 }

@@ -42,6 +42,17 @@ public interface IInterfaceFeign {
     public AjaxResult queryAppById(JSONObject jsonObject);
 
     /**
+     * TODO 获取应用信息
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2020/10/12 15:14
+     * @throws:
+     */
+    @PostMapping("/czl/rest/data/center/app/queryAppInfoByKey")
+    public AjaxResult queryAppInfoByKey(JSONObject jsonObject);
+
+    /**
      * TODO 获取应用接口关联信息
      * @Param:   null
      * @return:  * @return: null

@@ -18,7 +18,7 @@ import java.util.Date;
 public class ApplicationInfo extends IfQuery {
 
     public static enum key{
-        applicationId ,applicationName ,applicationCode ,aliveFlag ,addUserId ,oprUserId ,
+        applicationId ,applicationName ,applicationCode ,aliveFlag ,routerPath,addUserId ,oprUserId ,
         addTime ,oprTime
     }
 

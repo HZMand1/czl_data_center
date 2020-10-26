@@ -22,4 +22,15 @@ public interface IApplicationService {
      * @throws:
      */
     public JSONObject queryAppById(JSONObject jsonObject);
+
+    /**
+     * TODO 根据key获取接口详情
+     *
+     * @Param: null
+     * @return: * @return: null
+     * @author: 黄芝民
+     * @Date: 2020/9/29 16:44
+     * @throws:
+     */
+    public JSONObject queryAppInfoByKey(JSONObject jsonObject);
 }

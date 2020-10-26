@@ -41,13 +41,16 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
     private IInterfaceService iInterfaceService;
     @Autowired
     private IApplicationService applicationService;
-    @Autowired
-    private IAppSourceDataInterService appSourceDataInterService;
 
     /**
      * 接口的唯一信息 ，密钥 用于获取结构的相关信息，并作校验
      */
     private static final String SECRET_KEY = "secretKey";
+
+    /**
+     * 路由器的唯一信息 ，密钥 用于获取结构的相关信息，并作校验
+     */
+    private static final String ROUTER_KEY = "routerKey";
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -70,27 +73,21 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
         if(!StringUtil.equals(currentUrl,path)){
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "The secretKey key does not belong to the current interface."));
         }
-        // 获取应用接口关联信息
-        JSONObject queryParam = new JSONObject();
-        queryParam.put("secretKey",interfaceInfoVo.getSecretKey());
-        JSONObject appSourceInterInfo = appSourceDataInterService.getAppDataSourceBySecretKey(queryParam);
-        if(ObjectUtils.isNullObj(appSourceInterInfo)){
-            return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get app and interface info by " + interfaceInfoVo.getSecretKey()));
-        }
 
-        // 校验路由信息是否一致
-        JSONObject param = new JSONObject();
-        param.put("applicationId",appSourceInterInfo.getLong("applicationId"));
-        JSONObject applicationJson = applicationService.queryAppById(param);
-        if(ObjectUtils.isNullObj(applicationJson)){
-            return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get applicationInfo by " + interfaceInfoVo.getApplicationId()));
+        // 获取应用信息
+        String routerKey = exchange.getRequest().getHeaders().getFirst(ROUTER_KEY);
+        JSONObject queryParam = new JSONObject();
+        queryParam.put("routerPath",routerKey);
+        JSONObject appInfo = applicationService.queryAppInfoByKey(queryParam);
+        if(ObjectUtils.isNullObj(appInfo)){
+            return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get app info by router key : " + routerKey));
         }
         JSONObject routerJson = JSON.parseObject(JSON.toJSONString(exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR)));
         if(ObjectUtils.isNullObj(routerJson)){
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get router info."));
         }
         String targetRouter = routerJson.getString("uri");
-        String routerUrl = applicationJson.getString("mappingPath");
+        String routerUrl = appInfo.getString("mappingPath");
         if(!targetRouter.contains(routerUrl)){
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "router address can't match"));
         }

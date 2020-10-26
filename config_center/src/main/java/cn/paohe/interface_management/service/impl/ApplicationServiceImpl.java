@@ -131,11 +131,7 @@ public class ApplicationServiceImpl implements IApplicationService {
         //条件
         Condition condition = new Condition(ApplicationInfo.class);
         Example.Criteria criteria = condition.createCriteria();
-        // 设置默认值
-//        if (ObjectUtils.isNullObj(applicationInfo.getAliveFlag())) {
-//            applicationInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-//        }
-        Long loginId = UserUtil.getUserEntity().getUserId();
+        Long loginId = ObjectUtils.isNullObj(UserUtil.getUserEntity()) ? null : UserUtil.getUserEntity().getUserId();
         if (ObjectUtils.isNullObj(applicationInfo.getAddUserId()) && !StringUtil.equals(1,loginId)) {
             applicationInfo.setAddUserId(loginId);
         }
@@ -152,6 +148,9 @@ public class ApplicationServiceImpl implements IApplicationService {
         }
         if (StringUtil.isNotBlank(applicationInfo.getApplicationCode())) {
             criteria.andLike(ApplicationInfo.key.applicationCode.toString(), DataCenterCollections.PERCENT_SIGN + applicationInfo.getApplicationCode() + DataCenterCollections.PERCENT_SIGN);
+        }
+        if (StringUtil.isNotBlank(applicationInfo.getRouterPath())) {
+            criteria.andEqualTo(ApplicationInfo.key.routerPath.toString(), applicationInfo.getRouterPath());
         }
         //排序
         condition.setOrderByClause("ADD_TIME DESC");

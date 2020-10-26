@@ -79,8 +79,30 @@ public class RestAppSourceInterController {
     }
 
     @ApiOperation(value = "删除数据源")
-    @RequestMapping(value = "enableAppDataInter", method = RequestMethod.POST)
+    @RequestMapping(value = "deleteBySourceId", method = RequestMethod.POST)
     public AjaxResult deleteBySourceId(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfo appSourceInterInfo) {
+        if (ObjectUtils.isNullObj(appSourceInterInfo.getApplicationId())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "应用ID不能为空");
+        }
+        if (ObjectUtils.isNullObj(appSourceInterInfo.getDataSourceId())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "数据源ID不能为空");
+        }
+        List<AppSourceInterInfo> appSourceInterInfoList = appSourceInterService.queryAppInterfaceList(appSourceInterInfo);
+        int deleteCount = 0;
+        for (AppSourceInterInfo sourceInterInfo : appSourceInterInfoList) {
+            AppSourceInterInfo appSourceInterInfo1 = new AppSourceInterInfo();
+            appSourceInterInfo1.setId(sourceInterInfo.getId());
+            deleteCount = deleteCount + appSourceInterService.deleteById(appSourceInterInfo1);
+        }
+        if(deleteCount > 0){
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"删除成功");
+        }
+        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"删除失败");
+    }
+
+    @ApiOperation(value = "关联/取关")
+    @RequestMapping(value = "enableAppDataInter", method = RequestMethod.POST)
+    public AjaxResult enableAppDataInter(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfo appSourceInterInfo) {
         if (ObjectUtils.isNullObj(appSourceInterInfo.getApplicationId())) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "应用ID不能为空");
         }

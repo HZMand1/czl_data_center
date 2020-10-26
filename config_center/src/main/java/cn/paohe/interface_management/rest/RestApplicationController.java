@@ -62,6 +62,20 @@ public class RestApplicationController {
         return new AjaxResult(result);
     }
 
+    @AuthExclude
+    @ApiOperation(value = "根据key获取应用信息")
+    @RequestMapping(value = "queryAppInfoByKey", method = RequestMethod.POST)
+    public AjaxResult queryAppInfoByKey(@ApiParam(value = "应用实体Vo", required = true) @RequestBody ApplicationInfo applicationInfo) {
+        if (ObjectUtils.isNullObj(applicationInfo.getRouterPath())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "router key can't empty");
+        }
+        List<ApplicationInfo> result = applicationService.queryAppList(applicationInfo);
+        if(CollectionUtil.isNotEmpty(result)){
+            return new AjaxResult(result.get(0));
+        }
+        return new AjaxResult();
+    }
+
     @ApiOperation(value = "获取全部用户应用")
     @RequestMapping(value = "queryAppList", method = RequestMethod.POST)
     public AjaxResult queryAppList(@ApiParam(value = "应用实体Vo", required = true) @RequestBody ApplicationInfo applicationInfo) {
