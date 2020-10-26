@@ -17,7 +17,7 @@ import java.util.Date;
 @Table(name = "app_source_inter")
 public class AppSourceInterInfo extends IfQuery {
     public static enum key{
-        id ,applicationId,applicationName ,dataSourceId ,interfaceId,aliveFlag ,addUserId ,oprUserId ,
+        id ,applicationId,applicationName ,dataSourceId ,interfaceId,secretKey,aliveFlag ,addUserId ,oprUserId ,
         addTime ,oprTime
     }
 
@@ -38,6 +38,10 @@ public class AppSourceInterInfo extends IfQuery {
     @ApiModelProperty(value = "接口ID")
     @Column(name = "INTERFACE_ID")
     private Long interfaceId;
+
+    @ApiModelProperty(value = "接口密钥")
+    @Column(name = "SECRET_KEY")
+    private String secretKey;
 
     @ApiModelProperty(value = "逻辑状态标识，0:失效,1:启用")
     @Column(name = "ALIVE_FLAG")
@@ -129,5 +133,13 @@ public class AppSourceInterInfo extends IfQuery {
 
     public void setOprTime(Date oprTime) {
         this.oprTime = oprTime;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 }

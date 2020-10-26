@@ -118,6 +118,9 @@ public class AppSourceInterServiceImpl implements IAppSourceInterService {
         if(!ObjectUtils.isNullObj(appSourceInterInfo.getAddUserId())){
             criteria.andEqualTo(AppSourceInterInfo.key.addUserId.name(),appSourceInterInfo.getAddUserId());
         }
+        if(!ObjectUtils.isNullObj(appSourceInterInfo.getSecretKey())){
+            criteria.andEqualTo(AppSourceInterInfo.key.secretKey.name(),appSourceInterInfo.getSecretKey());
+        }
         List<AppSourceInterInfo> appSourceInterInfos = appSourceInterMapper.selectByCondition(condition);
         return appSourceInterInfos;
     }

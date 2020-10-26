@@ -85,13 +85,19 @@ public class RestAppSourceInterController {
         if (ObjectUtils.isNullObj(appSourceInterInfo.getDataSourceId())) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "数据源ID不能为空");
         }
-        if (ObjectUtils.isNullObj(appSourceInterInfo.getDataSourceId())) {
-            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "数据源ID不能为空");
+        if (ObjectUtils.isNullObj(appSourceInterInfo.getInterfaceId())) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "接口ID不能为空");
         }
         // 新增关系
         if(StringUtil.equals(DataCenterCollections.YesOrNo.YES.value,appSourceInterInfo.getAliveFlag())){
             // 默认全部关联
             appSourceInterInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
+            // 获取接口信息
+            InterfaceInfoVo interfaceInfo = new InterfaceInfoVo();
+            interfaceInfo.setInterfaceId(appSourceInterInfo.getInterfaceId());
+            InterfaceInfoVo interfaceInfoVo = interfaceService.queryInterfaceVoById(interfaceInfo);
+
+            appSourceInterInfo.setSecretKey(interfaceInfoVo.getSecretKey());
 
             // 新增人和时间
             appSourceInterInfo.setAddTime(new Date());
@@ -168,7 +174,8 @@ public class RestAppSourceInterController {
             appSourceInterInfo.setInterfaceId(info.getInterfaceId());
             // 默认全部关联
             appSourceInterInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-
+            // 接口密钥
+            appSourceInterInfo.setSecretKey(info.getSecretKey());
             // 新增人和时间
             appSourceInterInfo.setAddTime(new Date());
             appSourceInterInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
@@ -190,5 +197,19 @@ public class RestAppSourceInterController {
         appSourceInterInfoVo.setAddUserId(UserUtil.getUserEntity().getUserId());
         List<DataSourceInfo> dataSourceInfos = appSourceInterService.addDataSourceList(appSourceInterInfoVo);
         return new AjaxResult(dataSourceInfos);
+    }
+
+
+    @ApiOperation(value = "根据接口密钥ID获取关联信息")
+    @RequestMapping(value = "getAppDataSourceBySecretKey", method = RequestMethod.POST)
+    public AppSourceInterInfo getAppDataSourceBySecretKey(@ApiParam(value = "应用接口实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {
+        if (ObjectUtils.isNullObj(appSourceInterInfoVo.getSecretKey())) {
+            return null;
+        }
+        List<AppSourceInterInfo> appSourceInterInfos = appSourceInterService.queryAppInterfaceList(appSourceInterInfoVo);
+        if(CollectionUtil.isNotEmpty(appSourceInterInfos)){
+            return appSourceInterInfos.get(0);
+        }
+        return null;
     }
 }

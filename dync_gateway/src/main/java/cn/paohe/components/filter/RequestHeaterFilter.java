@@ -5,6 +5,7 @@ import cn.paohe.framework.utils.base.DateUtil;
 import cn.paohe.framework.utils.base.ObjectUtils;
 import cn.paohe.framework.utils.base.StringUtil;
 import cn.paohe.framework.utils.rest.AjaxResult;
+import cn.paohe.interfaceMsg.service.IAppSourceDataInterService;
 import cn.paohe.interfaceMsg.service.IApplicationService;
 import cn.paohe.interfaceMsg.service.IInterfaceService;
 import cn.paohe.vo.InterfaceInfoVo;
@@ -40,6 +41,8 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
     private IInterfaceService iInterfaceService;
     @Autowired
     private IApplicationService applicationService;
+    @Autowired
+    private IAppSourceDataInterService appSourceDataInterService;
 
     /**
      * 接口的唯一信息 ，密钥 用于获取结构的相关信息，并作校验
@@ -67,9 +70,19 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
         if(!StringUtil.equals(currentUrl,path)){
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "The secretKey key does not belong to the current interface."));
         }
+        // 获取应用接口关联信息
+        JSONObject queryParam = new JSONObject();
+        queryParam.put("applicationId",interfaceInfoVo.getSecretKey());
+        JSONObject appSourceInterInfo = appSourceDataInterService.getAppDataSourceBySecretKey(queryParam);
+        if(ObjectUtils.isNullObj(appSourceInterInfo)){
+            if(ObjectUtils.isNullObj(appSourceInterInfo)){
+                return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get app and interface info by " + interfaceInfoVo.getSecretKey()));
+            }
+        }
+
         // 校验路由信息是否一致
         JSONObject param = new JSONObject();
-        param.put("applicationId",interfaceInfoVo.getApplicationId());
+        param.put("applicationId",appSourceInterInfo.getLong("applicationId"));
         JSONObject applicationJson = applicationService.queryAppById(param);
         if(ObjectUtils.isNullObj(applicationJson)){
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get applicationInfo by " + interfaceInfoVo.getApplicationId()));
