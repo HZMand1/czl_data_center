@@ -1,13 +1,18 @@
 package cn.paohe.interface_management.rest;
 
 import cn.paohe.base.utils.basetype.StringUtil;
+import cn.paohe.entity.model.InterfaceMag.AppSourceInterInfo;
 import cn.paohe.entity.model.InterfaceMag.InterfaceInfo;
+import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
 import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
 import cn.paohe.enums.DataCenterCollections;
+import cn.paohe.interface_management.service.IAppSourceInterService;
 import cn.paohe.interface_management.service.IInterfaceService;
 import cn.paohe.sys.annotation.AuthExclude;
 import cn.paohe.sys.annotation.RequiresPermissions;
 import cn.paohe.util.basetype.ObjectUtils;
+import cn.paohe.utils.CollectionUtil;
+import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +39,8 @@ public class RestInterfaceController {
 
     @Autowired
     private IInterfaceService iInterfaceService;
+    @Autowired
+    private IAppSourceInterService appSourceInterService;
 
     @ApiOperation(value = "根据ID获取接口信息")
     @RequestMapping(value = "queryInterfaceById", method = RequestMethod.POST)
@@ -141,6 +148,14 @@ public class RestInterfaceController {
     @ApiOperation(value = "删除接口信息")
     @RequestMapping(value = "deleteInterfaceById", method = RequestMethod.POST)
     public AjaxResult deleteInterfaceById(@ApiParam(value = "接口信息实体", required = true) @RequestBody InterfaceInfo interfaceInfo) {
+        // 校验是否关联了应用
+        AppSourceInterInfo appSourceInterInfo = new AppSourceInterInfo();
+        appSourceInterInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
+        appSourceInterInfo.setInterfaceId(interfaceInfo.getInterfaceId());
+        List<AppSourceInterInfo> appSourceInterInfoVos = appSourceInterService.queryAppInterfaceList(appSourceInterInfo);
+        if(CollectionUtil.isNotEmpty(appSourceInterInfoVos)){
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"该接口已关联应用，请先删除关联关系",interfaceInfo);
+        }
         int count = iInterfaceService.deleteInterfaceById(interfaceInfo);
         if(count > 0){
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"删除成功",interfaceInfo);
