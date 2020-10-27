@@ -1,11 +1,15 @@
 package cn.paohe.interface_management.rest;
 
+import cn.paohe.entity.model.InterfaceMag.AppSourceInterInfo;
 import cn.paohe.entity.model.InterfaceMag.ApplicationInfo;
 import cn.paohe.entity.model.InterfaceMag.DataSourceInfo;
 import cn.paohe.enums.DataCenterCollections;
+import cn.paohe.interface_management.service.IAppSourceInterService;
 import cn.paohe.interface_management.service.IDataSourceService;
 import cn.paohe.sys.annotation.RequiresPermissions;
 import cn.paohe.util.basetype.ObjectUtils;
+import cn.paohe.utils.CollectionUtil;
+import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +34,8 @@ public class RestDataSourceController {
 
     @Autowired
     private IDataSourceService dataSourceService;
+    @Autowired
+    private IAppSourceInterService appSourceInterService;
 
     @ApiOperation(value = "根据ID获取数据源信息")
     @RequestMapping(value = "queryDataSourceById", method = RequestMethod.POST)
@@ -88,6 +94,16 @@ public class RestDataSourceController {
         if (ObjectUtils.isNullObj(dataSourceInfo.getDataSourceId())) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "数据源ID不能为空");
         }
+
+        // 校验是否关联了应用
+        AppSourceInterInfo appSourceInterInfo = new AppSourceInterInfo();
+        appSourceInterInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
+        appSourceInterInfo.setDataSourceId(dataSourceInfo.getDataSourceId());
+        List<AppSourceInterInfo> appSourceInterInfoVos = appSourceInterService.queryAppInterfaceList(appSourceInterInfo);
+        if(CollectionUtil.isNotEmpty(appSourceInterInfoVos)){
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value,"该数据源已关联应用，请先删除关联关系",dataSourceInfo);
+        }
+
         int enableCount = dataSourceService.deleteDataSourceById(dataSourceInfo);
         if(enableCount > 0){
             // 删除该数据源下的接口
