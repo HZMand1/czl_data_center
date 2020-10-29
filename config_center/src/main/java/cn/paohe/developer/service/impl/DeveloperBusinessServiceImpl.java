@@ -82,7 +82,7 @@ public class DeveloperBusinessServiceImpl implements IDeveloperBusinessService {
                 appInfo.setUrl("/" + appInfo.getUrl());
             }
             // 开发者访问地址
-            String url = gatewayContext + appInfo.getRouterPath() + appInfo.getUrl();
+            String url = gatewayContext + appInfo.getRouterKey() + appInfo.getUrl();
             appInfo.setUrl(url);
         }
 

@@ -45,7 +45,7 @@
         SELECT
         <include refid="Base_Column_List"/>,
         d.`DATA_SOURCE_NAME` as dataSourceName,
-        d.`ROUTER_PATH` as routerPath,
+        d.`ROUTER_KEY` as routerKey,
         i.`SECRET_KEY` as secretKey,
         i.`INTERFACE_NAME` as interfaceName,
         t.`TYPE_NAME` as typeName,

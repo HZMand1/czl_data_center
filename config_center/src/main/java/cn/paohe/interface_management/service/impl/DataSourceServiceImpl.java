@@ -139,7 +139,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
 //        if (ObjectUtils.isNullObj(dataSourceInfo.getAliveFlag())) {
 //            dataSourceInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
 //        }
-        Long loginId = UserUtil.getUserEntity().getUserId();
+        Long loginId = ObjectUtils.isNullObj(UserUtil.getUserEntity()) ? null : UserUtil.getUserEntity().getUserId();
         if (ObjectUtils.isNullObj(dataSourceInfo.getAddUserId()) && !StringUtil.equals(1,loginId)) {
             dataSourceInfo.setAddUserId(loginId);
         }
@@ -157,7 +157,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
         if (StringUtil.isNotBlank(dataSourceInfo.getDataSourceCode())) {
             criteria.andLike(DataSourceInfo.key.dataSourceCode.name(), DataCenterCollections.PERCENT_SIGN + dataSourceInfo.getDataSourceCode() + DataCenterCollections.PERCENT_SIGN);
         }
-        if (StringUtil.isNotBlank(dataSourceInfo.getDataSourceCode())) {
+        if (StringUtil.isNotBlank(dataSourceInfo.getRouterKey())) {
             criteria.andEqualTo(DataSourceInfo.key.routerKey.name(), dataSourceInfo.getRouterKey());
         }
         //排序

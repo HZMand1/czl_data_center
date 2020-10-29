@@ -33,9 +33,11 @@ public class AppSourceInterInfoVo extends AppSourceInterInfo {
     @ApiModelProperty(value = "标签名称")
     private String labelName;
 
-    @ApiModelProperty(value = "路由器映射地址")
-    @Column(name = "ROUTER_PATH")
+    @ApiModelProperty(value = "路由地址")
     private String routerPath;
+
+    @ApiModelProperty(value = "路由密钥")
+    private String routerKey;
 
     @ApiModelProperty(value = "请求URL")
     @Column(name = "URL")
@@ -95,5 +97,13 @@ public class AppSourceInterInfoVo extends AppSourceInterInfo {
 
     public void setDataSourceName(String dataSourceName) {
         this.dataSourceName = dataSourceName;
+    }
+
+    public String getRouterKey() {
+        return routerKey;
+    }
+
+    public void setRouterKey(String routerKey) {
+        this.routerKey = routerKey;
     }
 }

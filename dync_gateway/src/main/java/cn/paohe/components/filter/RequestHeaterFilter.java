@@ -77,9 +77,9 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
 
         // 获取数据源信息
         String routerKey = exchange.getRequest().getHeaders().getFirst(ROUTER_KEY);
-        JSONObject queryParam = new JSONObject();
-        queryParam.put("routerKey",routerKey);
-        JSONObject dataSourceInfo = dataSourceService.queryDataSourceByKey(queryParam);
+        JSONObject routerParam = new JSONObject();
+        routerParam.put("routerKey",routerKey);
+        JSONObject dataSourceInfo = dataSourceService.queryDataSourceByKey(routerParam);
         if(ObjectUtils.isNullObj(dataSourceInfo)){
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "Can't get app info by router key : " + routerKey));
         }
