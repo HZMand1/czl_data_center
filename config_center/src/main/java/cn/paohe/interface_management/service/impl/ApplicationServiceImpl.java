@@ -48,21 +48,9 @@ public class ApplicationServiceImpl implements IApplicationService {
         if(ObjectUtils.isNullObj(applicationInfo.getAliveFlag())){
             applicationInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
         }
-        // 设置路由映射地址
-        String code = SnowFlakeIds.get().nextId() + "";
-        if(StringUtil.isBlank(applicationInfo.getRouterPath())){
-            applicationInfo.setRouterPath(code);
-        }
-        // 设置上下文根
-        if(StringUtil.isBlank(applicationInfo.getContextName())){
-            applicationInfo.setContextName("/" + code + "/**");
-        }
-        // 处理下路由地址
-        if(StringUtil.isNotBlank(applicationInfo.getMappingPath())){
-            String temp = applicationInfo.getMappingPath().substring(applicationInfo.getMappingPath().length() - 1,applicationInfo.getMappingPath().length());
-            if(StringUtil.equals(temp,"/")){
-                applicationInfo.setMappingPath(applicationInfo.getMappingPath().substring(0,applicationInfo.getMappingPath().length() - 1));
-            }
+        // 默认生成app code
+        if(StringUtil.isBlank(applicationInfo.getApplicationCode())){
+            applicationInfo.setApplicationCode("S" + SnowFlakeIds.get().nextId());
         }
         return applicationMapper.insert(applicationInfo);
     }
@@ -148,9 +136,6 @@ public class ApplicationServiceImpl implements IApplicationService {
         }
         if (StringUtil.isNotBlank(applicationInfo.getApplicationCode())) {
             criteria.andLike(ApplicationInfo.key.applicationCode.toString(), DataCenterCollections.PERCENT_SIGN + applicationInfo.getApplicationCode() + DataCenterCollections.PERCENT_SIGN);
-        }
-        if (StringUtil.isNotBlank(applicationInfo.getRouterPath())) {
-            criteria.andEqualTo(ApplicationInfo.key.routerPath.toString(), applicationInfo.getRouterPath());
         }
         //排序
         condition.setOrderByClause("ADD_TIME DESC");

@@ -8,6 +8,7 @@ import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.dao.IDataSourceMapper;
 import cn.paohe.interface_management.service.IDataSourceService;
 import cn.paohe.util.basetype.ObjectUtils;
+import cn.paohe.utils.SnowFlakeIds;
 import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.PageAjax;
 import com.github.pagehelper.page.PageMethod;
@@ -47,6 +48,24 @@ public class DataSourceServiceImpl implements IDataSourceService {
         if (ObjectUtils.isNullObj(dataSourceInfo.getAliveFlag())) {
             dataSourceInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
         }
+
+        // 设置路由密钥
+        String routerKey = "R" + SnowFlakeIds.get().nextId();
+        if(StringUtil.isBlank(dataSourceInfo.getRouterKey())){
+            dataSourceInfo.setRouterKey(routerKey);
+        }
+        // 设置上下文根
+        if(StringUtil.isBlank(dataSourceInfo.getContextName())){
+            dataSourceInfo.setContextName("/" + routerKey + "/**");
+        }
+        // 设置路由转发地址
+        if(StringUtil.isNotBlank(dataSourceInfo.getRouterPath())){
+            String temp = dataSourceInfo.getRouterPath().substring(dataSourceInfo.getRouterPath().length() - 1,dataSourceInfo.getRouterPath().length());
+            if(StringUtil.equals(temp,"/")){
+                dataSourceInfo.setRouterPath(dataSourceInfo.getRouterPath().substring(0,dataSourceInfo.getRouterPath().length() - 1));
+            }
+        }
+
         return dataSourceMapper.insert(dataSourceInfo);
     }
 
@@ -127,16 +146,19 @@ public class DataSourceServiceImpl implements IDataSourceService {
 
         // 设置查询条件
         if (!ObjectUtils.isNullObj(dataSourceInfo.getAliveFlag())) {
-            criteria.andEqualTo(DataSourceInfo.key.aliveFlag.toString(), dataSourceInfo.getAliveFlag());
+            criteria.andEqualTo(DataSourceInfo.key.aliveFlag.name(), dataSourceInfo.getAliveFlag());
         }
         if (!ObjectUtils.isNullObj(dataSourceInfo.getAddUserId())) {
-            criteria.andEqualTo(DataSourceInfo.key.addUserId.toString(), dataSourceInfo.getAddUserId());
+            criteria.andEqualTo(DataSourceInfo.key.addUserId.name(), dataSourceInfo.getAddUserId());
         }
         if (StringUtil.isNotBlank(dataSourceInfo.getDataSourceName())) {
-            criteria.andLike(DataSourceInfo.key.dataSourceName.toString(), DataCenterCollections.PERCENT_SIGN + dataSourceInfo.getDataSourceName() + DataCenterCollections.PERCENT_SIGN);
+            criteria.andLike(DataSourceInfo.key.dataSourceName.name(), DataCenterCollections.PERCENT_SIGN + dataSourceInfo.getDataSourceName() + DataCenterCollections.PERCENT_SIGN);
         }
         if (StringUtil.isNotBlank(dataSourceInfo.getDataSourceCode())) {
-            criteria.andLike(DataSourceInfo.key.dataSourceCode.toString(), DataCenterCollections.PERCENT_SIGN + dataSourceInfo.getDataSourceCode() + DataCenterCollections.PERCENT_SIGN);
+            criteria.andLike(DataSourceInfo.key.dataSourceCode.name(), DataCenterCollections.PERCENT_SIGN + dataSourceInfo.getDataSourceCode() + DataCenterCollections.PERCENT_SIGN);
+        }
+        if (StringUtil.isNotBlank(dataSourceInfo.getDataSourceCode())) {
+            criteria.andEqualTo(DataSourceInfo.key.routerKey.name(), dataSourceInfo.getRouterKey());
         }
         //排序
         condition.setOrderByClause("ADD_TIME DESC");

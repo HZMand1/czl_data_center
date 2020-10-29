@@ -18,7 +18,7 @@ import java.util.Date;
 public class ApplicationInfo extends IfQuery {
 
     public static enum key{
-        applicationId ,applicationName ,applicationCode ,aliveFlag ,routerPath,addUserId ,oprUserId ,
+        applicationId ,applicationName ,applicationCode ,aliveFlag ,addUserId ,oprUserId ,
         addTime ,oprTime
     }
 
@@ -44,21 +44,9 @@ public class ApplicationInfo extends IfQuery {
     @Column(name = "PHONE")
     private String phone;
 
-    @ApiModelProperty(value = "上下文名称")
-    @Column(name = "CONTEXT_NAME")
-    private String contextName;
-
     @ApiModelProperty(value = "描述")
     @Column(name = "DESCRIPTION")
     private String description;
-
-    @ApiModelProperty(value = "路由器映射地址")
-    @Column(name = "ROUTER_PATH")
-    private String routerPath;
-
-    @ApiModelProperty(value = "映射路径")
-    @Column(name = "MAPPING_PATH")
-    private String mappingPath;
 
     @ApiModelProperty(value = "逻辑状态标识，0:失效,1:启用")
     @Column(name = "ALIVE_FLAG")
@@ -144,36 +132,12 @@ public class ApplicationInfo extends IfQuery {
         this.oprTime = oprTime;
     }
 
-    public String getContextName() {
-        return contextName;
-    }
-
-    public void setContextName(String contextName) {
-        this.contextName = contextName;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getMappingPath() {
-        return mappingPath;
-    }
-
-    public void setMappingPath(String mappingPath) {
-        this.mappingPath = mappingPath;
-    }
-
-    public String getRouterPath() {
-        return routerPath;
-    }
-
-    public void setRouterPath(String routerPath) {
-        this.routerPath = routerPath;
     }
 
     public String getAppUserName() {
