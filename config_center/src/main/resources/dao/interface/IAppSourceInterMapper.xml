@@ -18,7 +18,7 @@
         <include refid="Base_Column_List"/>
         ,
         d.`DATA_SOURCE_NAME` as dataSourceName,
-        count(a.`APPLICATION_ID`) as interfaceCount
+        IF(a.`INTERFACE_ID`,COUNT(a.`APPLICATION_ID`),0) AS interfaceCount
         FROM `app_source_inter` a
         LEFT JOIN data_source_info d ON a.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID`
         WHERE 1 = 1
