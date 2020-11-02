@@ -185,18 +185,7 @@ public class RestAppSourceInterController {
         interfaceInfo.setDataSourceId(appSourceInterInfoVo.getDataSourceId());
         List<InterfaceInfoVo> interfaceInfos = interfaceService.queryInterfaceVoList(interfaceInfo);
         if(CollectionUtil.isEmpty(interfaceInfos)){
-            AppSourceInterInfo appSourceInterInfo = new AppSourceInterInfoVo();
-            // 应用ID
-            appSourceInterInfo.setApplicationId(appSourceInterInfoVo.getApplicationId());
-            // 数据源ID
-            appSourceInterInfo.setDataSourceId(appSourceInterInfoVo.getDataSourceId());
-            // 默认全部关联
-            appSourceInterInfo.setAliveFlag(DataCenterCollections.YesOrNo.YES.value);
-            // 新增人和时间
-            appSourceInterInfo.setAddTime(new Date());
-            appSourceInterInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
-            appSourceInterService.insertAppInterface(appSourceInterInfo);
-            return new AjaxResult();
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "该数据源没有接口信息,请先添加接口");
         }
         List<AppSourceInterInfo> appSourceInterInfos = new ArrayList<>(interfaceInfos.size());
         for (InterfaceInfoVo info : interfaceInfos) {
