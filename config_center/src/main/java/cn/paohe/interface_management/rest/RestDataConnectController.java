@@ -27,7 +27,7 @@ import java.util.Set;
  **/
 @RestController
 @CrossOrigin
-@RequestMapping("/rest/connect/")
+@RequestMapping("/rest/data/center/connect/")
 public class RestDataConnectController {
 
     @Autowired
