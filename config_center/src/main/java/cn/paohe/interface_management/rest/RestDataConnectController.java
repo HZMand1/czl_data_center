@@ -62,7 +62,7 @@ public class RestDataConnectController {
     @RequestMapping(value = "insertConnect", method = RequestMethod.POST)
     public AjaxResult insertConnect(@ApiParam(value = "应用实体Vo", required = true) @RequestBody DataConnectInfo dataConnectInfo) {
         Set<String> errorMsg = new HashSet<>(1);
-        boolean isPass = nullCheck(dataConnectInfo, errorMsg);
+        boolean isPass = nullCheck(dataConnectInfo, errorMsg,true);
         if (!isPass) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, errorMsg.iterator().next());
         }
@@ -83,10 +83,12 @@ public class RestDataConnectController {
      * @Date: 2020/5/26 16:06
      * @throws:
      */
-    private boolean nullCheck(DataConnectInfo dataConnectInfo, Set<String> errorMsg) {
-        if (ObjectUtils.isNullObj(dataConnectInfo.getDataSourceId())) {
-            errorMsg.add("数据源ID不能为空");
-            return false;
+    private boolean nullCheck(DataConnectInfo dataConnectInfo, Set<String> errorMsg,boolean testCheck) {
+        if(testCheck){
+            if (ObjectUtils.isNullObj(dataConnectInfo.getDataSourceId())) {
+                errorMsg.add("数据源ID不能为空");
+                return false;
+            }
         }
         if (StringUtil.isBlank(dataConnectInfo.getConnectName())) {
             errorMsg.add("连接名称不能为空");
@@ -143,7 +145,7 @@ public class RestDataConnectController {
     @RequestMapping(value = "testConnect", method = RequestMethod.POST)
     public AjaxResult testConnect(@ApiParam(value = "应用实体Vo", required = true) @RequestBody DataConnectInfo dataConnectInfo) {
         Set<String> errorMsg = new HashSet<>(1);
-        boolean isPass = nullCheck(dataConnectInfo, errorMsg);
+        boolean isPass = nullCheck(dataConnectInfo, errorMsg,false);
         if (!isPass) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, errorMsg.iterator().next());
         }
