@@ -65,6 +65,9 @@
 		<if test="typeId != null">
 			AND i.`TYPE_ID` = #{typeId}
 		</if>
+		<if test="interfaceType != null">
+			AND i.`INTERFACE_TYPE` = #{interfaceType}
+		</if>
 		<if test="typeName != null and typeName != ''">
 			AND t.`TYPE_NAME` LIKE CONCAT('%',#{typeName},'%')
 		</if>
