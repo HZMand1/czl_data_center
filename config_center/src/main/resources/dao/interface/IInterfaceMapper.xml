@@ -22,7 +22,9 @@
 	    i.`ADD_USER_ID` as addUserId,
 	    i.`ADD_TIME` as `addTime`,
 	    i.`OPR_USER_ID` as oprUserId,
-	    i.`OPR_TIME` as oprTime
+	    i.`OPR_TIME` as oprTime,
+		i.`INTERFACE_TYPE` as interfaceType,
+		i.`SQL_MSG` as sqlMsg
 	</sql>
 
 	<!-- 根据ID查询接口信息 -->
