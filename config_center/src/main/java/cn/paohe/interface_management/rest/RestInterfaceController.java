@@ -106,10 +106,10 @@ public class RestInterfaceController {
             errorMsg.add("接口名称不能为空");
             return false;
         }
-//        if (ObjectUtils.isNullObj(interfaceInfo.getApplicationId())) {
-//            errorMsg.add("所属应用不能为空");
-//            return false;
-//        }
+        if (ObjectUtils.isNullObj(interfaceInfo.getInterfaceType())) {
+            errorMsg.add("接口类型不能为空");
+            return false;
+        }
         if (ObjectUtils.isNullObj(interfaceInfo.getDataSourceId())) {
             errorMsg.add("所属数据源不能为空");
             return false;
@@ -122,14 +122,18 @@ public class RestInterfaceController {
             errorMsg.add("所属标签不能为空");
             return false;
         }
-        if (StringUtil.isBlank(interfaceInfo.getUrl())) {
-            errorMsg.add("请求URL不能为空");
-            return false;
+        if(StringUtil.equals(interfaceInfo.getInterfaceType(),DataCenterCollections.InterfaceTypeEnum.INTERFACE_TYPE.value)){
+            if (StringUtil.isBlank(interfaceInfo.getUrl())) {
+                errorMsg.add("请求URL不能为空");
+                return false;
+            }
         }
-//        if (StringUtil.isBlank(interfaceInfo.getServerUrl())) {
-//            errorMsg.add("服务器URL不能为空");
-//            return false;
-//        }
+        if(StringUtil.equals(interfaceInfo.getInterfaceType(),DataCenterCollections.InterfaceTypeEnum.DATA_SOURCE_TYPE.value)){
+            if (StringUtil.isBlank(interfaceInfo.getSqlMsg())) {
+                errorMsg.add("sql语句不能为空");
+                return false;
+            }
+        }
         return true;
     }
 

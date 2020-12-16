@@ -121,22 +121,21 @@ public class DataCenterCollections {
     }
 
     /**
-     * 签署方式-自动签
+     * TODO  接口类型枚举类
      *
      * @version V1.0
      * @author: 黄芝民
-     * @date: 2020年7月11日 下午1:50:54
+     * @date: 2020年6月26日 下午2:36:01
      * @copyright 广东跑合中药材有限公司 Copyright (c) 2020
      */
-    public static enum ContractTimeLimitEnum {
+    public static enum InterfaceTypeEnum {
+        INTERFACE_TYPE(0, "接口类型"), DATA_SOURCE_TYPE(1, "数据库类型");
 
-        ONEMATH("oneMath", "1个月"), THREEMATH("threeMath", "3个月"), ONEYEAR("other", "一年");
-
-        public final String value;
+        public final int value;
 
         private final String desc;
 
-        private ContractTimeLimitEnum(String value, String desc) {
+        private InterfaceTypeEnum(int value, String desc) {
             this.value = value;
             this.desc = desc;
         }
@@ -145,36 +144,14 @@ public class DataCenterCollections {
             return desc;
         }
 
-        public static String getDesc(String type) {
-            for (ContractTimeLimitEnum enumType : ContractTimeLimitEnum.values()) {
-                if (enumType.value.equalsIgnoreCase(type)) {
+        public static String getDesc(int type) {
+            for (InterfaceTypeEnum enumType : InterfaceTypeEnum.values()) {
+                if (enumType.value == type) {
                     return enumType.getDesc();
                 }
             }
             return "" + type;
         }
-
-        public static Date finishTime(Date date, String type) {
-            Date time = null;
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            if (type.equals(ContractTimeLimitEnum.ONEMATH.value)) {
-                //一个月
-                calendar.add(Calendar.MONTH, 1);
-                time = calendar.getTime();
-            }
-            if (type.equals(ContractTimeLimitEnum.THREEMATH.value)) {
-                //一个月
-                calendar.add(Calendar.MONTH, 3);
-                time = calendar.getTime();
-            }
-            if (type.equals(ContractTimeLimitEnum.ONEYEAR.value)) {
-                //一个月
-                calendar.add(Calendar.YEAR, 1);
-                time = calendar.getTime();
-            }
-
-            return time;
-        }
     }
+
 }

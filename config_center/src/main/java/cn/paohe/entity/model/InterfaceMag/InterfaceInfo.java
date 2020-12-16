@@ -86,6 +86,14 @@ public class InterfaceInfo extends IfQuery {
     @Column(name = "END_TIME")
     private Date endTime;
 
+    @ApiModelProperty(value = "SQLMsg")
+    @Column(name = "SQL_MSG")
+    private String sqlMsg;
+
+    @ApiModelProperty(value = "接口类型,接口：0,数据库:1")
+    @Column(name = "INTERFACE_TYPE")
+    private Integer interfaceType;
+
     @ApiModelProperty(value = "逻辑状态标识，0:失效,1:启用")
     @Column(name = "ALIVE_FLAG")
     private Integer aliveFlag;
@@ -121,14 +129,6 @@ public class InterfaceInfo extends IfQuery {
     public void setInterfaceName(String interfaceName) {
         this.interfaceName = interfaceName;
     }
-
-//    public Long getApplicationId() {
-//        return applicationId;
-//    }
-//
-//    public void setApplicationId(Long applicationId) {
-//        this.applicationId = applicationId;
-//    }
 
     public Long getDataSourceId() {
         return dataSourceId;
@@ -258,4 +258,19 @@ public class InterfaceInfo extends IfQuery {
         this.secretKey = secretKey;
     }
 
+    public String getSqlMsg() {
+        return sqlMsg;
+    }
+
+    public void setSqlMsg(String sqlMsg) {
+        this.sqlMsg = sqlMsg;
+    }
+
+    public Integer getInterfaceType() {
+        return interfaceType;
+    }
+
+    public void setInterfaceType(Integer interfaceType) {
+        this.interfaceType = interfaceType;
+    }
 }
