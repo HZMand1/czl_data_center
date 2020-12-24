@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.paohe.user.dao.IDataStatisticsMapper">
+    <sql id="Base_Column_List">
+        i
+        .
+        `INTERFACE_ID`
+        as interfaceId,
+	    i.`INTERFACE_NAME` as interfaceName,
+	    i.`DATA_SOURCE_ID` as dataSourceId,
+	    d.`DATA_SOURCE_NAME` as dataSourceName,
+	    i.`TYPE_ID` as typeId,
+	    t.`TYPE_NAME` as typeName,
+	    i.`LABEL_ID` as labelId,
+	    l.`LABEL_NAME` as labelName,
+	    i.`URL` as url,
+	    i.`HEADER_INFO` as headerInfo,
+	    i.`BODY_INFO` as bodyInfo,
+	    i.`RESPONSE_INFO` as responseInfo,
+	    i.`DESCRIPTION` as description,
+	    i.`SECRET_KEY` as secretKey,
+	    i.`START_TIME` as startTime,
+	    i.`END_TIME` as endTime,
+	    i.`ALIVE_FLAG` as aliveFlag,
+	    i.`ADD_USER_ID` as addUserId,
+	    i.`ADD_TIME` as `addTime`,
+	    i.`OPR_USER_ID` as oprUserId,
+	    i.`OPR_TIME` as oprTime,
+		i.`INTERFACE_TYPE` as interfaceType,
+		i.`SQL_MSG` as sqlMsg
+    </sql>
+
+    <!-- 根据ID查询接口信息 -->
+    <select id="queryNewInterfaceByType" resultType="java.util.Map"
+            parameterType="cn.paohe.entity.vo.data_statistics.DataStatisticsVo">
+        SELECT i.`TYPE_ID` as typeId, t.`TYPE_NAME` as typeName, i.`LABEL_ID` as labelId, l.`LABEL_NAME` as labelName, COUNT(l.`LABEL_ID`) AS labelCount
+        FROM interface_info i
+                 LEFT JOIN `interface_type_info` t ON i.`TYPE_ID` = t.`TYPE_ID`
+                 LEFT JOIN `interface_label_info` l ON i.`LABEL_ID` = l.`LABEL_ID`
+        WHERE 1 =1
+		<if test="addUserId != null">
+			AND i.`ADD_USER_ID` = #{addUserId}
+		</if>
+		<if test="typeId != null">
+			AND i.`TYPE_ID` = #{typeId}
+		</if>
+		<if test="startAddDate != null">
+			AND i.`ADD_TIME` &gt;= #{startAddDate}
+		</if>
+		<if test="endAddDate != null">
+			AND i.`ADD_TIME` &lt;= #{endAddDate}
+		</if>
+        GROUP BY i.`LABEL_ID`
+    </select>
+
+</mapper>
