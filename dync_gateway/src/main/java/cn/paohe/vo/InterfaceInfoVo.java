@@ -2,6 +2,7 @@ package cn.paohe.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -13,6 +14,9 @@ import java.util.Date;
  * @Copyright 广东跑合中药材有限公司 Copyright (c) 2020
  **/
 public class InterfaceInfoVo {
+
+    @Id
+    private String id;
 
     @ApiModelProperty(value = "路由Key")
     private String routerKey;
@@ -254,5 +258,13 @@ public class InterfaceInfoVo {
 
     public void setRouterKey(String routerKey) {
         this.routerKey = routerKey;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

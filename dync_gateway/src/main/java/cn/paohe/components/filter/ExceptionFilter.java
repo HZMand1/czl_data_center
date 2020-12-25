@@ -6,6 +6,7 @@ import cn.paohe.framework.utils.ESUtil;
 import cn.paohe.framework.utils.RedisClient;
 import cn.paohe.framework.utils.base.ObjectUtils;
 import cn.paohe.framework.utils.base.StringUtil;
+import cn.paohe.framework.utils.cryption.uuid.UUIDUtil;
 import cn.paohe.framework.utils.rest.AjaxResult;
 import cn.paohe.interfaceMsg.service.IInterfaceService;
 import cn.paohe.vo.InterfaceInfoVo;
@@ -80,6 +81,7 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "can't get interface info by secret key."));
         }
         interfaceInfoVo.setRouterKey(routerKey);
+        interfaceInfoVo.setId(UUIDUtil.getUUID());
 
         // 当前时间
         Long nowtime = System.currentTimeMillis();
