@@ -57,7 +57,7 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
     @Override
     public AjaxResult queryInterfaceConnectLog(DataStatisticsVo dataStatisticsVo) {
         QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-                .must(QueryBuilders.termsQuery("typeId",dataStatisticsVo.getTypeId()))
+//                .must(QueryBuilders.termsQuery("typeId",dataStatisticsVo.getTypeId()))
                 .must(QueryBuilders.rangeQuery("addTime").gte(dataStatisticsVo.getStartAddDate()))
                 .must(QueryBuilders.rangeQuery("addTime").lte(dataStatisticsVo.getEndAddDate()));
 
