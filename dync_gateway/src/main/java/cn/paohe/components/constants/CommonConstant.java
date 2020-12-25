@@ -9,6 +9,8 @@ public class CommonConstant {
 
     public static final String RECORD_IP_KEY = "record_ip";
 
+    public static final String CONNECTION_INTERFACE_LIST = "connection_list";
+
     public static final String ATTACK_ON_PURPOSE = "attack_on_purpose";
 
     public static final String ACCESS_TO_RECORDS = "access_to_records";

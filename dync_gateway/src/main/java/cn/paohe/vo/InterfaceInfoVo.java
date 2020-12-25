@@ -14,6 +14,9 @@ import java.util.Date;
  **/
 public class InterfaceInfoVo {
 
+    @ApiModelProperty(value = "路由Key")
+    private String routerKey;
+
     @ApiModelProperty(value = "接口ID")
     private Long interfaceId;
 
@@ -73,6 +76,9 @@ public class InterfaceInfoVo {
 
     @ApiModelProperty(value = "逻辑状态标识，0:失效,1:启用")
     private Integer aliveFlag;
+
+    @ApiModelProperty(value = "接口调用状态，1：恶意攻击,2:成功连接,3:接口报错")
+    private Integer connectStatus;
 
     public Long getInterfaceId() {
         return interfaceId;
@@ -232,5 +238,21 @@ public class InterfaceInfoVo {
 
     public void setAliveFlag(Integer aliveFlag) {
         this.aliveFlag = aliveFlag;
+    }
+
+    public Integer getConnectStatus() {
+        return connectStatus;
+    }
+
+    public void setConnectStatus(Integer connectStatus) {
+        this.connectStatus = connectStatus;
+    }
+
+    public String getRouterKey() {
+        return routerKey;
+    }
+
+    public void setRouterKey(String routerKey) {
+        this.routerKey = routerKey;
     }
 }

@@ -13,6 +13,7 @@ import java.util.Date;
  */
 public class DataCenterCollections {
 
+    public static final String CONNECTION_INTERFACE_LIST = "connection_interface_list";
     public static final String PERCENT_SIGN = "%";
     /**
      * TODO  http请求响应状态码

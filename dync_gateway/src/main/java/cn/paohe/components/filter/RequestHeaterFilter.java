@@ -43,20 +43,10 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
     @Autowired
     private IDataSourceService dataSourceService;
 
-    /**
-     * 接口的唯一信息 ，密钥 用于获取结构的相关信息，并作校验
-     */
-    private static final String SECRET_KEY = "secretKey";
-
-    /**
-     * 路由器的唯一信息 ，密钥 用于获取结构的相关信息，并作校验
-     */
-    private static final String ROUTER_KEY = "routerKey";
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 获取对应的接口信息
-        String secretKey = exchange.getRequest().getHeaders().getFirst(SECRET_KEY);
+        String secretKey = exchange.getRequest().getHeaders().getFirst(DataCenterCollections.SECRET_KEY);
         if (StringUtil.isBlank(secretKey)) {
             return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "secret Key can't empty."));
         }
@@ -76,7 +66,7 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
         }
 
         // 获取数据源信息
-        String routerKey = exchange.getRequest().getHeaders().getFirst(ROUTER_KEY);
+        String routerKey = exchange.getRequest().getHeaders().getFirst(DataCenterCollections.ROUTER_KEY);
         JSONObject routerParam = new JSONObject();
         routerParam.put("routerKey",routerKey);
         JSONObject dataSourceInfo = dataSourceService.queryDataSourceByKey(routerParam);

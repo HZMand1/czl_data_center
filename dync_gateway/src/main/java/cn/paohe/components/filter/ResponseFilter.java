@@ -24,7 +24,7 @@
 // * @Version V1.0
 // * @Copyright 广东跑合中药材有限公司 Copyright (c) 2020
 // **/
-////@Component
+//@Component
 //public class ResponseFilter implements GlobalFilter, Ordered {
 //    @Override
 //    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {

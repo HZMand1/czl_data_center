@@ -15,6 +15,7 @@
 	<properties>
 		<b2b.version>1.1.2</b2b.version>
 		<facade.version>1.1.17</facade.version>
+		<es-phfw.version>0.0.1</es-phfw.version>
 	</properties>
 
 	<!-- 导入spring cloud版本 -->
@@ -82,6 +83,13 @@
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
 			<version>3.4.0</version>
+		</dependency>
+
+		<!-- es-phfw -->
+		<dependency>
+			<groupId>cn.paohe</groupId>
+			<artifactId>es-phfw</artifactId>
+			<version>${es-phfw.version}</version>
 		</dependency>
 	</dependencies>
 

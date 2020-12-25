@@ -2,12 +2,17 @@ package cn.paohe.user.service.impl;
 
 import cn.paohe.base.component.annotation.TargetDataSource;
 import cn.paohe.entity.vo.data_statistics.DataStatisticsVo;
+import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
 import cn.paohe.enums.DataCenterCollections;
+import cn.paohe.framework.utils.ESUtil;
 import cn.paohe.user.dao.IDataStatisticsMapper;
 import cn.paohe.user.service.IDataStatisticsService;
 import cn.paohe.util.basetype.ObjectUtils;
 import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.AjaxResult;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +32,8 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
 
     @Resource
     private IDataStatisticsMapper dataStatisticsMapper;
+    @Autowired
+    private ESUtil esUtil;
 
     @TargetDataSource(value = "center-r")
     @Override
@@ -49,6 +56,12 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
     @TargetDataSource(value = "center-r")
     @Override
     public AjaxResult queryInterfaceConnectLog(DataStatisticsVo dataStatisticsVo) {
-        return null;
+        QueryBuilder queryBuilder = QueryBuilders.boolQuery()
+                .must(QueryBuilders.termsQuery("typeId",dataStatisticsVo.getTypeId()))
+                .must(QueryBuilders.rangeQuery("addTime").gte(dataStatisticsVo.getStartAddDate()))
+                .must(QueryBuilders.rangeQuery("addTime").lte(dataStatisticsVo.getEndAddDate()));
+
+        List<InterfaceInfoVo> interfaceInfoVos = esUtil.search4NoPagination(DataCenterCollections.CONNECTION_INTERFACE_LIST,queryBuilder,InterfaceInfoVo.class);
+        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"获取数据成功",interfaceInfoVos);
     }
 }

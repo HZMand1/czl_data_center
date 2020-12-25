@@ -13,6 +13,17 @@ import java.util.Date;
  */
 public class DataCenterCollections {
 
+
+    /**
+     * 接口的唯一信息 ，密钥 用于获取结构的相关信息，并作校验
+     */
+    public static final String SECRET_KEY = "secretKey";
+
+    /**
+     * 路由器的唯一信息 ，密钥 用于获取结构的相关信息，并作校验
+     */
+    public static final String ROUTER_KEY = "routerKey";
+
     /**
      * TODO  http请求响应状态码
      *
@@ -76,6 +87,44 @@ public class DataCenterCollections {
 
         public static String getDesc(int type) {
             for (YesOrNo enumType : YesOrNo.values()) {
+                if (enumType.value == type) {
+                    return enumType.getDesc();
+                }
+            }
+            return "" + type;
+        }
+    }
+
+
+    /**
+     * TODO  是否可用枚举
+     *
+     * @version V1.0
+     * @author: 黄芝民
+     * @date: 2020年10月18日 上午9:11:22
+     * @copyright 广东跑合中药材有限公司 Copyright (c) 2020
+     */
+    public static enum InterfaceConnectEmus {
+        // 恶意攻击
+        ATTACK_ON_PURPOSE(1, "恶意攻击"),
+        SUCCESS(2, "成功连接"),
+        ERROR(3,"接口报错");
+
+        public final int value;
+
+        private final String desc;
+
+        private InterfaceConnectEmus(int value, String desc) {
+            this.value = value;
+            this.desc = desc;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public static String getDesc(int type) {
+            for (InterfaceConnectEmus enumType : InterfaceConnectEmus.values()) {
                 if (enumType.value == type) {
                     return enumType.getDesc();
                 }
