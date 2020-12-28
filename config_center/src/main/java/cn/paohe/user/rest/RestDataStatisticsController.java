@@ -1,6 +1,8 @@
 package cn.paohe.user.rest;
 
 import cn.paohe.entity.vo.data_statistics.DataStatisticsVo;
+import cn.paohe.entity.vo.interfaceMag.ESInterfaceVo;
+import cn.paohe.framework.utils.page.PageAjax;
 import cn.paohe.user.service.IDataStatisticsService;
 import cn.paohe.vo.framework.AjaxResult;
 import io.swagger.annotations.ApiOperation;
@@ -40,8 +42,8 @@ public class RestDataStatisticsController {
 
     @ApiOperation(value = "统计本周、月、季、年,分类标签下接口调用的情况")
     @RequestMapping(value = "queryInterfaceConnectLog", method = RequestMethod.POST)
-    public AjaxResult queryInterfaceConnectLog(@ApiParam(value = "用户实体类", required = true) @RequestBody DataStatisticsVo dataStatisticsVo) {
-        AjaxResult ajaxResult = dataStatisticsService.queryInterfaceConnectLog(dataStatisticsVo);
+    public PageAjax<ESInterfaceVo> queryInterfaceConnectLog(@ApiParam(value = "用户实体类", required = true) @RequestBody DataStatisticsVo dataStatisticsVo) {
+        PageAjax<ESInterfaceVo> ajaxResult = dataStatisticsService.queryInterfaceConnectLog(dataStatisticsVo);
         return ajaxResult;
     }
 }

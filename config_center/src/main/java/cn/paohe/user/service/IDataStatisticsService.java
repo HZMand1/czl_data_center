@@ -1,6 +1,8 @@
 package cn.paohe.user.service;
 
 import cn.paohe.entity.vo.data_statistics.DataStatisticsVo;
+import cn.paohe.entity.vo.interfaceMag.ESInterfaceVo;
+import cn.paohe.framework.utils.page.PageAjax;
 import cn.paohe.vo.framework.AjaxResult;
 
 /**
@@ -40,5 +42,5 @@ public interface IDataStatisticsService {
      * @Date:    2020/12/24 13:42
      * @throws:
      */
-    AjaxResult queryInterfaceConnectLog(DataStatisticsVo dataStatisticsVo);
+    PageAjax<ESInterfaceVo> queryInterfaceConnectLog(DataStatisticsVo dataStatisticsVo);
 }

@@ -1,5 +1,6 @@
 package cn.paohe.entity.vo.data_statistics;
 
+import cn.paohe.vo.framework.IfQuery;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.Date;
  * @Version V1.0
  * @Copyright 广东跑合中药材有限公司 Copyright (c) 2020
  **/
-public class DataStatisticsVo {
+public class DataStatisticsVo extends IfQuery {
 
     @ApiModelProperty(value = "所属标签ID")
     private Long labelId;
