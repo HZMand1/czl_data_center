@@ -84,12 +84,24 @@
 			<artifactId>java-jwt</artifactId>
 			<version>3.4.0</version>
 		</dependency>
-
-		<!-- es-phfw -->
 		<dependency>
 			<groupId>cn.paohe</groupId>
 			<artifactId>es-phfw</artifactId>
 			<version>${es-phfw.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-slf4j-impl</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-jul</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 

@@ -2,20 +2,25 @@ package cn.paohe.user.service.impl;
 
 import cn.paohe.base.component.annotation.TargetDataSource;
 import cn.paohe.entity.vo.data_statistics.DataStatisticsVo;
-import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
+import cn.paohe.entity.vo.interfaceMag.ESInterfaceVo;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.framework.utils.ESUtil;
 import cn.paohe.user.dao.IDataStatisticsMapper;
 import cn.paohe.user.service.IDataStatisticsService;
 import cn.paohe.util.basetype.ObjectUtils;
+import cn.paohe.utils.CollectionUtil;
 import cn.paohe.utils.UserUtil;
 import cn.paohe.vo.framework.AjaxResult;
-import org.elasticsearch.index.query.QueryBuilder;
+import com.alibaba.fastjson.JSONObject;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +39,9 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
     private IDataStatisticsMapper dataStatisticsMapper;
     @Autowired
     private ESUtil esUtil;
+    @Autowired
+    private RestHighLevelClient client;
+
 
     @TargetDataSource(value = "center-r")
     @Override
@@ -44,24 +52,62 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
         }
         dataStatisticsVo.setAddUserId(loginUserId);
         List<Map<Object, Object>> list = dataStatisticsMapper.queryNewInterfaceByType(dataStatisticsVo);
-        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"获取数据成功",list);
+        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "获取数据成功", list);
     }
 
     @TargetDataSource(value = "center-r")
     @Override
     public AjaxResult queryInterfaceConnectByType(DataStatisticsVo dataStatisticsVo) {
-        return null;
+        Long loginUserId = UserUtil.getUserEntity().getUserId();
+        if (ObjectUtils.isNullObj(loginUserId)) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "用户ID不能为空");
+        }
+        dataStatisticsVo.setAddUserId(loginUserId);
+        List<Map<Object, Object>> list = dataStatisticsMapper.queryNewInterfaceByType(dataStatisticsVo);
+        if (CollectionUtil.isEmpty(list)){
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "获取数据成功", list);
+        }
+        List<JSONObject> jsonObjectList = new ArrayList<>();
+        JSONObject jsonObject = null;
+        for (Map<Object, Object> map : list) {
+            jsonObject = new JSONObject();
+            String labelName = String.valueOf(map.get("labelName"));
+            Long labelId = Long.valueOf(String.valueOf(map.get("labelId")));
+
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(QueryBuilders.termQuery("addUserId",loginUserId));
+            boolQueryBuilder.must(QueryBuilders.termQuery("labelId",labelId));
+            List<ESInterfaceVo> interfaceInfoVos = esUtil.search4NoPagination(DataCenterCollections.CONNECTION_INTERFACE_LIST,boolQueryBuilder,ESInterfaceVo.class);
+
+            jsonObject.put("labelName",labelName);
+            jsonObject.put("labelId",labelId);
+            jsonObject.put("list",interfaceInfoVos);
+            jsonObjectList.add(jsonObject);
+        }
+        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "获取数据成功", jsonObjectList);
     }
 
     @TargetDataSource(value = "center-r")
     @Override
     public AjaxResult queryInterfaceConnectLog(DataStatisticsVo dataStatisticsVo) {
-        QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-//                .must(QueryBuilders.termsQuery("typeId",dataStatisticsVo.getTypeId()))
-                .must(QueryBuilders.rangeQuery("addTime").gte(dataStatisticsVo.getStartAddDate()))
-                .must(QueryBuilders.rangeQuery("addTime").lte(dataStatisticsVo.getEndAddDate()));
+        Long loginUserId = UserUtil.getUserEntity().getUserId();
+        if (ObjectUtils.isNullObj(loginUserId)) {
+            return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "用户ID不能为空");
+        }
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("addUserId",loginUserId));
 
-        List<InterfaceInfoVo> interfaceInfoVos = esUtil.search4NoPagination(DataCenterCollections.CONNECTION_INTERFACE_LIST,queryBuilder,InterfaceInfoVo.class);
-        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value,"获取数据成功",interfaceInfoVos);
+        if(!ObjectUtils.isNullObj(dataStatisticsVo.getTypeId())){
+            boolQueryBuilder.must(QueryBuilders.termQuery("typeId",dataStatisticsVo.getTypeId()));
+        }
+        if(!ObjectUtils.isNullObj(dataStatisticsVo.getStartAddDate())){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("addTime").gte(dataStatisticsVo.getStartAddDate()));
+        }
+        if(!ObjectUtils.isNullObj(dataStatisticsVo.getEndAddDate())){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("addTime").lte(dataStatisticsVo.getEndAddDate()));
+        }
+
+        List<ESInterfaceVo> interfaceInfoVos = esUtil.search4NoPagination(DataCenterCollections.CONNECTION_INTERFACE_LIST,boolQueryBuilder,ESInterfaceVo.class);
+        return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "获取数据成功", interfaceInfoVos);
     }
 }

@@ -2,6 +2,7 @@ package cn.paohe;
 
 import cn.paohe.base.config.RedisConfig;
 import cn.paohe.base.datasource.mybatis.DynamicDataSourceRegister;
+import cn.paohe.util.ref.SpringUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -30,7 +32,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableDiscoveryClient
 @SpringBootConfiguration
 @ComponentScan(excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {RedisConfig.class})
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {RedisConfig.class}),
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SpringUtil.class})
 })
 public class ConfigApplication extends SpringBootServletInitializer {
 

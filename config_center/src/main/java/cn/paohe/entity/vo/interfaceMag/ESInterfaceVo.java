@@ -1,8 +1,7 @@
-package cn.paohe.vo;
+package cn.paohe.entity.vo.interfaceMag;
 
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
 import javax.persistence.Id;
 import java.util.Date;
 
@@ -10,13 +9,12 @@ import java.util.Date;
  * TODO
  *
  * @Author 黄芝民
- * @Date 2020/9/29 16:16
+ * @Date 2020/12/28 10:45
  * @Version V1.0
  * @Copyright 广东跑合中药材有限公司 Copyright (c) 2020
  **/
-public class InterfaceInfoVo {
+public class ESInterfaceVo {
 
-    @Id
     private String id;
 
     @ApiModelProperty(value = "路由Key")
@@ -85,11 +83,27 @@ public class InterfaceInfoVo {
     @ApiModelProperty(value = "接口调用状态，1：恶意攻击,2:成功连接,3:接口报错")
     private Integer connectStatus;
 
+    @ApiModelProperty(value = "接口调用时间")
+    private Date connectTime;
+
     @ApiModelProperty(value = "创建用户")
     private Long addUserId;
 
-    @ApiModelProperty(value = "接口调用时间")
-    private Date connectTime;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRouterKey() {
+        return routerKey;
+    }
+
+    public void setRouterKey(String routerKey) {
+        this.routerKey = routerKey;
+    }
 
     public Long getInterfaceId() {
         return interfaceId;
@@ -257,22 +271,6 @@ public class InterfaceInfoVo {
 
     public void setConnectStatus(Integer connectStatus) {
         this.connectStatus = connectStatus;
-    }
-
-    public String getRouterKey() {
-        return routerKey;
-    }
-
-    public void setRouterKey(String routerKey) {
-        this.routerKey = routerKey;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Long getAddUserId() {

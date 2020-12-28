@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Date;
+
 /**
  * TODO
  *
@@ -114,6 +116,7 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
     }
 
     private void setupRecord2Elasticsearch(InterfaceInfoVo interfaceInfoVo) {
+        interfaceInfoVo.setConnectTime(new Date());
         esUtil.save(CommonConstant.CONNECTION_INTERFACE_LIST,interfaceInfoVo);
     }
 

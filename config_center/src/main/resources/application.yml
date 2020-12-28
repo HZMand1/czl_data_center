@@ -104,3 +104,13 @@ logging:
       cn.paohe : DEBUG
 gateway:
    context: http://192.168.100.52:12001/
+elasticsearch:
+   host: 192.168.100.213:9200
+   ssword: yzh0623
+   protocol: http # 网络协议
+   common:
+      max-connect: 50 # 最大连接数
+      max-connect-per-route: 50 # 最大路由连接数
+      connect-timeout: 120
+      socket-timeout: 120
+      connect-request-timeout: 60
