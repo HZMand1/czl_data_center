@@ -50,7 +50,9 @@
         i.`INTERFACE_NAME` as interfaceName,
         t.`TYPE_NAME` as typeName,
         l.`LABEL_NAME` as labelName,
-        i.`URL` as url
+        i.`URL` as url,
+        i.`SQL_MSG` as sqlMsg,
+        i.`INTERFACE_TYPE` as interfaceType
         FROM `app_source_inter` a
         LEFT JOIN application_info p ON a.`APPLICATION_ID` = p.`APPLICATION_ID`
         LEFT JOIN data_source_info d ON a.`DATA_SOURCE_ID` = d.`DATA_SOURCE_ID`

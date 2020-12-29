@@ -43,6 +43,12 @@ public class AppSourceInterInfoVo extends AppSourceInterInfo {
     @Column(name = "URL")
     private String url;
 
+    @ApiModelProperty(value = "SQLMsg")
+    private String sqlMsg;
+
+    @ApiModelProperty(value = "接口类型,接口：0,数据库:1")
+    private Integer interfaceType;
+
     public String getTypeName() {
         return typeName;
     }
@@ -105,5 +111,21 @@ public class AppSourceInterInfoVo extends AppSourceInterInfo {
 
     public void setRouterKey(String routerKey) {
         this.routerKey = routerKey;
+    }
+
+    public String getSqlMsg() {
+        return sqlMsg;
+    }
+
+    public void setSqlMsg(String sqlMsg) {
+        this.sqlMsg = sqlMsg;
+    }
+
+    public Integer getInterfaceType() {
+        return interfaceType;
+    }
+
+    public void setInterfaceType(Integer interfaceType) {
+        this.interfaceType = interfaceType;
     }
 }
