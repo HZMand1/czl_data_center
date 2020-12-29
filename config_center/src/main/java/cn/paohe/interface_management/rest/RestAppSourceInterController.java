@@ -183,6 +183,7 @@ public class RestAppSourceInterController {
         // 获取接口信息
         InterfaceInfoVo interfaceInfo = new InterfaceInfoVo();
         interfaceInfo.setDataSourceId(appSourceInterInfoVo.getDataSourceId());
+        interfaceInfo.setAddUserId(UserUtil.getUserEntity().getUserId());
         List<InterfaceInfoVo> interfaceInfos = interfaceService.queryInterfaceVoList(interfaceInfo);
         if(CollectionUtil.isEmpty(interfaceInfos)){
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "该数据源没有接口信息,请先添加接口");
