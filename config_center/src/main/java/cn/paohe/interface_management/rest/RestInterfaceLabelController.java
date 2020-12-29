@@ -2,12 +2,15 @@ package cn.paohe.interface_management.rest;
 
 import cn.paohe.base.utils.basetype.BeanCopy;
 import cn.paohe.base.utils.basetype.StringUtil;
+import cn.paohe.entity.model.InterfaceMag.DataSourceInfo;
 import cn.paohe.entity.model.InterfaceMag.InterfaceLabelInfo;
 import cn.paohe.entity.vo.interfaceMag.InterfaceLabelInfoVo;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.service.IInterfaceLabelService;
+import cn.paohe.sys.annotation.AuthExclude;
 import cn.paohe.sys.annotation.RequiresPermissions;
 import cn.paohe.util.basetype.ObjectUtils;
+import cn.paohe.utils.CollectionUtil;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
 import io.swagger.annotations.ApiOperation;
@@ -114,5 +117,16 @@ public class RestInterfaceLabelController {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "删除成功", interfaceLabelInfo);
         }
         return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "删除失败", interfaceLabelInfo);
+    }
+
+    @AuthExclude
+    @ApiOperation(value = "根据ID获取标签信息")
+    @RequestMapping(value = "queryLabelById", method = RequestMethod.POST)
+    public InterfaceLabelInfo queryLabelById(@ApiParam(value = "应用实体Vo", required = true) @RequestBody InterfaceLabelInfoVo interfaceLabelInfoVo) {
+        if (ObjectUtils.isNullObj(interfaceLabelInfoVo.getLabelId())) {
+            return null;
+        }
+        InterfaceLabelInfo info = iInterfaceLabelService.queryInterfaceLabelById(interfaceLabelInfoVo);
+        return info;
     }
 }

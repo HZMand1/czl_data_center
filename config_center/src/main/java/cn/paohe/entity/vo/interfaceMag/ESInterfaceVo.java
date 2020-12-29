@@ -86,6 +86,9 @@ public class ESInterfaceVo {
     @ApiModelProperty(value = "接口调用时间")
     private Date connectTime;
 
+    @ApiModelProperty(value = "接口调用时间/日")
+    private String connectTimeStr;
+
     @ApiModelProperty(value = "创建用户")
     private Long addUserId;
 
@@ -287,5 +290,13 @@ public class ESInterfaceVo {
 
     public void setConnectTime(Date connectTime) {
         this.connectTime = connectTime;
+    }
+
+    public String getConnectTimeStr() {
+        return connectTimeStr;
+    }
+
+    public void setConnectTimeStr(String connectTimeStr) {
+        this.connectTimeStr = connectTimeStr;
     }
 }

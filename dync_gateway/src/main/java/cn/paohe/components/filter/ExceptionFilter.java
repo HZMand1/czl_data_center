@@ -4,6 +4,7 @@ import cn.paohe.components.constants.CommonConstant;
 import cn.paohe.emus.DataCenterCollections;
 import cn.paohe.framework.utils.ESUtil;
 import cn.paohe.framework.utils.RedisClient;
+import cn.paohe.framework.utils.base.DateUtil;
 import cn.paohe.framework.utils.base.ObjectUtils;
 import cn.paohe.framework.utils.base.StringUtil;
 import cn.paohe.framework.utils.cryption.uuid.UUIDUtil;
@@ -117,6 +118,7 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
 
     private void setupRecord2Elasticsearch(InterfaceInfoVo interfaceInfoVo) {
         interfaceInfoVo.setConnectTime(new Date());
+        interfaceInfoVo.setConnectTimeStr(DateUtil.getCurDate(DateUtil.yyyyMMdd_EN));
         esUtil.save(CommonConstant.CONNECTION_INTERFACE_LIST,interfaceInfoVo);
     }
 

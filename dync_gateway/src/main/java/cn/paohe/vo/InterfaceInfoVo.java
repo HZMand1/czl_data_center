@@ -91,6 +91,9 @@ public class InterfaceInfoVo {
     @ApiModelProperty(value = "接口调用时间")
     private Date connectTime;
 
+    @ApiModelProperty(value = "接口调用时间/日")
+    private String connectTimeStr;
+
     public Long getInterfaceId() {
         return interfaceId;
     }
@@ -289,5 +292,13 @@ public class InterfaceInfoVo {
 
     public void setConnectTime(Date connectTime) {
         this.connectTime = connectTime;
+    }
+
+    public String getConnectTimeStr() {
+        return connectTimeStr;
+    }
+
+    public void setConnectTimeStr(String connectTimeStr) {
+        this.connectTimeStr = connectTimeStr;
     }
 }
