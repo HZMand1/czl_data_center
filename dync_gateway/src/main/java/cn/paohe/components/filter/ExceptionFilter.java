@@ -9,8 +9,10 @@ import cn.paohe.framework.utils.base.ObjectUtils;
 import cn.paohe.framework.utils.base.StringUtil;
 import cn.paohe.framework.utils.cryption.uuid.UUIDUtil;
 import cn.paohe.framework.utils.rest.AjaxResult;
+import cn.paohe.interfaceMsg.service.IDataSourceService;
 import cn.paohe.interfaceMsg.service.IInterfaceService;
 import cn.paohe.vo.InterfaceInfoVo;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -46,6 +48,8 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
     private ESUtil esUtil;
     @Autowired
     private IInterfaceService iInterfaceService;
+    @Autowired
+    private IDataSourceService dataSourceService;
 
     /**
      * 允许的最小请求间隔
@@ -85,6 +89,14 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
         }
         interfaceInfoVo.setRouterKey(routerKey);
         interfaceInfoVo.setId(UUIDUtil.getUUID());
+
+        JSONObject routerParam = new JSONObject();
+        routerParam.put("routerKey",routerKey);
+        JSONObject dataSourceInfo = dataSourceService.queryDataSourceByKey(routerParam);
+        if(!ObjectUtils.isNullObj(dataSourceInfo)){
+            interfaceInfoVo.setDataSourceId(dataSourceInfo.getLong("dataSourceId"));
+            interfaceInfoVo.setDataSourceName(dataSourceInfo.getString("dataSourceName"));
+        }
 
         // 当前时间
         Long nowtime = System.currentTimeMillis();
