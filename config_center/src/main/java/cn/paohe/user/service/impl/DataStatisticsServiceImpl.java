@@ -82,13 +82,19 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
         if (CollectionUtil.isEmpty(list)) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "获取数据成功", list);
         }
+        // 查询条件
         BoolQueryBuilder boolQueryBuilder = getBoolQueryBuilder(dataStatisticsVo, loginUserId);
+        // 分组
         TermsAggregationBuilder labelIdGroup = AggregationBuilders.terms("connectionTimeGroup").field("connectTimeStr")
                 .subAggregation(AggregationBuilders.terms("labelIds").field("labelId"));
+
+        // 分组排序
+        labelIdGroup.order(Terms.Order.term(true));
 
         List<Map<String, Object>> dateMap = new ArrayList();
         try {
             Scroll scroll = new Scroll(TimeValue.timeValueMinutes(1L));
+
             SearchRequest searchRequest = new SearchRequest(new String[]{DataCenterCollections.CONNECTION_INTERFACE_LIST.toLowerCase()});
             searchRequest.scroll(scroll);
             SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -96,6 +102,7 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
             searchSourceBuilder.query(boolQueryBuilder);
             searchSourceBuilder.aggregation(labelIdGroup);
             searchRequest.source(searchSourceBuilder);
+
             SearchResponse searchResponse = this.client.search(searchRequest, new Header[0]);
             Aggregations aggregations = searchResponse.getAggregations();
             //获取主分组信息
