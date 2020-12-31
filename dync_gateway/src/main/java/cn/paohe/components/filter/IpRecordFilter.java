@@ -54,7 +54,7 @@ public class IpRecordFilter implements GlobalFilter, Ordered {
     @Override
     public int getOrder() {
         // 以5开头作为第一个
-        return 5;
+        return 6;
     }
 
     /**

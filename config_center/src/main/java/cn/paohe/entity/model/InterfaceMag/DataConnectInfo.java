@@ -18,7 +18,7 @@ import java.util.Date;
 public class DataConnectInfo extends IfQuery {
 
     public static enum key{
-        dataConnectId ,connectName,connectAddress ,connectDriver ,connectUser,aliveFlag ,addUserId ,oprUserId ,
+        dataConnectId ,dataSourceId,connectName,connectAddress ,connectDriver ,connectUser,aliveFlag ,addUserId ,oprUserId ,
         addTime ,oprTime
     }
 

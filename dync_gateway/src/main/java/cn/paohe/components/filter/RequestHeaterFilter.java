@@ -94,7 +94,6 @@ public class RequestHeaterFilter implements GlobalFilter, Ordered {
                 return FilterErrorUtil.errorInfo(exchange, new AjaxResult(DataCenterCollections.YesOrNo.NO.value, "current interface out of connection time range."));
             }
         }
-
         return chain.filter(exchange);
     }
 

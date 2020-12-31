@@ -85,6 +85,9 @@ public class InterfaceInfoVo {
     @ApiModelProperty(value = "接口调用状态，1：恶意攻击,2:成功连接,3:接口报错")
     private Integer connectStatus;
 
+    @ApiModelProperty(value = "接口类型,接口：0,数据库:1")
+    private Integer interfaceType;
+
     @ApiModelProperty(value = "创建用户")
     private Long addUserId;
 
@@ -300,5 +303,13 @@ public class InterfaceInfoVo {
 
     public void setConnectTimeStr(String connectTimeStr) {
         this.connectTimeStr = connectTimeStr;
+    }
+
+    public Integer getInterfaceType() {
+        return interfaceType;
+    }
+
+    public void setInterfaceType(Integer interfaceType) {
+        this.interfaceType = interfaceType;
     }
 }

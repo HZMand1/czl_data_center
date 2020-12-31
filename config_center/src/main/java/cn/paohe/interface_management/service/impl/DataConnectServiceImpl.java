@@ -144,7 +144,7 @@ public class DataConnectServiceImpl implements IDataConnectService {
             criteria.andEqualTo(DataConnectInfo.key.addUserId.name(), dataConnectInfo.getAddUserId());
         }
         if (!ObjectUtils.isNullObj(dataConnectInfo.getDataSourceId())) {
-            criteria.andEqualTo(DataConnectInfo.key.dataConnectId.name(), dataConnectInfo.getDataSourceId());
+            criteria.andEqualTo(DataConnectInfo.key.dataSourceId.name(), dataConnectInfo.getDataSourceId());
         }
         if (StringUtil.isNotBlank(dataConnectInfo.getConnectName())) {
             criteria.andLike(DataConnectInfo.key.connectName.name(), DataCenterCollections.PERCENT_SIGN + dataConnectInfo.getConnectName() + DataCenterCollections.PERCENT_SIGN);

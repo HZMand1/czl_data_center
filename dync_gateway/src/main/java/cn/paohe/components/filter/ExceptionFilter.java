@@ -9,6 +9,7 @@ import cn.paohe.framework.utils.base.ObjectUtils;
 import cn.paohe.framework.utils.base.StringUtil;
 import cn.paohe.framework.utils.cryption.uuid.UUIDUtil;
 import cn.paohe.framework.utils.rest.AjaxResult;
+import cn.paohe.interfaceMsg.service.IDataSourceConnService;
 import cn.paohe.interfaceMsg.service.IDataSourceService;
 import cn.paohe.interfaceMsg.service.IInterfaceService;
 import cn.paohe.vo.InterfaceInfoVo;
@@ -50,6 +51,8 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
     private IInterfaceService iInterfaceService;
     @Autowired
     private IDataSourceService dataSourceService;
+    @Autowired
+    private IDataSourceConnService dataSourceConnService;
 
     /**
      * 允许的最小请求间隔
@@ -125,6 +128,15 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
         setupRecord2Elasticsearch(interfaceInfoVo);
         redisClient.hSetHash(MALICIOUS_IP, key + PRE_REQUEST_PATH, key);
         redisClient.hSetHash(MALICIOUS_IP, key + PRE_REQUEST_TIME, String.valueOf(nowtime));
+
+        if(StringUtil.equals(1,interfaceInfoVo.getInterfaceType())){
+            // 获取数据源信息
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("secretKey",secretKey);
+            jsonObject.put("routerKey",routerKey);
+            AjaxResult ajaxResult = dataSourceConnService.sqlQuery(jsonObject);
+            return FilterErrorUtil.errorInfo(exchange,ajaxResult);
+        }
         return chain.filter(exchange);
     }
 

@@ -129,6 +129,8 @@ public class RestInterfaceController {
             }
         }
         if(StringUtil.equals(interfaceInfo.getInterfaceType(),DataCenterCollections.InterfaceTypeEnum.DATA_SOURCE_TYPE.value)){
+            // 设置默认的连接
+            interfaceInfo.setUrl("/sql/query");
             if (StringUtil.isBlank(interfaceInfo.getSqlMsg())) {
                 errorMsg.add("sql语句不能为空");
                 return false;
