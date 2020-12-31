@@ -26,4 +26,15 @@ public interface IDataSourceConnFeign {
      */
     @PostMapping("czl/rest/data/center/data/source/connect/sqlQuery")
     public AjaxResult sqlQuery(JSONObject jsonObject);
+
+    /**
+     * TODO 根据数据源ID获取数据库连接信息
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2020/10/12 15:14
+     * @throws:
+     */
+    @PostMapping("czl/rest/data/center/connect/queryConnectInfo")
+    public JSONObject queryConnectInfo(JSONObject jsonObject);
 }

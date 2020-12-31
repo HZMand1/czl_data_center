@@ -4,10 +4,14 @@ import cn.paohe.base.utils.basetype.StringUtil;
 import cn.paohe.entity.model.InterfaceMag.DataConnectInfo;
 import cn.paohe.enums.DataCenterCollections;
 import cn.paohe.interface_management.service.IDataConnectService;
+import cn.paohe.sys.annotation.AuthExclude;
 import cn.paohe.sys.annotation.RequiresPermissions;
 import cn.paohe.util.basetype.ObjectUtils;
+import cn.paohe.utils.CollectionUtil;
 import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +52,25 @@ public class RestDataConnectController {
     public AjaxResult queryConnectList(@ApiParam(value = "应用实体Vo", required = true) @RequestBody DataConnectInfo dataConnectInfo) {
         List<DataConnectInfo> dataConnectInfos = dataConnectService.queryConnectList(dataConnectInfo);
         return new AjaxResult(dataConnectInfos);
+    }
+
+    @AuthExclude
+    @ApiOperation(value = "根据数据源ID获取数据库连接信息")
+    @RequestMapping(value = "queryConnectInfo", method = RequestMethod.POST)
+    public JSONObject queryConnectInfo(@ApiParam(value = "应用实体Vo", required = true) @RequestBody JSONObject jsonObject) {
+        Long dataSourceId = jsonObject.getLong("dataSourceId");
+        if(ObjectUtils.isNullObj(dataSourceId)){
+            return null;
+        }
+        DataConnectInfo dataConnectInfo = new DataConnectInfo();
+        dataConnectInfo.setDataSourceId(dataSourceId);
+        List<DataConnectInfo> dataConnectInfos = dataConnectService.queryConnectList(dataConnectInfo);
+        if(CollectionUtil.isEmpty(dataConnectInfos)){
+            return null;
+        }
+        DataConnectInfo dataConnectInfo1 = dataConnectInfos.get(0);
+        JSONObject result = JSONObject.parseObject(JSON.toJSONString(dataConnectInfo1));
+        return result;
     }
 
     @ApiOperation(value = "分页查询连接信息")

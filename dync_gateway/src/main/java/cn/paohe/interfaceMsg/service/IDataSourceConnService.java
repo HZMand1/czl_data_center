@@ -22,4 +22,14 @@ public interface IDataSourceConnService {
      * @throws:
      */
     public AjaxResult sqlQuery(JSONObject jsonObject);
+
+    /**
+     * TODO 获取数据库连接信息
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2020/12/30 16:58
+     * @throws:
+     */
+    public JSONObject queryConnectInfo(JSONObject jsonObject);
 }

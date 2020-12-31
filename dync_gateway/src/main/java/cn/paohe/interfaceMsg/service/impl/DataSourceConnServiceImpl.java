@@ -26,4 +26,9 @@ public class DataSourceConnServiceImpl implements IDataSourceConnService {
     public AjaxResult sqlQuery(JSONObject jsonObject) {
         return dataSourceConnFeign.sqlQuery(jsonObject);
     }
+
+    @Override
+    public JSONObject queryConnectInfo(JSONObject jsonObject) {
+        return dataSourceConnFeign.queryConnectInfo(jsonObject);
+    }
 }

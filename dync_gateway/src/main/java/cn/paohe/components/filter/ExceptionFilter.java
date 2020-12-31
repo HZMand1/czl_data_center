@@ -12,6 +12,8 @@ import cn.paohe.framework.utils.rest.AjaxResult;
 import cn.paohe.interfaceMsg.service.IDataSourceConnService;
 import cn.paohe.interfaceMsg.service.IDataSourceService;
 import cn.paohe.interfaceMsg.service.IInterfaceService;
+import cn.paohe.util.DB.CommonUtils;
+import cn.paohe.util.DB.ConnectionPool;
 import cn.paohe.vo.InterfaceInfoVo;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * TODO
@@ -130,11 +136,42 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
         redisClient.hSetHash(MALICIOUS_IP, key + PRE_REQUEST_TIME, String.valueOf(nowtime));
 
         if(StringUtil.equals(1,interfaceInfoVo.getInterfaceType())){
+            JSONObject queryParam = new JSONObject();
+            queryParam.put("dataSourceId",interfaceInfoVo.getDataSourceId());
+            JSONObject connectionInfo = dataSourceConnService.queryConnectInfo(queryParam);
             // 获取数据源信息
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("secretKey",secretKey);
             jsonObject.put("routerKey",routerKey);
-            AjaxResult ajaxResult = dataSourceConnService.sqlQuery(jsonObject);
+
+            ConnectionPool connPool = new ConnectionPool(connectionInfo.getString("connectDriver"),
+                    connectionInfo.getString("connectAddress"), connectionInfo.getString("connectUser"), connectionInfo.getString("connectPassword"));
+            try {
+                connPool.createPool();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            // 结果集
+            List<Map<String,Object>> mapList = new ArrayList<>();
+            try {
+                Connection conn = connPool.getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(interfaceInfoVo.getSqlMsg());
+                ResultSet result = preparedStatement.executeQuery();
+                ResultSetMetaData md = result.getMetaData();
+                int columnCount = md.getColumnCount();
+                while (result.next()) {
+                    JSONObject vo = new JSONObject();
+                    for (int i = 1; i <= columnCount; i++) {
+                        vo.put(md.getColumnName(i), result.getObject(i));
+                    }
+                    mapList.add(CommonUtils.dataMap2Java(vo));
+                }
+                connPool.closeConnectionPool();
+            } catch (SQLException ex1) {
+                ex1.printStackTrace();
+            }
+            // 获取接口信息
+            AjaxResult ajaxResult = new AjaxResult(mapList);
             return FilterErrorUtil.errorInfo(exchange,ajaxResult);
         }
         return chain.filter(exchange);

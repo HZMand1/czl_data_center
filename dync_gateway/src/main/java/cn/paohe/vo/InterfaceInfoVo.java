@@ -58,6 +58,9 @@ public class InterfaceInfoVo {
     @ApiModelProperty(value = "请求URL")
     private String url;
 
+    @ApiModelProperty(value = "sql请求url")
+    private String sqlMsg;
+
     @ApiModelProperty(value = "请求头信息")
     private String headerInfo;
 
@@ -311,5 +314,13 @@ public class InterfaceInfoVo {
 
     public void setInterfaceType(Integer interfaceType) {
         this.interfaceType = interfaceType;
+    }
+
+    public String getSqlMsg() {
+        return sqlMsg;
+    }
+
+    public void setSqlMsg(String sqlMsg) {
+        this.sqlMsg = sqlMsg;
     }
 }
