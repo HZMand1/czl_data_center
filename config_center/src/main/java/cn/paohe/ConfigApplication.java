@@ -2,6 +2,7 @@ package cn.paohe;
 
 import cn.paohe.base.config.RedisConfig;
 import cn.paohe.base.datasource.mybatis.DynamicDataSourceRegister;
+import cn.paohe.framework.utils.ESUtil;
 import cn.paohe.util.ref.SpringUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
@@ -33,7 +34,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootConfiguration
 @ComponentScan(excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {RedisConfig.class}),
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SpringUtil.class})
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SpringUtil.class}),
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {ESUtil.class})
 })
 public class ConfigApplication extends SpringBootServletInitializer {
 
