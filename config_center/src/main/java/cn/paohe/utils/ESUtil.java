@@ -326,10 +326,10 @@ public class ESUtil {
             }
 
             page.setTotal(searchHits.getTotalHits());
+            page.setRows(list);
         } catch (IOException var15) {
             logger.error("func[ESUtil.search4Pagination] Exception [{} - {}] stackTrace[{}] ", new Object[]{var15.getCause(), var15.getMessage(), Arrays.deepToString(var15.getStackTrace())});
         }
-
-        return AppUtil.returnPage(list);
+        return page;
     }
 }
