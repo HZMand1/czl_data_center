@@ -27,6 +27,7 @@ import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -313,6 +314,7 @@ public class ESUtil {
             sourceBuilder.query(queryBuilder);
             sourceBuilder.from(page.getPageNo() * page.getPageSize());
             sourceBuilder.size(page.getPageSize());
+            sourceBuilder.sort("connectTime", SortOrder.DESC);
             searchRequest.source(sourceBuilder);
             SearchResponse searchResponse = this.client.search(searchRequest, new Header[0]);
             SearchHits searchHits = searchResponse.getHits();

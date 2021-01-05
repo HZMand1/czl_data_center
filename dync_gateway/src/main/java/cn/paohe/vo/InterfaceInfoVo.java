@@ -295,14 +295,6 @@ public class InterfaceInfoVo {
         this.addUserId = addUserId;
     }
 
-    public Date getConnectTime() {
-        return connectTime;
-    }
-
-    public void setConnectTime(Date connectTime) {
-        this.connectTime = connectTime;
-    }
-
     public String getConnectTimeStr() {
         return connectTimeStr;
     }
@@ -333,5 +325,13 @@ public class InterfaceInfoVo {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public Date getConnectTime() {
+        return connectTime;
+    }
+
+    public void setConnectTime(Date connectTime) {
+        this.connectTime = connectTime;
     }
 }

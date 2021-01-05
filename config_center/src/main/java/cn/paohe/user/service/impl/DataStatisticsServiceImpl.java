@@ -152,10 +152,10 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
             boolQueryBuilder.must(QueryBuilders.termQuery("typeId", dataStatisticsVo.getTypeId()));
         }
         if (!ObjectUtils.isNullObj(dataStatisticsVo.getStartAddDate())) {
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("addTime").gte(dataStatisticsVo.getStartAddDate()));
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("connectTime").gte(dataStatisticsVo.getStartAddDate().getTime()));
         }
         if (!ObjectUtils.isNullObj(dataStatisticsVo.getEndAddDate())) {
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("addTime").lte(dataStatisticsVo.getEndAddDate()));
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("connectTime").lte(dataStatisticsVo.getEndAddDate().getTime()));
         }
         return boolQueryBuilder;
     }
