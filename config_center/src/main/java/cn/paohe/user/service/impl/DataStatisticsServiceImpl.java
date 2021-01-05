@@ -1,6 +1,7 @@
 package cn.paohe.user.service.impl;
 
 import cn.paohe.base.component.annotation.TargetDataSource;
+import cn.paohe.base.utils.basetype.BeanCopy;
 import cn.paohe.entity.model.InterfaceMag.InterfaceLabelInfo;
 import cn.paohe.entity.vo.data_statistics.DataStatisticsVo;
 import cn.paohe.entity.vo.interfaceMag.ESInterfaceVo;
@@ -77,8 +78,10 @@ public class DataStatisticsServiceImpl implements IDataStatisticsService {
         if (ObjectUtils.isNullObj(loginUserId)) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_NO.value, "用户ID不能为空");
         }
-        dataStatisticsVo.setAddUserId(loginUserId);
-        List<Map<Object, Object>> list = dataStatisticsMapper.queryNewInterfaceByType(dataStatisticsVo);
+        DataStatisticsVo dataStatisticsVo1 = BeanCopy.objectCopy(dataStatisticsVo,DataStatisticsVo.class);
+        dataStatisticsVo1.setStartAddDate(null);
+        dataStatisticsVo1.setEndAddDate(null);
+        List<Map<Object, Object>> list = dataStatisticsMapper.queryNewInterfaceByType(dataStatisticsVo1);
         if (CollectionUtil.isEmpty(list)) {
             return new AjaxResult(DataCenterCollections.RestHttpStatus.AJAX_CODE_YES.value, "获取数据成功", list);
         }
