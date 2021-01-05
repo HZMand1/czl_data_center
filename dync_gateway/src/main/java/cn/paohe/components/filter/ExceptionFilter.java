@@ -136,7 +136,7 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
             }
         }
         interfaceInfoVo.setConnectStatus(DataCenterCollections.InterfaceConnectEmus.SUCCESS.value);
-        setupRecord2Elasticsearch(interfaceInfoVo);
+
         redisClient.hSetHash(MALICIOUS_IP, key + PRE_REQUEST_PATH, key);
         redisClient.hSetHash(MALICIOUS_IP, key + PRE_REQUEST_TIME, String.valueOf(nowtime));
 
@@ -173,8 +173,10 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
                 }
                 connPool.closeConnectionPool();
             } catch (SQLException ex1) {
-                ex1.printStackTrace();
+                interfaceInfoVo.setDescription(ex1.getMessage());
             }
+            // 保存调用信息
+            setupRecord2Elasticsearch(interfaceInfoVo);
             // 获取接口信息
             AjaxResult ajaxResult = new AjaxResult(mapList);
             return FilterErrorUtil.errorInfo(exchange,ajaxResult);

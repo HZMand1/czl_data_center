@@ -51,12 +51,13 @@
 //                return super.writeWith(body);
 //            }
 //        };
+//        Mono<Void> voidMono = chain.filter(exchange.mutate().response(decoratedResponse).build());
 //        // replace response with decorator
-//        return chain.filter(exchange.mutate().response(decoratedResponse).build());
+//        return voidMono;
 //    }
 //
 //    @Override
 //    public int getOrder() {
-//        return 7;
+//        return -1;
 //    }
 //}
