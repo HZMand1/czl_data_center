@@ -92,6 +92,9 @@ public class ESInterfaceVo {
     @ApiModelProperty(value = "创建用户")
     private Long addUserId;
 
+    @ApiModelProperty(value = "接口调用IP")
+    private String ip;
+
     public String getId() {
         return id;
     }
@@ -298,5 +301,13 @@ public class ESInterfaceVo {
 
     public void setConnectTimeStr(String connectTimeStr) {
         this.connectTimeStr = connectTimeStr;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

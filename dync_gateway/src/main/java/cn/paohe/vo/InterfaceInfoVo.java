@@ -100,6 +100,9 @@ public class InterfaceInfoVo {
     @ApiModelProperty(value = "接口调用时间/日")
     private String connectTimeStr;
 
+    @ApiModelProperty(value = "接口调用IP")
+    private String ip;
+
     public Long getInterfaceId() {
         return interfaceId;
     }
@@ -322,5 +325,13 @@ public class InterfaceInfoVo {
 
     public void setSqlMsg(String sqlMsg) {
         this.sqlMsg = sqlMsg;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

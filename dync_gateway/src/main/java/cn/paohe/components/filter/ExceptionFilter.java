@@ -8,6 +8,7 @@ import cn.paohe.framework.utils.base.DateUtil;
 import cn.paohe.framework.utils.base.ObjectUtils;
 import cn.paohe.framework.utils.base.StringUtil;
 import cn.paohe.framework.utils.cryption.uuid.UUIDUtil;
+import cn.paohe.framework.utils.http.IPUtil;
 import cn.paohe.framework.utils.rest.AjaxResult;
 import cn.paohe.interfaceMsg.service.IDataSourceConnService;
 import cn.paohe.interfaceMsg.service.IDataSourceService;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -86,7 +88,6 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
         String LastConnect = String.valueOf(redisClient.hGetHash(MALICIOUS_IP,key + PRE_REQUEST_PATH));
         String preRequestPath = ObjectUtils.isNullObj(LastConnect) ? "" : LastConnect;
 
-
         // 上次请求时间
         Object preRequestTimeStr = redisClient.hGetHash(MALICIOUS_IP, key + PRE_REQUEST_TIME);
         Long preRequestTime = ObjectUtils.isNullObj(preRequestTimeStr) ? 0 : Long.valueOf(preRequestTimeStr.toString());
@@ -98,6 +99,10 @@ public class ExceptionFilter implements GlobalFilter, Ordered {
         }
         interfaceInfoVo.setRouterKey(routerKey);
         interfaceInfoVo.setId(UUIDUtil.getUUID());
+        // ip地址
+        ServerHttpRequest shr = exchange.getRequest();
+        String requestIp = IPUtil.getIpAdd(shr);
+        interfaceInfoVo.setIp(requestIp);
 
         JSONObject routerParam = new JSONObject();
         routerParam.put("routerKey",routerKey);

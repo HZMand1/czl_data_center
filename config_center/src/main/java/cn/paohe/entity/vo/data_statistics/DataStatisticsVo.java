@@ -1,6 +1,7 @@
 package cn.paohe.entity.vo.data_statistics;
 
 import cn.paohe.vo.framework.IfQuery;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Date;
  * @Version V1.0
  * @Copyright 广东跑合中药材有限公司 Copyright (c) 2020
  **/
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DataStatisticsVo extends IfQuery {
 
     @ApiModelProperty(value = "所属标签ID")
