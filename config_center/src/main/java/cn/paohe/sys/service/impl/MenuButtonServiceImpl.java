@@ -353,10 +353,10 @@ public class MenuButtonServiceImpl implements IMenuButtonService {
         criteria.andEqualTo("parentId", menu.getMenuId());
         List<MenuButtonEntity> menuButtonEntities = menuButtonMapper.selectByCondition(condition);
         if (menuButtonEntities != null && menuButtonEntities.size() > 0) {
-            ErrorMessageUtils.setErrorMessage("请先删除子菜单");
+            ErrorMessageUtils.setErrorMessage("请先删除子RoleInfoServiceImpl菜单");
         }
         //菜单管理和角色管理为必有菜单
-        if (menu.getMenuId().equals("1")) {
+        if (StringUtil.equals(menu.getMenuId(),1)) {
             ErrorMessageUtils.setErrorMessage("此项为系统固有菜单，不能删除");
         }
         int i = menuButtonMapper.deleteByPrimaryKey(menu.getMenuId());
