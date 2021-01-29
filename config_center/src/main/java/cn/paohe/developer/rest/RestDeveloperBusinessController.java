@@ -4,6 +4,7 @@ import cn.paohe.developer.service.IDeveloperBusinessService;
 import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
 import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
 import cn.paohe.util.basetype.ObjectUtils;
+import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -37,6 +38,13 @@ public class RestDeveloperBusinessController {
     @RequestMapping(value = "queryDeveloperInterPage", method = RequestMethod.POST)
     public PageAjax<AppSourceInterInfoVo> queryDeveloperInterPage(@ApiParam(value = "接口信息实体Vo", required = true) @RequestBody AppSourceInterInfoVo appSourceInterInfoVo) {
         PageAjax<AppSourceInterInfoVo> result = developerBusinessService.queryDeveloperInterPage(appSourceInterInfoVo);
+        return result;
+    }
+
+    @ApiOperation(value = "接口测试")
+    @RequestMapping(value = "interfaceTest", method = RequestMethod.POST)
+    public AjaxResult interfaceTest(@ApiParam(value = "接口信息实体Vo", required = true) @RequestBody InterfaceInfoVo interfaceInfoVo) {
+        AjaxResult result = developerBusinessService.interfaceTest(interfaceInfoVo);
         return result;
     }
 }

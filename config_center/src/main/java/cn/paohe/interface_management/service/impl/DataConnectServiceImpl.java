@@ -78,6 +78,15 @@ public class DataConnectServiceImpl implements IDataConnectService {
         return dataConnectMapper.selectByPrimaryKey(dataConnectInfo);
     }
 
+    @Override
+    public DataConnectInfo queryConnectBySourceId(DataConnectInfo dataConnectInfo) {
+        if(ObjectUtils.isNullObj(dataConnectInfo.getDataSourceId())){
+            return null;
+        }
+        DataConnectInfo result = dataConnectMapper.selectOne(dataConnectInfo);
+        return result;
+    }
+
     @TargetDataSource(value = "center-r")
     @Override
     public List<DataConnectInfo> queryConnectList(DataConnectInfo dataConnectInfo) {

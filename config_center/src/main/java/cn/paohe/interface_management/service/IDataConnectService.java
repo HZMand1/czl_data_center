@@ -57,6 +57,16 @@ public interface IDataConnectService {
     public DataConnectInfo queryConnectById(DataConnectInfo dataConnectInfo);
 
     /**
+     * TODO 根据应用ID获取信息
+     * @Param:   dataConnectInfo
+     * @return:  dataConnectInfo
+     * @author:  黄芝民
+     * @Date:    2020/9/16 14:37
+     * @throws:
+     */
+    public DataConnectInfo queryConnectBySourceId(DataConnectInfo dataConnectInfo);
+
+    /**
      * TODO 查询全部应用信息
      * @Param:   dataConnectInfo
      * @return:  list

@@ -2,6 +2,7 @@ package cn.paohe.developer.service;
 
 import cn.paohe.entity.vo.interfaceMag.AppSourceInterInfoVo;
 import cn.paohe.entity.vo.interfaceMag.InterfaceInfoVo;
+import cn.paohe.vo.framework.AjaxResult;
 import cn.paohe.vo.framework.PageAjax;
 
 /**
@@ -35,4 +36,14 @@ public interface IDeveloperBusinessService {
      * @throws:
      */
     public PageAjax<AppSourceInterInfoVo> queryDeveloperInterPage(AppSourceInterInfoVo appSourceInterInfoVo);
+
+    /**
+     * TODO
+     * @Param:   null
+     * @return:  * @return: null
+     * @author:  黄芝民
+     * @Date:    2021/1/29 16:32
+     * @throws:  
+     */
+    AjaxResult interfaceTest(InterfaceInfoVo interfaceInfoVo);
 }
